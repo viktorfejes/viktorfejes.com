@@ -37,7 +37,9 @@ const sortedTags = [...tags].sort();
         position: relative;
         overflow: hidden;
         border-radius: 1rem;
-        padding-top: 66.66%;
+        /* aspect-ratio: 3 / 2; */
+        flex: 1 1 calc(50% - 1rem);
+        padding-top: 33.33%;
     }
 
     .portfolio-item .portfolio-click {
@@ -108,5 +110,12 @@ const sortedTags = [...tags].sort();
         height: 100%;
         object-fit: cover;
         transition: transform 0.3s ease;
+    }
+
+    @media (max-width: 768px) {
+        .portfolio-item {
+            flex: 1 1 100%;
+            padding-top: 66.66%;
+        }
     }
 </style>

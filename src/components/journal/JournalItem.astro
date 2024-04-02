@@ -44,7 +44,7 @@ if (!images[thumb_src]) {
 <style>
     .journal-item {
         overflow: hidden;
-        width: calc(100% / 3 - 1.5rem);
+        flex: 1 1 calc(100% / 3 - 2rem);
     }
 
     .journal-image {
@@ -114,5 +114,11 @@ if (!images[thumb_src]) {
         );
         bottom: 0;
         left: 0;
+    }
+
+    @media (max-width: 768px) {
+        .journal-item {
+            flex: 1 1 100%;
+        }
     }
 </style>

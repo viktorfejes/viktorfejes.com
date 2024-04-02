@@ -25,10 +25,12 @@ if (!images[logo_src]) {
 
 <div class="project-item">
     <a href={link} class="project-a">
-        <div class="project-logo">
-            <Image src={images[logo_src]()} alt=`${name}'s icon` />
+        <div class="project-meta">
+            <div class="project-logo">
+                <Image src={images[logo_src]()} alt=`${name}'s icon` />
+            </div>
+            <h3 class="project-name">{name}</h3>
         </div>
-        <h3 class="project-name">{name}</h3>
         <p class="project-desc">{desc}</p>
         <!-- <ToolTags tags={tags} /> -->
     </a>
@@ -38,7 +40,7 @@ if (!images[logo_src]) {
     .project-item {
         position: relative;
         /* overflow: hidden; */
-        width: calc(100% / 3 - 1.5rem);
+        flex: 1 1 calc((100% / 3) - 2rem);
         border: 6px solid #131317;
         outline: 1px solid #222228;
         background-color: #111115;
@@ -59,11 +61,18 @@ if (!images[logo_src]) {
         padding: 1.5rem;
     }
 
+    .project-meta {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
     .project-logo {
         width: 5rem;
         height: 5rem;
         overflow: hidden;
-        margin-bottom: 2.5rem;
+        /* margin-bottom: 2.5rem; */
     }
 
     .project-logo img {
@@ -87,9 +96,29 @@ if (!images[logo_src]) {
     }
 
     .project-desc {
-        font-size: 1rem;
-        color: var(--tertiary-color);
+        font-size: var(--font-size-sm);
+        color: var(--color-secondary);
         margin-top: 0.5rem;
-        line-height: 1.617;
+        line-height: 1.65;
+    }
+
+    @media (max-width: 970px) {
+        .project-item {
+            flex: 1 1 100%;
+        }
+
+        .project-meta {
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .project-logo {
+            width: 2rem;
+            height: 2rem;
+        }
+
+        .project-desc {
+            display: none;
+        }
     }
 </style>

@@ -39,8 +39,8 @@ const limitedCaseStudies = show != 0 ? caseStudies.slice(0, show) : caseStudies;
         position: relative;
         max-width: var(--content-width);
         margin: 0 auto 4rem auto;
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(570px, 1fr));
+        display: flex;
+        flex-wrap: wrap;
         gap: 2rem;
     }
 

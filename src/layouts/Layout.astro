@@ -49,7 +49,9 @@ const { title, theme="dark" } = Astro.props;
 		--color-primary: #e6e6ea;
 		--color-secondary: #aaaaae;
 		--color-accent: #fbe094;
-		--color-dark: #101014;
+
+		--color-dark-1: #101014;
+		--color-dark-2: #18181c;
 
 		/* Widths */
 		--width-container: 80rem;
@@ -66,7 +68,8 @@ const { title, theme="dark" } = Astro.props;
 		--font-primary: "Inter", sans-serif;
 		--font-mono: "JetBrains Mono", monospace;
 
-		--font-size-sm: 0.875rem;
+		--font-size-xs: 0.875rem;
+		--font-size-sm: 1rem;
 		--font-size-std: 1.25rem;
 		--font-size-lg: 1.5rem;
 		--font-size-xl: 2rem;
@@ -106,7 +109,7 @@ const { title, theme="dark" } = Astro.props;
 		font-weight: var(--font-weight-normal);
 		line-height: var(--line-height-base);
 		color: var(--color-primary);
-		background-color: var(--color-dark);
+		background-color: var(--color-dark-1);
 		overflow-x: hidden;
 	}
 
@@ -117,7 +120,7 @@ const { title, theme="dark" } = Astro.props;
 
 	body.light {
 		background-color: var(--color-primary);
-		color: var(--color-dark);
+		color: var(--color-dark-1);
 	}
 
 	span.rainbow-bg {

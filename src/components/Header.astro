@@ -13,8 +13,8 @@
             <li><a href="/journal">Journal</a></li>
             <li><a href="/projects">Projects</a></li>
             <li><a href="#">Contact</a></li>
-            <!-- <li><a href="#">☰</a></li> -->
         </ul>
+        <a href="#" class="nav-hamburger">☰</a>
     </nav>
 </header>
 
@@ -36,16 +36,16 @@
         margin: 0 auto;
     }
 
-    .main-navigation .nav-list {
+    .nav-list {
         display: flex;
         gap: 2rem;
     }
 
-    .main-navigation .nav-list li {
+    .nav-list li {
         list-style: none;
     }
 
-    .main-navigation .nav-list li a {
+    .nav-list li a {
         text-decoration: none;
         color: var(--primary-color);
         color: var(--tertiary-color);
@@ -54,8 +54,12 @@
         transition: color 0.3s ease;
     }
 
-    .main-navigation .nav-list li a:hover {
+    .nav-list li a:hover {
         color: var(--primary-color);
+    }
+
+    .nav-hamburger {
+        display: none;
     }
 
     .logo {
@@ -72,5 +76,14 @@
         display: block;
         color: var(--secondary-color);
         fill: var(--secondary-color);
+    }
+
+    @media (max-width: 720px) {
+        .nav-list {
+            display: none;
+        }
+        .nav-hamburger {
+            display: block;
+        }
     }
 </style>
