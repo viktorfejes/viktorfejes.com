@@ -3,7 +3,7 @@
         "id": 1,
         "name": "microECS",
         "url": "https://github.com/viktorfejes/microECS",
-        "icon": "base_favicon.png",
+        "icon": "microecs_logo.png",
         "desc": "A small and performant ECS library written in C++ for game engines and simulations.",
         "tools": [
             "C++"
@@ -22,7 +22,7 @@
     {
         "id": 3,
         "name": "LUT Converter",
-        "url": "https://github.com/viktorfejes/microECS",
+        "url": "https://convert.viktorfejes.com/",
         "icon": "base_favicon.png",
         "desc": "An online tool for converting Hald images to .cube LUT files.",
         "tools": [

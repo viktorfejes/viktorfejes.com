@@ -1,5 +1,6 @@
 ---
 title: The Incredible Egg
+featured: true
 thumbnail: gildstudios-incredibleegg-still-4_WP0LQ.jpg
 tags: [Art Direction, Retouching]
 software: [Photoshop]
@@ -11,14 +12,14 @@ import ContentImg from "../../components/ContentImg.astro";
 import ContentVideo from "../../components/ContentVideo.astro";
 import Caption from "../../components/Caption.astro";
 
-<div class:list={[style.flex, style.col_2]}>
+<div class="flex col-2">
     <ContentImg src="gildstudios-incredibleegg-still-3.jpg" alt="Something" dir="cs/incredible-egg" />
     <ContentImg src="gildstudios-incredibleegg-still-4.jpg" alt="Something" dir="cs/incredible-egg" />
 </div>
 
 <ContentImg src="gildstudios-incredibleegg-still-1.jpg" alt="Something" dir="cs/incredible-egg" />
 
-<div class:list={[style.flex, style.col_2]}>
+<div class="flex col-2">
     <ContentImg src="gildstudios-incredibleegg-still-8.jpg" alt="Something" dir="cs/incredible-egg" />
     <ContentImg src="gildstudios-incredibleegg-still-6.jpg" alt="Something" dir="cs/incredible-egg" />
     <ContentImg src="gildstudios-incredibleegg-still-5.jpg" alt="Something" dir="cs/incredible-egg" />
@@ -27,7 +28,7 @@ import Caption from "../../components/Caption.astro";
 
 <ContentImg src="gildstudios-incredibleegg-still-2.jpg" alt="Something" dir="cs/incredible-egg" />
 
-<div class:list={[style.flex, style.col_2]}>
+<div class="flex col-2">
     <ContentImg src="gildstudios-incredibleegg-still-9.jpg" alt="Something" dir="cs/incredible-egg" />
     <ContentImg src="gildstudios-incredibleegg-still-10.jpg" alt="Something" dir="cs/incredible-egg" />
     <ContentImg src="gildstudios-incredibleegg-still-11.jpg" alt="Something" dir="cs/incredible-egg" />
@@ -36,13 +37,17 @@ import Caption from "../../components/Caption.astro";
     <ContentImg src="gildstudios-incredibleegg-still-14.jpg" alt="Something" dir="cs/incredible-egg" />
 </div>
 
+<div class="block-text">
 It was important to keep the color grading consistent across the images of the campaigns. Therefore, I crafted a 3D LUT, that after thorough testing and tweaking, was applied to all of the images.
+</div>
 
 <ContentVideo src="/video/incredible-egg_daredevil-breakdown.mp4" formats={["mp4"]} loop={true} autoplay={true} muted={true} controls={true} />
 <Caption>Breakdown of 'Daredevil' from Dinner Eggs campaign</Caption>
 
+<div class="block-text">
 ## Dinner Eggs
 One of the campaigns in the series was titled "Dinner Eggs". The concept was almost identical to the other campaigns, except this time the characters had to evoke of a feeling of a dinner setting. What made it challenging was that the characters were shot the same way as the others, and placing assets shot in front of a bright background into a dark setting can cause issues around the edges. I had to carefully mask out the characters, and for parts that were impossible to mask out (like hair, fur...etc.), I manually painted in the missing parts.
+</div>
 
 <ContentImg src="gildstudios-dinnereggs-1.jpg" alt="Something" dir="cs/incredible-egg" />
 

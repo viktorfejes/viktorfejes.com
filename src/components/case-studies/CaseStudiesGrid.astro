@@ -4,11 +4,15 @@ import CaseStudyItem from "./CaseStudyItem.astro";
 
 interface Props {
     show: number;
+    featured?: boolean;
 }
 
-const { show } = Astro.props;
+const { show, featured = false } = Astro.props;
 
-const caseStudies = await getCollection("case-studies");
+const caseStudies = await getCollection("case-studies", ({ data }) => {
+    // return content that is not a draft and is featured if featured is true
+    return !data.draft && (!featured || data.featured);
+});
 
 // const caseStudies = await Astro.glob("../../content/case-studies/*.md*");
 // caseStudies.sort(

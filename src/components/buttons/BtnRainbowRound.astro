@@ -27,17 +27,20 @@ const { href: linkTo } = Astro.props;
             #ff1886 76%,
             #fce844 100.2%
         );
-        border-radius: 0.5rem;
+        border-radius: 8px;
         padding: 1px;
         background-size: 200% 200%;
         line-height: 1.125;
     }
 
     .btn-rainbow-rounded a {
+        margin: 0;
+        line-height: 1.2;
+        white-space: nowrap;
         display: block;
         text-decoration: none;
         background: var(--secondary-color);
-        border-radius: calc(0.5rem - 1px);
+        border-radius: 7px;
         color: var(--color-primary);
         padding: 0.8rem 1.6rem;
         transition: background 0.3s;

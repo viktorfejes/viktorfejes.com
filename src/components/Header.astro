@@ -14,7 +14,24 @@
             <li><a href="/projects">Projects</a></li>
             <li><a href="#">Contact</a></li>
         </ul>
-        <a href="#" class="nav-hamburger">☰</a>
+        <div class="nav-hamburger-group">
+            <input type="checkbox" name="hamburger-opener" id="hambox" />
+            <label for="hambox" class="hamburger-btn">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </label>
+
+            <div class="hidden-nav-container">
+                <ul class="hidden-nav">
+                    <li><a href="/case-studies">Case Studies</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/journal">Journal</a></li>
+                    <li><a href="/projects">Projects</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+        </div>
     </nav>
 </header>
 
@@ -58,8 +75,109 @@
         color: var(--primary-color);
     }
 
-    .nav-hamburger {
+    .nav-hamburger-group {
         display: none;
+    }
+
+    #hambox {
+        display: none;
+    }
+
+    .hamburger-btn {
+        position: relative;
+        cursor: pointer;
+        user-select: none;
+        display: block;
+        width: 2rem;
+        height: 1.5rem;
+        overflow: hidden;
+        z-index: 11;
+    }
+
+    .hamburger-line {
+        position: absolute;
+        display: block;
+        width: 100%;
+        height: 3px;
+        background: var(--color-primary);
+        border-radius: 2px;
+        transition: all 0.3s ease;
+        width: 85%;
+    }
+
+    .hamburger-line:nth-child(1) {
+        top: 0;
+    }
+
+    .hamburger-line:nth-child(2) {
+        width: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .hamburger-line:nth-child(3) {
+        bottom: 0;
+    }
+
+    #hambox:checked + .hamburger-btn .hamburger-line:nth-child(1) {
+        top: 50%;
+        transform: translateY(-50%) rotate(45deg);
+    }
+
+    #hambox:checked + .hamburger-btn .hamburger-line:nth-child(2) {
+        transform: translateX(-100%);
+    }
+
+    #hambox:checked + .hamburger-btn .hamburger-line:nth-child(3) {
+        bottom: 50%;
+        transform: translateY(50%) rotate(-45deg);
+    }
+
+    .hidden-nav-container {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        left: 0;
+        overflow: hidden;
+        max-height: 0;
+        transition: max-height 0.3s ease;
+        background: var(--color-dark-2);
+        width: 100%;
+        height: auto;
+        padding: 0 2rem;
+    }
+
+    #hambox:checked ~ .hidden-nav-container {
+        transition: max-height 1s ease;
+        max-height: 100%;
+    }
+
+    .hidden-nav {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+        padding: 2rem 0;
+        list-style: none;
+        margin: 4rem 0 0 0;
+    }
+
+    .hidden-nav li {
+        width: 100%;
+        text-align: center;
+        border-radius: 0.5rem;
+        background: var(--color-dark-3);
+    }
+
+    .hidden-nav li a {
+        display: block;
+        width: 100%;
+        padding: 1rem 0;
+        color: var(--color-primary);
+        font-size: 1.2rem;
+        font-weight: 400;
+        text-decoration: none;
     }
 
     .logo {
@@ -70,6 +188,7 @@
         /* background: var(--offwhite-color); */
         border-radius: 50%;
         padding: 0.9rem 0.75rem 0.75rem;
+        z-index: 11;
     }
 
     .logo svg {
@@ -82,7 +201,7 @@
         .nav-list {
             display: none;
         }
-        .nav-hamburger {
+        .nav-hamburger-group {
             display: block;
         }
     }

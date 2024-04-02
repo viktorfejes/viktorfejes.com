@@ -52,6 +52,7 @@ const { title, theme="dark" } = Astro.props;
 
 		--color-dark-1: #101014;
 		--color-dark-2: #18181c;
+		--color-dark-3: #202024;
 
 		/* Widths */
 		--width-container: 80rem;
@@ -157,5 +158,25 @@ const { title, theme="dark" } = Astro.props;
 	.col-2 > * {
 		flex: 1 1 calc(50% - 0.5rem);
 		border-radius: 1rem;
+	}
+
+	/* Blocks, mainly for content */
+	.block-text {
+		width: 100%;
+		max-width: var(--width-paragraph);
+		margin: 4rem auto;
+	}
+
+	.block-text p {
+        margin-bottom: 2rem;
+        font-size: var(--font-size-std);
+        line-height: var(--line-height-base);
+        color: var(--color-primary);
+	}
+
+	@media (max-width: 768px) {
+		.col-2 > * {
+			flex: 1 1 100%;
+		}
 	}
 </style>

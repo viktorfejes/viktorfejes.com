@@ -39,6 +39,7 @@ const sortedTags = [...tags].sort();
         border-radius: 1rem;
         /* aspect-ratio: 3 / 2; */
         flex: 1 1 calc(50% - 1rem);
+        max-width: calc(50% - 1rem);
         padding-top: 33.33%;
     }
 
@@ -115,6 +116,7 @@ const sortedTags = [...tags].sort();
     @media (max-width: 768px) {
         .portfolio-item {
             flex: 1 1 100%;
+            max-width: 100%;
             padding-top: 66.66%;
         }
     }
