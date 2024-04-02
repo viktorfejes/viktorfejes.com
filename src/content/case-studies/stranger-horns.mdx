@@ -1,0 +1,52 @@
+---
+title: The Stranger With Horns
+thumbnail: charDemon-Final-edited_smallFile-jpeg6.jpg
+tags: [CGI, Art Direction]
+software: [ZBrush, Photoshop, Maya, Substance Painter, Wrap, Marvelous Designer]
+
+description: Personal project I created to test and set-up a pipeline for realistic 3D character art creation. My aim was to achieve photorealism for a still image while not taking too long with execution.
+---
+import ContentImg from "../../components/ContentImg.astro";
+import ContentVideo from "../../components/ContentVideo.astro";
+import Caption from "../../components/Caption.astro";
+import ContentFlex from "../../components/ContentFlex.astro";
+
+<ContentImg src="charDemon-Final-edited_smallFile-jpeg6.jpg" alt="Something" dir="cs" />
+<Caption>Final image</Caption>
+
+Since the bust started as an anatomy study in ZBrush, there was no concept art to follow. However, at some point, a character started to emerge. I decided to go with it and developed it into a horned human that lives on a desert planet. The goggles and poncho-like garment were added to reinforce the idea of a desert dweller.
+
+<ContentVideo src="/video/demon_char_goggles.mp4" formats={["mp4"]} loop={true} autoplay={true} muted={true} controls={true} />
+<Caption>Goggles in Substance Painter</Caption>
+
+<ContentImg src="horned_stranger-closeup-01.jpg" alt="Something" dir="cs/horns" />
+
+Throughout the project, I experimented with different styles of clothing using Marvelous Designer. Even though, I was eager to do something more elaborate, I decided to keep it simple to avoid scope creep.
+
+<ContentFlex cols={2}>
+    <ContentImg src="horned_stranger-md-01.jpg" alt="Something" dir="cs/horns" />
+    <ContentImg src="horned_stranger-md-02.jpg" alt="Something" dir="cs/horns" />
+</ContentFlex>
+<Caption>Iterating in Marvelous Designer</Caption>
+
+<ContentImg src="dp-experiments.jpg" alt="Something" dir="cs" />
+
+I am a big fan of reusable assets, so I created a new realistic set of eyes that I could reuse in other projects. It turns out medical images are the best references for sculpting an iris, albeit can be a bit disturbing, but the results are worth it. They helped me sculpt this iris in ZBrush.
+
+<ContentImg src="iris_sculpted.jpg" alt="Something" dir="cs" />
+<Caption>Iris sculpt in ZBrush</Caption>
+
+
+<ContentImg src="charDemon-Final_Clay.jpg" alt="Something" dir="cs" />
+
+## The Full Pipeline
+
+To summarize, the pipeline for this project was as follows. The main sculpting of the bust, horns, and iris were done in ZBrush. The goggles and the rest of the eye were polymodelled in Maya, while the clothes were created in Marvelous Designer -- all of which were finished in ZBrush.
+
+Topology was important to me to get right, so I went back and forth between Maya and ZBrush to get the best results. The final topology and UVs were done in Maya, while Wrap helped with the transfer of XYZ textures.
+
+Everything else was done in Substance Painter, where I painted the textures and added the final touches. Then, I rendered out the final image using Arnold, and applied some post-processing in Photoshop.
+
+<ContentVideo src="/video/demon_char_wire.mp4" formats={["mp4"]} loop={true} autoplay={true} muted={true} controls={true} />
+
+<ContentImg src="horned_stranger-closeup-02.jpg" alt="Something" dir="cs/horns" />

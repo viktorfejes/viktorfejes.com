@@ -1,0 +1,118 @@
+---
+import { slugify } from "../assets/scripts/utils.js";
+
+interface Props {
+    tags: string[];
+}
+
+const { tags } = Astro.props;
+---
+
+<ul class="tool-tags">
+    {
+        tags.map((tag) => (
+            <li class="tool-tag">
+                <a
+                    href={`/tags/${slugify(tag)}`}
+                    class={`tool-tag-link ${slugify(tag)}-icon`}
+                >
+                    {tag}
+                </a>
+            </li>
+        ))
+    }
+</ul>
+
+<style>
+    .tool-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .tool-tag-link {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-weight: 400;
+        background-color: #191919;
+        color: var(--tertiary-color);
+        /* border: 4px solid #131313; */
+        border: 1px solid #222;
+        padding: 0.5rem 0.825rem;
+        border-radius: 0.5rem;
+        font-size: 0.875rem;
+        color: var(--offwhite-color);
+        text-decoration: none;
+    }
+
+    .tool-tag-link::before {
+        content: "";
+        display: inline-block;
+        width: 1rem;
+        height: 1rem;
+        margin-right: 0.5rem;
+        background: url("/src/assets/images/software-icons.png");
+        background-position: 0 0;
+        background-size: 128px 64px;
+    }
+
+    .tool-tag-link.marvelous-designer-icon::before {
+        background-position: -1rem -2rem;
+    }
+
+    .tool-tag-link.rizom-icon::before {
+        background-position: -1rem 0;
+    }
+
+    .tool-tag-link.max-icon::before {
+        background-position: -2rem 0;
+    }
+
+    .tool-tag-link.maya-icon::before {
+        background-position: -3rem 0;
+    }
+
+    .tool-tag-link.blender-icon::before {
+        background-position: -4rem 0;
+    }
+
+    .tool-tag-link.v-ray-icon::before {
+        background-position: -5rem 0;
+    }
+
+    .tool-tag-link.corona-icon::before {
+        background-position: -6rem 0;
+    }
+
+    .tool-tag-link.zbrush-icon::before {
+        background-position: -7rem 0;
+    }
+
+    .tool-tag-link.photoshop-icon::before {
+        background-position: 0 -1rem;
+    }
+
+    .tool-tag-link.substance-designer-icon::before {
+        background-position: -1rem -1rem;
+    }
+
+    .tool-tag-link.substance-painter-icon::before {
+        background-position: -2rem -1rem;
+    }
+
+    .tool-tag-link.wrap-icon::before {
+        background-position: -3rem -1rem;
+    }
+
+    .tool-tag-link.javascript-icon::before {
+        background-position: -6rem -1rem;
+    }
+
+    .tool-tag-link.cpp-icon::before {
+        background-position: -7rem -1rem;
+    }
+</style>

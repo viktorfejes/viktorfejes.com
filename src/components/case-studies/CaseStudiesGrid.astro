@@ -1,0 +1,56 @@
+---
+import { getCollection } from "astro:content";
+import CaseStudyItem from "./CaseStudyItem.astro";
+
+interface Props {
+    show: number;
+}
+
+const { show } = Astro.props;
+
+const caseStudies = await getCollection("case-studies");
+
+// const caseStudies = await Astro.glob("../../content/case-studies/*.md*");
+// caseStudies.sort(
+//     (a, b) => Date.parse(b.frontmatter.date) - Date.parse(a.frontmatter.date),
+// );
+
+const limitedCaseStudies = show != 0 ? caseStudies.slice(0, show) : caseStudies;
+---
+
+<div class="portfolio-grid">
+    {
+        limitedCaseStudies.map((caseStudy) => (
+            <CaseStudyItem
+                title={caseStudy.data.title}
+                thumbnail={caseStudy.data.thumbnail}
+                tags={caseStudy.data.tags}
+                slug={caseStudy.slug}
+            />
+        ))
+    }
+    <div class="no-matches" style="display: none;">
+        <p>No case study matches the selection.</p>
+    </div>
+</div>
+
+<style>
+    .portfolio-grid {
+        position: relative;
+        max-width: var(--content-width);
+        margin: 0 auto 4rem auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(570px, 1fr));
+        gap: 2rem;
+    }
+
+    .no-matches {
+        margin-top: 2rem;
+        margin-bottom: 4rem;
+    }
+
+    .no-matches p {
+        font-size: 1.5rem;
+        color: var(--primary-color);
+    }
+</style>

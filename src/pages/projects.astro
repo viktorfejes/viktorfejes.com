@@ -1,0 +1,49 @@
+---
+import ProjectsGrid from "../components/projects/ProjectsGrid.astro";
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Projects - Viktor Fejes" theme="dark">
+    <div class="projects">
+        <div class="page-header projects-header">
+            <h1 class="page-title">Projects</h1>
+            <p>
+                Here are some of the projects that I am the most proud of. I
+                have worked on a wide range of projects utilising a variety of
+                skills. Feel free to filter the projects by clicking on the tags
+                below.
+            </p>
+        </div>
+        <ProjectsGrid show={0} />
+    </div>
+</Layout>
+
+<style>
+    .projects {
+        padding: 4rem 2rem 6rem 2rem;
+    }
+
+    .page-header {
+        width: 100%;
+        max-width: var(--content-width);
+        margin: 0 auto;
+        margin-bottom: 4rem;
+        margin-top: 4rem;
+    }
+
+    .page-title {
+        font-size: 2.8rem;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        color: var(--offwhite-color);
+        margin: 0;
+    }
+
+    .page-header p {
+        font-size: 1.25rem;
+        color: var(--tertiary-color);
+        line-height: 1.65;
+        max-width: var(--thin-width);
+        margin-bottom: 2rem;
+    }
+</style>

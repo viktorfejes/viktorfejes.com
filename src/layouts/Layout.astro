@@ -1,0 +1,158 @@
+---
+import "../styles/normalize.css";
+import "../styles/fonts.css";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { ViewTransitions } from "astro:transitions";
+
+interface Props {
+	title: string;
+	theme: string;
+}
+
+const { title, theme="dark" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Astro description" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<!-- <meta name="generator" content={Astro.generator} /> -->
+		<title>{title}</title>
+		<ViewTransitions />
+	</head>
+	<body class={theme}>
+		<Header />
+		<slot />
+		<Footer />
+	</body>
+</html>
+
+<style is:global>
+	:root {
+		--primary-color: #fbe094;
+		/* --secondary-color: #0f0d0d; */
+		--secondary-color: #101014;
+		--tertiary-color: #aaaaaa;
+		--offwhite-color: #e6e6ea;
+
+		--content-width: 80rem;
+		--journal-width: 56.25rem;
+		--thin-width: 40rem;
+
+		/* !!!NEW VARIABLES!!! */
+
+		/* Color */
+		--color-primary: #e6e6ea;
+		--color-secondary: #aaaaae;
+		--color-accent: #fbe094;
+		--color-dark: #101014;
+
+		/* Widths */
+		--width-container: 80rem;
+		--width-medium: 56.25rem;
+		--width-paragraph: 40rem;
+
+		/* Spacing */
+		--padding-base: 2rem;
+
+		/* Border */
+		--border-radius: 1rem;
+
+		/* Font */
+		--font-primary: "Inter", sans-serif;
+		--font-mono: "JetBrains Mono", monospace;
+
+		--font-size-sm: 0.875rem;
+		--font-size-std: 1.25rem;
+		--font-size-lg: 1.5rem;
+		--font-size-xl: 2rem;
+
+		--font-size-xs: 0.75rem;
+		--font-size-md: 1rem;
+		--font-size-2xl: 1.5rem;
+		--font-size-3xl: 1.875rem;
+		--font-size-4xl: 2.25rem;
+		--font-size-5xl: 3rem;
+		--font-size-6xl: 4rem;
+
+		--font-weight-light: 300;
+		--font-weight-normal: 400;
+		--font-weight-medium: 500;
+		--font-weight-semibold: 600;
+		--font-weight-bold: 700;
+		--font-weight-extrabold: 800;
+
+		/* Line height */
+		--line-height-base: 1.65;
+		--line-height-heading: 1.2;
+
+		--letter-spacing-1: -0.03rem;
+		--spacing-2: -0.05rem;
+
+		--gradient-primary: linear-gradient(109.6deg,
+				#ff1886 11.2%,
+				#fce844 52%,
+				#35b2ef 100.2%);
+	}
+
+	/* Main Global CSS */
+	body {
+		font-family: var(--font-primary);
+		font-size: var(--font-size-std);
+		font-weight: var(--font-weight-normal);
+		line-height: var(--line-height-base);
+		color: var(--color-primary);
+		background-color: var(--color-dark);
+		overflow-x: hidden;
+	}
+
+	a {
+		text-decoration: none;
+		color: var(--color-accent);
+	}
+
+	body.light {
+		background-color: var(--color-primary);
+		color: var(--color-dark);
+	}
+
+	span.rainbow-bg {
+		background: var(--gradient-primary);
+		background-clip: text;
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		color: transparent;
+	}
+
+	pre,
+	code {
+		font-family: var(--font-mono);
+		font-size: 1rem;
+		line-height: 1.4;
+		padding: 2rem 0;
+		border-radius: 1rem;
+	}
+
+	code .line {
+		padding: 0 2rem;
+	}
+
+	/* Utility Global CSS */
+	.flex {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		gap: 1rem;
+		flex-wrap: wrap;
+		margin-bottom: 1rem;
+	}
+
+	.col-2 > * {
+		flex: 1 1 calc(50% - 0.5rem);
+		border-radius: 1rem;
+	}
+</style>

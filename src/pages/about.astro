@@ -1,0 +1,136 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="About - Viktor Fejes" theme="dark">
+    <div class="page-about">
+        <div class="about-header">
+            <div class="header-inner">
+                <div class="about-left">
+                    <h1>Building, Creating, Designing, Developing</h1>
+                    <p>
+                        Viktor is the Creative Director of Gild Studios. You
+                        might have seen him around on educational websites,
+                        including CreativeLive, KelbyOne, or Visual Education.
+                        If you want to contact him you can join his Discord
+                        channel. He lives in Los Angeles, CA.
+                    </p>
+                </div>
+                <div class="about-right">
+                    <video src="/video/reel2018.mp4" autoplay muted loop
+                    ></video>
+                </div>
+            </div>
+        </div>
+        <div class="about-main">
+            <div>
+                <p>
+                    Viktor is the Creative Director of Gild Studios, which he
+                    founded to realise wonderful and captivating creations for
+                    the ad industry. He is a retoucher and 3d artist by trade,
+                    and an English philologist by education. Though, the latter
+                    has no bearing on his life except sometimes going "uhm,
+                    actually" when something vaguely related to linguistics
+                    comes up.
+                </p>
+            </div>
+            <div>
+                <p>
+                    You might have seen him around on educational platforms and
+                    conferences, including CreativeLive, KelbyOne, or Visual
+                    Education as he believes sharing is vital for the
+                    advancement of this craft. His most useful tools can be
+                    found on his Gumroad and his free videos on YouTube. In 2019
+                    he was named as one of Forbes' 30 under 30. He is not under
+                    thirty anymore.
+                </p>
+            </div>
+            <div>
+                <p>
+                    Some things he likes, including but not limited to, and in
+                    no particular order: coding, cooking, mechanical keyboards,
+                    the games industry, mountains, challenges, and diving into
+                    new projects.
+                </p>
+            </div>
+            <div>
+                <p>
+                    If you want to contact him you can join his Discord channel
+                    or send him an email. He lives in Los Angeles, CA.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .page-about {
+            padding: 0 0 6rem 0;
+        }
+
+        .about-header {
+            background-color: #18181c;
+            margin-top: -6.25rem;
+            padding-top: 6.25rem;
+            padding: 6.25rem 2rem 2rem 2rem;
+        }
+
+        .header-inner {
+            position: relative;
+            max-width: var(--content-width);
+            margin: 0 auto;
+            margin-top: 8rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 4rem;
+        }
+
+        .about-main {
+            max-width: var(--content-width);
+            margin: 0 auto;
+            line-height: 1.65;
+            font-size: 1.25rem;
+            color: var(--offwhite-color);
+            display: flex;
+            justify-content: space-between;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .about-main div {
+            width: calc(50% - 2rem);
+            /* flex-grow: 0; */
+            /* flex-shrink: 1; */
+        }
+
+        .about-header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            letter-spacing: -0.03rem;
+            color: var(--offwhite-color);
+        }
+
+        .about-header p {
+            font-size: 1.25rem;
+            color: var(--offwhite-color);
+            line-height: 1.65;
+        }
+
+        .about-right {
+            aspect-ratio: 16 / 9;
+            max-width: 50rem;
+        }
+
+        .about-left {
+            max-width: 40rem;
+            position: absolute;
+            left: 0;
+            line-height: 1.2;
+        }
+
+        .about-right video {
+            width: 100%;
+            border-radius: 0.5rem;
+        }
+    </style>
+</Layout>

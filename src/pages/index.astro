@@ -1,0 +1,81 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Intro from "../components/Intro.astro";
+import CaseStudiesGrid from "../components/case-studies/CaseStudiesGrid.astro";
+import BtnRainbowRound from "../components/buttons/BtnRainbowRound.astro";
+import AboutIndex from "../components/about/AboutIndex.astro";
+import JournalGrid from "../components/journal/JournalGrid.astro";
+import ProjectsGrid from "../components/projects/ProjectsGrid.astro";
+---
+
+<Layout title="Viktor Fejes" theme="dark">
+	<main class="main">
+		<Intro />
+		<section class="case-studies">
+			<div class="section-header">
+				<h2 class="section-header-title">Case Studies</h2>
+				<BtnRainbowRound href="/case-studies">
+					View Case Studies
+				</BtnRainbowRound>
+			</div>
+			<CaseStudiesGrid show={6} />
+		</section>
+		<section class="about">
+			<div class="about-inner">
+				<AboutIndex />
+			</div>
+		</section>
+		<section class="journal">
+			<div class="section-header">
+				<h2 class="section-header-title">Journal</h2>
+				<BtnRainbowRound href="/journal">View all</BtnRainbowRound>
+			</div>
+			<JournalGrid show={3} />
+		</section>
+		<section class="projects">
+			<div class="section-header">
+				<h2 class="section-header-title">Projects</h2>
+				<BtnRainbowRound href="/projects">View all</BtnRainbowRound>
+			</div>
+			<ProjectsGrid show={3} />
+		</section>
+	</main>
+</Layout>
+
+<style>
+	.main {
+	}
+
+	.section-header {
+		width: 100%;
+		max-width: var(--content-width);
+		margin: 0 auto;
+		margin-bottom: 2rem;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.section-header-title {
+		font-size: var(--font-size-xl);
+		font-weight: var(--font-weight-extrabold);
+		letter-spacing: var(--letter-spacing-1);
+		color: var(--color-primary);
+		margin: 0;
+	}
+
+	.case-studies,
+	.about,
+	.journal,
+	.projects {
+		padding: 0 2rem;
+		margin-bottom: 12rem;
+	}
+
+	.about {
+		background-color: #18181c;
+		padding-top: 8rem;
+		padding-bottom: 8rem;
+		margin-bottom: 8rem;
+	}
+</style>

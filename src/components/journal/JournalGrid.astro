@@ -1,0 +1,43 @@
+---
+import { getCollection } from "astro:content";
+import JournalItem from "./JournalItem.astro";
+
+interface Props {
+    show: number;
+}
+
+const { show } = Astro.props;
+
+// const journal = await Astro.glob("../../content/journal/*.md*");
+// journal.sort(
+//     (a, b) => Date.parse(b.frontmatter.date) - Date.parse(a.frontmatter.date),
+// );
+
+const journal = await getCollection("journal");
+const limitedJournal = show != 0 ? journal.slice(0, show) : journal;
+---
+
+<div class="journal-grid">
+    {
+        limitedJournal.map((journal) => (
+            <JournalItem
+                title={journal.data.title}
+                thumbnail={journal.data.thumbnail}
+                date={journal.data.date}
+                href={journal.slug}
+            />
+        ))
+    }
+</div>
+
+<style>
+    .journal-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 2rem;
+        max-width: var(--content-width);
+        margin: 0 auto;
+        margin-bottom: 12rem;
+    }
+</style>

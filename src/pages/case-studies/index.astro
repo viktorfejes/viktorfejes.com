@@ -1,0 +1,147 @@
+---
+import CaseStudiesGrid from "../../components/case-studies/CaseStudiesGrid.astro";
+import Layout from "../../layouts/Layout.astro";
+
+const selectableTags = ["Art Direction", "CGI", "Retouching", "Coding"];
+---
+
+<Layout title="Case Studies - Viktor Fejes" theme="dark">
+    <div class="case-studies">
+        <div class="page-header case-studies-header">
+            <h1 class="page-title">Case Studies</h1>
+            <p>
+                Here are some of the projects that I am the most proud of. I
+                have worked on a wide range of projects utilising a variety of
+                skills. Feel free to filter the projects by clicking on the tags
+                below.
+            </p>
+            <ul>
+                {
+                    selectableTags.map((tag) => (
+                        <li>
+                            <a href="#" class="tag-button">
+                                {tag}
+                            </a>
+                        </li>
+                    ))
+                }
+            </ul>
+        </div>
+        <CaseStudiesGrid show={0} />
+    </div>
+</Layout>
+
+<script is:inline data-astro-rerun>
+    document.addEventListener("astro:page-load", () => {
+        let activeTags = new Set();
+        const tagButtons = document.querySelectorAll(".tag-button");
+        const items = document.querySelectorAll("[data-tags]");
+        const noMatch = document.querySelector(".no-matches");
+        const url = new URL(window.location.href);
+
+        const hashTag = url.hash.replace("#", "");
+        if (hashTag !== "") {
+            activeTags.add(hashTag);
+            tagButtons.forEach((btn) => {
+                if (activeTags.has(btn.textContent.trim())) {
+                    btn.classList.add("active");
+                }
+            });
+            filterItems(activeTags);
+        }
+
+        tagButtons.forEach((button) => {
+            button.addEventListener("click", (e) => {
+                e.preventDefault();
+                if (activeTags.has(button.textContent.trim())) {
+                    activeTags.delete(button.textContent.trim());
+                    e.target.classList.remove("active");
+                } else {
+                    activeTags.add(button.textContent.trim());
+                    e.target.classList.add("active");
+                }
+                filterItems(activeTags);
+            });
+        });
+
+        function filterItems(activeTags) {
+            const itemCount = items.length;
+            let matchCount = itemCount;
+            items.forEach((item) => {
+                const tags = item.getAttribute("data-tags").split(",");
+                if (Array.from(activeTags).every((tag) => tags.includes(tag))) {
+                    item.style.display = "block";
+                } else {
+                    item.style.display = "none";
+                    matchCount--;
+                }
+            });
+
+            if (matchCount == 0) {
+                noMatch.style.display = "block";
+            } else {
+                noMatch.style.display = "none";
+            }
+        }
+    });
+</script>
+
+<style>
+    .case-studies {
+        padding: 4rem 2rem 6rem 2rem;
+    }
+
+    .page-header {
+        width: 100%;
+        max-width: var(--content-width);
+        margin: 0 auto;
+        margin-bottom: 4rem;
+        margin-top: 4rem;
+    }
+
+    .page-title {
+        font-size: 2.8rem;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        color: var(--color-primary);
+        margin: 0;
+    }
+
+    .page-header p {
+        font-size: 1.25rem;
+        color: var(--tertiary-color);
+        line-height: 1.65;
+        max-width: var(--thin-width);
+        margin-bottom: 2rem;
+    }
+
+    .page-header ul {
+        display: flex;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        gap: 1rem;
+    }
+
+    .page-header ul li a {
+        display: inline-block;
+        font-size: 1rem;
+        color: var(--color-primary);
+        text-decoration: none;
+        padding: 0.6rem 0.8rem;
+        border-radius: 0.3rem;
+        transition: background-color 0.2s;
+    }
+
+    .page-header ul li a:hover {
+        background-color: #28282c;
+    }
+
+    .page-header ul li a.active {
+        color: var(--secondary-color);
+        background-color: var(--primary-color);
+        transition:
+            background-color 0.2s,
+            color 0.2s;
+    }
+</style>

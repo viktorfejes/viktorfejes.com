@@ -1,0 +1,31 @@
+---
+interface Props {
+    src: string;
+    formats: string[];
+    autoplay: boolean;
+    loop: boolean;
+    muted: boolean;
+    controls: boolean;
+}
+
+const {
+    src,
+    formats,
+    autoplay = false,
+    loop = false,
+    muted = false,
+    controls = true,
+} = Astro.props;
+
+const rootSrc =
+    src.lastIndexOf(".") > -1 ? src.substring(0, src.lastIndexOf(".")) : src;
+---
+
+<video
+    autoplay={autoplay}
+    loop={loop}
+    muted={muted}
+    controls={controls}
+>
+    {formats.map((format) => <source src=`${rootSrc}.${format}` type={`video/${format}`} />)}
+</video>

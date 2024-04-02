@@ -1,0 +1,24 @@
+---
+interface Props {
+    class: string;
+    tags: string[];
+}
+
+const { class: className, tags } = Astro.props;
+---
+
+<ul class={className}>
+    {
+        tags.map((tag) => (
+            <li>
+                <a href="#">{tag}</a>
+            </li>
+        ))
+    }
+</ul>
+
+<style>
+    ul {
+        z-index: 1;
+    }
+</style>
