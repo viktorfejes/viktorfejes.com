@@ -102,3 +102,7 @@
 .icon-linkedin-squared:before {
     content: '\f30c';
 }
+
+.icon-out_arrow:before {
+    content: '\e800';
+}
