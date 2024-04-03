@@ -13,7 +13,9 @@ const { show } = Astro.props;
 //     (a, b) => Date.parse(b.frontmatter.date) - Date.parse(a.frontmatter.date),
 // );
 
-const journal = await getCollection("journal");
+const journal = await getCollection("journal", ({ data }) => {
+    return data.draft === false;
+});
 const limitedJournal = show != 0 ? journal.slice(0, show) : journal;
 ---
 
@@ -34,7 +36,7 @@ const limitedJournal = show != 0 ? journal.slice(0, show) : journal;
     .journal-grid {
         display: flex;
         flex-wrap: wrap;
-        justify-content: space-between;
+        /* justify-content: space-between; */
         gap: 2rem;
         max-width: var(--content-width);
         margin: 0 auto;

@@ -19,6 +19,7 @@ const journalCollection = defineCollection({
         title: z.string(),
         date: z.date(),
         thumbnail: z.string(),
+        draft: z.boolean().default(false),
     })
 });
 
