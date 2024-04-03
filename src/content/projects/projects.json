@@ -12,7 +12,7 @@
     {
         "id": 2,
         "name": "ChromaScopes",
-        "url": "https://github.com/viktorfejes/microECS",
+        "url": "https://chroma.gildstudios.com/",
         "icon": "chroma_logo.png",
         "desc": "An color visualizer desktop application for Photoshop. Includes vectorscope, waveform, and histogram.",
         "tools": [

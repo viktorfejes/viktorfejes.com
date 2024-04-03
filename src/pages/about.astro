@@ -1,4 +1,5 @@
 ---
+import BtnRainbowRound from "../components/buttons/BtnRainbowRound.astro";
 import Layout from "../layouts/Layout.astro";
 ---
 
@@ -7,14 +8,17 @@ import Layout from "../layouts/Layout.astro";
         <div class="about-header">
             <div class="header-inner">
                 <div class="about-left">
-                    <h1>Building, Creating, Designing, Developing</h1>
+                    <h1>Hey, I'm Viktor.</h1>
                     <p>
-                        Viktor is the Creative Director of Gild Studios. You
-                        might have seen him around on educational websites,
-                        including CreativeLive, KelbyOne, or Visual Education.
-                        If you want to contact him you can join his Discord
-                        channel. He lives in Los Angeles, CA.
+                        I'm a digital artist and developer based in Los Angeles,
+                        CA. For nearly 15 years I've had the pleasure of working
+                        with and learning from some of the best in the industry,
+                        combining my love for art and technology to create
+                        stunning visuals.
                     </p>
+                    <BtnRainbowRound href="/contact"
+                        >Get In Touch</BtnRainbowRound
+                    >
                 </div>
                 <div class="about-right">
                     <video src="/video/reel2018.mp4" autoplay muted loop
@@ -23,41 +27,52 @@ import Layout from "../layouts/Layout.astro";
             </div>
         </div>
         <div class="about-main">
-            <div>
-                <p>
-                    Viktor is the Creative Director of Gild Studios, which he
-                    founded to realise wonderful and captivating creations for
-                    the ad industry. He is a retoucher and 3d artist by trade,
-                    and an English philologist by education. Though, the latter
-                    has no bearing on his life except sometimes going "uhm,
-                    actually" when something vaguely related to linguistics
-                    comes up.
-                </p>
-            </div>
-            <div>
-                <p>
-                    You might have seen him around on educational platforms and
-                    conferences, including CreativeLive, KelbyOne, or Visual
-                    Education as he believes sharing is vital for the
-                    advancement of this craft. His most useful tools can be
-                    found on his Gumroad and his free videos on YouTube. In 2019
-                    he was named as one of Forbes' 30 under 30. He is not under
-                    thirty anymore.
-                </p>
-            </div>
-            <div>
-                <p>
-                    Some things he likes, including but not limited to, and in
-                    no particular order: coding, cooking, mechanical keyboards,
-                    the games industry, mountains, challenges, and diving into
-                    new projects.
-                </p>
-            </div>
-            <div>
-                <p>
-                    If you want to contact him you can join his Discord channel
-                    or send him an email. He lives in Los Angeles, CA.
-                </p>
+            <div class="about-main-inner">
+                <div>
+                    <p>
+                        Currently working as the Creative Director of <a
+                            href="https://gildstudios.com">Gild Studios</a
+                        >, I specialize in retouching, CGI, and tool
+                        development. I have a passion for creating beautiful
+                        images and tools that help others create beautiful
+                        images.
+                    </p>
+
+                    <p>
+                        My fascination with both the technical and artistic
+                        aspects of crafting visuals has led me to work with some
+                        of the biggest names in the industry, and to deepen my
+                        understanding of color, anatomy, light, and composition.
+                    </p>
+                    <p>
+                        My work has been featured on billboards worldwide,
+                        including Times Square and Sunset Boulevard, on the
+                        covers of magazines, like Variety and The Hollywood
+                        Reporter, and in numerous commercials and online
+                        campaigns. I have worked with clients such as Amazon,
+                        Microsoft, CBS, and AT&T.
+                    </p>
+                </div>
+                <div>
+                    <p>
+                        I am also an educator and a speaker, and I have spoken
+                        at events, such as <a
+                            href="https://www.creativelive.com/"
+                            >Creative Live's</a
+                        > Photo Week, and at various conferences and workshops. You
+                        can find my courses on platforms, like Creative Live, <a
+                            href="https://kelbyone.com/">KelbyOne</a
+                        >, and <a href="https://www.visualeducation.com/"
+                            >Visual Education</a
+                        >.
+                    </p>
+                    <p>
+                        When I'm not art directing, pushing pixels, developing a
+                        game engine, or writing <a href="#">LUT analyzers</a>, I
+                        enjoy practicing kendo, playing video games, and
+                        spending time with my wife.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
@@ -71,7 +86,8 @@ import Layout from "../layouts/Layout.astro";
             background-color: #18181c;
             margin-top: -6.25rem;
             padding-top: 6.25rem;
-            padding: 6.25rem 2rem 2rem 2rem;
+            padding: 6.25rem 2rem 4rem 2rem;
+            margin-bottom: 8rem;
         }
 
         .header-inner {
@@ -80,52 +96,66 @@ import Layout from "../layouts/Layout.astro";
             margin: 0 auto;
             margin-top: 8rem;
             display: flex;
-            justify-content: flex-end;
-            gap: 4rem;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 2rem;
         }
 
         .about-main {
+            padding: 0 2rem;
+        }
+
+        .about-main-inner {
             max-width: var(--content-width);
             margin: 0 auto;
-            line-height: 1.65;
             font-size: 1.25rem;
-            color: var(--offwhite-color);
+            color: var(--color-secondary);
             display: flex;
             justify-content: space-between;
-            gap: 2rem;
             flex-wrap: wrap;
+            gap: 2rem;
+            text-align: justify;
         }
 
-        .about-main div {
-            width: calc(50% - 2rem);
-            /* flex-grow: 0; */
-            /* flex-shrink: 1; */
+        .about-main-inner a {
+            color: var(--color-primary);
+            border-bottom: 3px solid var(--color-accent);
+            border-image-slice: 1;
+            border-image-source: var(--gradient-primary);
+            /* border-width: 0 0 2px 0; */
         }
 
-        .about-header h1 {
-            font-size: 3rem;
-            font-weight: 800;
-            margin-bottom: 2rem;
-            letter-spacing: -0.03rem;
-            color: var(--offwhite-color);
+        .about-main-inner div {
+            flex: 1 1 calc(50% - 1rem);
+            min-width: 25rem;
         }
 
         .about-header p {
             font-size: 1.25rem;
-            color: var(--offwhite-color);
+            color: var(--color-primary);
             line-height: 1.65;
-        }
-
-        .about-right {
-            aspect-ratio: 16 / 9;
-            max-width: 50rem;
+            margin-bottom: 2rem;
         }
 
         .about-left {
-            max-width: 40rem;
-            position: absolute;
-            left: 0;
-            line-height: 1.2;
+            position: relative;
+            flex: 1 1 calc(50% - 1rem);
+            min-width: 25rem;
+        }
+
+        .about-right {
+            flex: 1 1 calc(50% - 1rem);
+            /* position: absolute; */
+            aspect-ratio: 16 / 9;
+        }
+
+        .about-left h1 {
+            margin-top: 0;
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            letter-spacing: -0.03rem;
+            color: var(--color-accent);
         }
 
         .about-right video {
