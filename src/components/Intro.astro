@@ -1,54 +1,18 @@
 <div>
-    <!-- <div class="background-text">
-        <h1>Digital Artist <span class="ampersand">&</span> Developer</h1>
-    </div> -->
-
     <div class="main-intro">
-        <h2>
-            Hey, I'm Viktor Fejes, a <span class="rainbow-bg"
-                ><span class="red-shadow">Digital</span> Artist & <span
-                    class="blue-shadow">Developer</span
-                ></span
-            > from Los Angeles, CA.
-        </h2>
-        <!-- <div class="blur red"></div> -->
-        <!-- <div class="blur yellow"></div> -->
-        <!-- <div class="blur cyan"></div> -->
+        <div class="intro-inner">
+            <h2>
+                Hey, I'm Viktor Fejes, a <span class="rainbow-bg"
+                    ><span class="red-shadow">Digital</span> Artist & <span
+                        class="blue-shadow">Developer</span
+                    ></span
+                > from Los Angeles, CA.
+            </h2>
+        </div>
     </div>
 </div>
 
 <style>
-    .blur {
-        width: 40%;
-        height: 40%;
-        position: absolute;
-        border-radius: 50%;
-        z-index: -1;
-        filter: blur(8rem);
-    }
-
-    .blur.red {
-        top: 50%;
-        left: 0;
-        transform: translate(-20%, -50%) rotate(14deg);
-        background-color: #ff1886;
-        opacity: 0.2;
-    }
-    .blur.yellow {
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%) rotate(14deg);
-        background-color: #fce844;
-        opacity: 0.1;
-    }
-    .blur.cyan {
-        top: 50%;
-        right: 0;
-        transform: translate(10%, -50%) rotate(-14deg);
-        background-color: #35b2ef;
-        opacity: 0.2;
-    }
-
     .blue-shadow {
         text-shadow: rgba(53, 178, 239, 0.5) 2.5rem -2rem 8rem;
     }
@@ -56,48 +20,10 @@
         text-shadow: rgba(255, 24, 134, 0.5) -2.5rem 2rem 8rem;
     }
 
-    .background-text h1 {
-        display: inline-block;
-        top: 16rem;
-        left: 50%;
-        /* width: 100%; */
-        text-align: center;
-        transform: translateX(-50%);
-        position: absolute;
-        font-size: 12rem;
-        color: var(--secondary-color);
-        text-shadow:
-            2px 2px 0 #222,
-            -2px 2px 0 #222,
-            -2px -2px 0 #222,
-            2px -2px 0 #222;
-        z-index: -1;
-        /* display: none; */
-
-        /* Test */
-        background: linear-gradient(
-            109.6deg,
-            #ff1886 11.2%,
-            #fce844 52%,
-            #35b2ef 100.2%
-        );
-        text-shadow: none;
-        background-clip: text;
-        color: transparent;
-        font-size: 6rem;
-        font-weight: 800;
-        transform: translateX(-50%) scale3d(1.2, 3, 1) rotate(0deg);
-        filter: blur(8rem);
-        opacity: 0.4;
-        white-space: nowrap;
-    }
-
     .main-intro {
         position: relative;
         width: 100%;
-        max-width: var(--content-width);
-        margin: 8rem auto 10rem auto;
-        /* padding: 0 2rem; */
+        padding: 0 2rem;
     }
 
     .main-intro h2 {
@@ -107,6 +33,12 @@
         font-weight: 800;
         font-weight: 800;
         line-height: 1.2;
+    }
+
+    .intro-inner {
+        width: 100%;
+        max-width: var(--content-width);
+        margin: 8rem auto 10rem auto;
     }
 
     @media (max-width: 970px) {

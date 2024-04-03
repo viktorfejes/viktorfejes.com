@@ -125,7 +125,8 @@ const readTime = calcReadTime(journal.body);
         overflow: hidden;
     }
 
-    .journal-thumbnail img {
+    .journal-thumbnail :global(img) {
+        display: block;
         width: 100%;
         height: auto;
         object-fit: cover;
