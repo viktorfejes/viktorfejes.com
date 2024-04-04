@@ -127,7 +127,7 @@ import Layout from "../layouts/Layout.astro";
 
         .about-main-inner div {
             flex: 1 1 calc(50% - 1rem);
-            min-width: 25rem;
+            /* min-width: 25rem; */
         }
 
         .about-header p {
@@ -140,7 +140,7 @@ import Layout from "../layouts/Layout.astro";
         .about-left {
             position: relative;
             flex: 1 1 calc(50% - 1rem);
-            min-width: 25rem;
+            /* min-width: 25rem; */
         }
 
         .about-right {
@@ -161,6 +161,19 @@ import Layout from "../layouts/Layout.astro";
         .about-right video {
             width: 100%;
             border-radius: 0.5rem;
+        }
+
+        @media (max-width: 800px) {
+            .about-left,
+            .about-right,
+            .about-main-inner div {
+                flex: 1 1 100%;
+            }
+
+            .about-main-inner {
+                gap: 0;
+                text-align: left;
+            }
         }
     </style>
 </Layout>
