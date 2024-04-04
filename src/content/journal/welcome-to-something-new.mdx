@@ -1,0 +1,46 @@
+---
+title: Welcome To Something New
+date: 2024-04-04
+thumbnail: 240404_website_thumb.jpg
+---
+import ContentImg from "../../components/ContentImg.astro";
+
+At this point I would not be able to tell you how many different personal websites I have had. Therefore, I'm not going to make any promises of how long this one will last. However, I'd be happy if I could keep this up for while.
+
+I was around 14 when I started blogging. That is how I learned to write HTML, CSS, Javascript, PHP, and MySQL. It's one of my core memories of seeing someone having their own blog engine they wrote from scratch, and that inspiring me to do the same. I knew nothing about coding -- it was difficult at first, but eventually I managed to create my own small CMS from scratch. I kept that up for years and years, fine-tuning my own custom engine, engaging with other people and their communities. It was a lot of fun.
+
+## A new beginning
+As I said, no promises but here are my plans for the future regarding this website.
+- This website should be my HQ, my main hub where you can find all my important [projects](/projects) and [info](/about).
+- I want to keep up-to-date [Case Studies](/case-studies) so that people can see my process and I can document my work in a meaningful and visual way.
+- The projects I'm working on and/or I want people to know about shall be accessible from here.
+- Finally, I want this [journal](/journal) to serve as a resource for fellow artists and developers as I continue to navigate life and these difficult fields.
+
+From a personal perspective I feel the last point is the most important. I know some people publish tutorials on Youtube as their way of archiving what they have learnt and, if I can, I want to do the same here.
+
+## Let's get technical
+Let me give you a little insight what went into the creation of this new website. I'll be brief but I'll mention both design and programming aspects. It's not rocket science but might be interesting?
+
+Early on, I decided that I wanted the main part of the site to have a dark background because that always feels visually pleasing when presenting images.
+
+<ContentImg src="240404_website_colorscheme.jpg" alt="Picture of the Color Scheme and fonts used for the website's design" dir="journal" />
+
+Furthermore, because of what I do I wanted the design to reflect that by using colours and elements that remind me of prisms. The fonts, Inter and JetBrains Mono (for code segments) were used because they are my favourite currently, not to mention that they are easy to read.
+
+Under the hood I'm using [Astro](https://astro.build/) to make my job easier. I started with Nuxt.js but it had some quirks I wasn't a fan of so I switched to Astro (which is, by the way, the framework I used when building the website for [Gild](https://gildstudios.com)). Using Astro keeps Javascript usage to a minimum, which results in a performant site.
+
+However, on a site like mine the bottleneck is always going to be the images and videos. For the images I'm using Astro's built in image optimizer that creates different size and qualities for me at build time. The videos I have to manually fine-tune with the help of [Handbrake](https://handbrake.fr/).
+
+<ContentImg src="240404_website_buttons.jpg" alt="Picture of the Color Scheme and fonts used for the website's design" dir="journal" />
+
+My favourite elements on the whole site are these small rounded rainbow buttons. I think they are neat. They also have scrolling animation when you hover over them, done purely through CSS.
+
+Another thing that's done purely through CSS is the hamburger menu you get on mobile sizes. It's done with the strategic usage of a checkbox and sibling selectors. Oh, if my 14-year-old self had access to these fancy "new" CSS modules. It was a different time for CSS, and many other things.
+
+<ContentImg src="240404_website_hamburger.jpg" alt="Picture of the Color Scheme and fonts used for the website's design" dir="journal" />
+
+## Structuring for the complex
+One thing that was difficult when planning for the design was that I wanted to represent all the aspects of what I do and enjoy. Encapsulating that into a single website is challenging. However, with the current structure of having [Case Studies](/case-studies) for showing off various portfolio pieces in-depth, a [Projects](/projects) page to showcase my more developer leaning endeavors, and with a [Journal](/journal) to catalogue my journey I think I found the right balance.
+
+## For the future
+This is an on-going project and when the next time you visit things will be different, hopefully improved. And, if you are reading this in the future, and the website is completely different, just know that the chapter started somewhere here.

@@ -61,6 +61,7 @@ const { title, theme="dark" } = Astro.props;
 
 		/* Spacing */
 		--padding-base: 2rem;
+		--padding-side: 2rem;
 
 		/* Border */
 		--border-radius: 1rem;
@@ -177,6 +178,10 @@ const { title, theme="dark" } = Astro.props;
 	@media (max-width: 768px) {
 		.col-2 > * {
 			flex: 1 1 100%;
+		}
+
+		:root {
+			--padding-side: 1rem;
 		}
 	}
 </style>

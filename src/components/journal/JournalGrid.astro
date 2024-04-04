@@ -16,6 +16,12 @@ const { show } = Astro.props;
 const journal = await getCollection("journal", ({ data }) => {
     return data.draft === false;
 });
+
+// Sort by date
+journal.sort((a, b) => {
+    return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
+});
+
 const limitedJournal = show != 0 ? journal.slice(0, show) : journal;
 ---
 

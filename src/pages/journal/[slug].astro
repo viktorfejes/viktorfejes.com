@@ -89,6 +89,7 @@ const readTime = calcReadTime(journal.body);
     }
 
     .journal-meta {
+        font-size: var(--font-size-sm);
         color: var(--tertiary-color);
     }
 
@@ -113,7 +114,15 @@ const readTime = calcReadTime(journal.body);
         color: var(--secondary-color);
 
         font-size: 1.25rem;
-        line-height: 1.8;
+        /* line-height: 1.8; */
+    }
+
+    .journal-body :global(a) {
+        color: var(--color-dark-1);
+        border-bottom: 3px solid var(--color-dark-1);
+        border-image-slice: 1;
+        border-image-source: var(--gradient-primary);
+        font-weight: 600;
     }
 
     .journal-thumbnail {
@@ -144,7 +153,7 @@ const readTime = calcReadTime(journal.body);
 
     .journal-body :global(p) {
         font-size: 1.25rem;
-        line-height: 1.8;
+        /* line-height: 1.8; */
         max-width: var(--thin-width);
         margin: 0 auto;
         margin-bottom: 1.5rem;

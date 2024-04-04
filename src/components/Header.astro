@@ -206,8 +206,15 @@
 
     .logo svg {
         display: block;
-        color: var(--color-dark-1);
         fill: var(--color-dark-1);
+    }
+
+    :global(body.light) .logo {
+        background: var(--color-dark-1);
+    }
+
+    :global(body.light) .logo svg {
+        fill: var(--color-primary);
     }
 
     @media (max-width: 720px) {
