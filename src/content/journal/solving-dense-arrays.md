@@ -2,6 +2,7 @@
 title: Solving the Problem of Dense Arrays
 date: 2024-02-11
 thumbnail: coding.png
+draft: true
 ---
 Have you ever worked with datasets where a large portion of the values are zero or a default value? Traditional C++ arrays might not be the most space-efficient solution in these cases. Enter sparse-set arrays! Let's explore what they are and how to create a simple implementation.
 

@@ -3,6 +3,7 @@ import "../styles/normalize.css";
 import "../styles/fonts.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import Fluid from "../components/Fluid.astro";
 import { ViewTransitions } from "astro:transitions";
 
 interface Props {
@@ -25,6 +26,7 @@ const { title, theme="dark" } = Astro.props;
 		<ViewTransitions />
 	</head>
 	<body class={theme}>
+		<Fluid client:load />
 		<Header />
 		<slot />
 		<Footer />
@@ -99,9 +101,36 @@ const { title, theme="dark" } = Astro.props;
 		--spacing-2: -0.05rem;
 
 		--gradient-primary: linear-gradient(109.6deg,
-				#ff1886 11.2%,
-				#fce844 52%,
-				#35b2ef 100.2%);
+			#89102e 12%,
+			#fd4e43 24%,
+			#feae66 36%,
+			#ffed81 50%,
+			#ccd58a 62%,
+			#129d8a 74%,
+			#065264 100%
+		);
+
+		--gradient-secondary: linear-gradient(109.6deg,
+			#ff1886 11.2%,
+			#fce844 52%,
+			#35b2ef 100.2%
+		);
+
+		--gradient-double: linear-gradient(109.6deg,
+			#89102e 12%,
+			#fd4e43 16%,
+			#feae66 20%,
+			#ffed81 25%,
+			#ccd58a 33%,
+			#129d8a 41%,
+			#065264 50%,
+			#89102e 58%,
+			#fd4e43 66%,
+			#feae66 75%,
+			#ffed81 83%,
+			#ccd58a 91%,
+			#129d8a 100%
+        );
 	}
 
 	/* Main Global CSS */
@@ -113,6 +142,10 @@ const { title, theme="dark" } = Astro.props;
 		color: var(--color-primary);
 		background-color: var(--color-dark-1);
 		overflow-x: hidden;
+		/* background-image: url("/bg_test.jpg"); */
+		/* background-repeat: no-repeat; */
+		/* background-size: 100% 20%; */
+		
 	}
 
 	a {

@@ -2,11 +2,11 @@
     <div class="main-intro">
         <div class="intro-inner">
             <h2>
-                Hey, I'm Viktor Fejes, a <span class="rainbow-bg"
+                Hey, I'm Viktor.<br /><span class="rainbow-bg"
                     ><span class="red-shadow">Digital</span> Artist & <span
                         class="blue-shadow">Developer</span
                     ></span
-                > from Los Angeles, CA.
+                >
             </h2>
         </div>
     </div>
@@ -26,13 +26,27 @@
         padding: 0 var(--padding-side);
     }
 
+    /* .main-intro::before {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        top: -100%;
+        left: -25%;
+        bottom: -50%;
+        width: 150%;
+        background: var(--gradient-primary);
+        mask-image: radial-gradient(rgba(0, 0, 0, 0.45), transparent 70%);
+        opacity: 0.5;
+    } */
+
     .main-intro h2 {
-        color: var(--primary-color);
+        color: var(--color-accent);
         font-size: 6rem;
         margin-bottom: 2rem;
         font-weight: 800;
-        font-weight: 800;
+        font-weight: 600;
         line-height: 1.2;
+        letter-spacing: var(--letter-spacing-1);
     }
 
     .intro-inner {

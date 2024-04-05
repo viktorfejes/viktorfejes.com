@@ -2,6 +2,7 @@
 title: Retopology Using Emerging Technologies
 date: 2023-12-12
 thumbnail: world.jpg
+draft: true
 ---
 Retopology, the process of creating optimized 3D model geometry, has long been a crucial yet often tedious step in the 3D art pipeline. Thankfully, emerging technologies are changing the game! Let's explore some groundbreaking tools and techniques reshaping how we approach retopology.
 

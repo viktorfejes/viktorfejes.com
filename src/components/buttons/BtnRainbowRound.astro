@@ -19,16 +19,9 @@ const { href: linkTo } = Astro.props;
         color: var(--color-primary);
         font-size: var(--font-size-sm);
         font-weight: 400;
-        background: linear-gradient(
-            109.6deg,
-            #ff1886 11.2%,
-            #fce844 26%,
-            #35b2ef 50.1%,
-            #ff1886 76%,
-            #fce844 100.2%
-        );
+        background: var(--gradient-double);
         border-radius: 8px;
-        padding: 1px;
+        padding: 2px;
         background-size: 200% 200%;
         line-height: 1.125;
     }
@@ -39,8 +32,8 @@ const { href: linkTo } = Astro.props;
         white-space: nowrap;
         display: block;
         text-decoration: none;
-        background: var(--secondary-color);
-        border-radius: 7px;
+        background: var(--color-dark-1);
+        border-radius: 6px;
         color: var(--color-primary);
         padding: 0.8rem 1.6rem;
         transition: background 0.3s;

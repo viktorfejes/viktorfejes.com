@@ -12,7 +12,7 @@
             <li><a href="/about">About</a></li>
             <li><a href="/journal">Journal</a></li>
             <li><a href="/projects">Projects</a></li>
-            <li><a href="#">Contact</a></li>
+            <li><a href="mailto:viktor@viktorfejes.com">Contact</a></li>
         </ul>
         <div class="nav-hamburger-group">
             <input type="checkbox" name="hamburger-opener" id="hambox" />
@@ -39,7 +39,7 @@
     .site-header {
         width: 100%;
         height: 5rem;
-        padding: 0 2rem;
+        padding: 0 var(--padding-side);
     }
 
     .main-navigation {
@@ -150,7 +150,7 @@
         background: var(--color-dark-2);
         width: 100%;
         height: auto;
-        padding: 0 2rem;
+        padding: 0 var(--padding-side);
     }
 
     #hambox:checked ~ .hidden-nav-container {
