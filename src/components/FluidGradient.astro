@@ -40,7 +40,7 @@
                     x = pos[0] + offsetX;
                     y = pos[1] + offsetY;
                 } else {
-                    x = rand * 100 + windowWidth / 2;
+                    x = rand * 100 + (windowWidth / 2 - 50);
                     y = rand * 100;
                 }
 
@@ -64,6 +64,8 @@
                     dot.style.left = `${x + (rand - 0.5) * 100}px`;
                     dot.style.top = `${y + (rand - 0.5) * 100}px`;
                     dot.style.transform = `rotate(${rand * 360}deg) scale(${rand * 0.5 + 0.5})`;
+                    dot.style.background =
+                        colors[Math.floor(rand * colors.length)];
                 });
             }
 

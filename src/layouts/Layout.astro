@@ -11,7 +11,7 @@ interface Props {
 	theme: string;
 }
 
-const { title, theme="dark" } = Astro.props;
+const { title, theme = "dark" } = Astro.props;
 ---
 
 <!doctype html>
@@ -25,195 +25,195 @@ const { title, theme="dark" } = Astro.props;
 		<ViewTransitions />
 	</head>
 	<body class={theme}>
-		<!-- <FluidGradient client:load /> -->
+		<FluidGradient />
 		<Header />
 		<slot />
 		<Footer />
-	</body>
-</html>
-
-<style is:global>
-	:root {
-		--primary-color: #fbe094;
-		/* --secondary-color: #0f0d0d; */
-		--secondary-color: #101014;
-		--tertiary-color: #aaaaaa;
-		--offwhite-color: #e6e6ea;
-
-		--content-width: 80rem;
-		--journal-width: 56.25rem;
-		--thin-width: 40rem;
-
-		/* !!!NEW VARIABLES!!! */
-
-		/* Color */
-		--color-primary: #e6e6ea;
-		--color-secondary: #aaaaae;
-		--color-accent: #fbe094;
-
-		--color-dark-1: #101014;
-		--color-dark-2: #18181c;
-		--color-dark-3: #202024;
-
-		/* Widths */
-		--width-container: 80rem;
-		--width-medium: 56.25rem;
-		--width-paragraph: 40rem;
-
-		/* Spacing */
-		--padding-base: 2rem;
-		--padding-side: 2rem;
-
-		/* Border */
-		--border-radius: 1rem;
-
-		/* Font */
-		--font-primary: "Inter", sans-serif;
-		--font-mono: "JetBrains Mono", monospace;
-
-		--font-size-xs: 0.875rem;
-		--font-size-sm: 1rem;
-		--font-size-std: 1.25rem;
-		--font-size-lg: 1.5rem;
-		--font-size-xl: 2rem;
-
-		--font-size-xs: 0.75rem;
-		--font-size-md: 1rem;
-		--font-size-2xl: 1.5rem;
-		--font-size-3xl: 1.875rem;
-		--font-size-4xl: 2.25rem;
-		--font-size-5xl: 3rem;
-		--font-size-6xl: 4rem;
-
-		--font-weight-light: 300;
-		--font-weight-normal: 400;
-		--font-weight-medium: 500;
-		--font-weight-semibold: 600;
-		--font-weight-bold: 700;
-		--font-weight-extrabold: 800;
-
-		/* Line height */
-		--line-height-base: 1.65;
-		--line-height-heading: 1.2;
-
-		--letter-spacing-1: -0.03rem;
-		--spacing-2: -0.05rem;
-
-		--gradient-primary: linear-gradient(109.6deg,
-			#89102e 12%,
-			#fd4e43 24%,
-			#feae66 36%,
-			#ffed81 50%,
-			#ccd58a 62%,
-			#129d8a 74%,
-			#065264 100%
-		);
-
-		--gradient-secondary: linear-gradient(109.6deg,
-			#ff1886 11.2%,
-			#fce844 52%,
-			#35b2ef 100.2%
-		);
-
-		--gradient-double: linear-gradient(109.6deg,
-			#89102e 12%,
-			#fd4e43 16%,
-			#feae66 20%,
-			#ffed81 25%,
-			#ccd58a 33%,
-			#129d8a 41%,
-			#065264 50%,
-			#89102e 58%,
-			#fd4e43 66%,
-			#feae66 75%,
-			#ffed81 83%,
-			#ccd58a 91%,
-			#129d8a 100%
-        );
-	}
-
-	/* Main Global CSS */
-	body {
-		font-family: var(--font-primary);
-		font-size: var(--font-size-std);
-		font-weight: var(--font-weight-normal);
-		line-height: var(--line-height-base);
-		color: var(--color-primary);
-		background-color: var(--color-dark-1);
-		overflow-x: hidden;
-		/* background-image: url("/bg_test.jpg"); */
-		/* background-repeat: no-repeat; */
-		/* background-size: 100% 20%; */
-		
-	}
-
-	a {
-		text-decoration: none;
-		color: var(--color-accent);
-	}
-
-	body.light {
-		background-color: var(--color-primary);
-		color: var(--color-dark-1);
-	}
-
-	span.rainbow-bg {
-		background: var(--gradient-primary);
-		background-clip: text;
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		color: transparent;
-	}
-
-	pre,
-	code {
-		font-family: var(--font-mono);
-		font-size: 1rem;
-		line-height: 1.4;
-		padding: 2rem 0;
-		border-radius: 1rem;
-	}
-
-	code .line {
-		padding: 0 2rem;
-	}
-
-	/* Utility Global CSS */
-	.flex {
-		display: flex;
-		justify-content: space-between;
-		align-items: flex-start;
-		gap: 1rem;
-		flex-wrap: wrap;
-		margin-bottom: 1rem;
-	}
-
-	.col-2 > * {
-		flex: 1 1 calc(50% - 0.5rem);
-		border-radius: 1rem;
-	}
-
-	/* Blocks, mainly for content */
-	.block-text {
-		width: 100%;
-		max-width: var(--width-paragraph);
-		margin: 4rem auto;
-	}
-
-	.block-text p {
-        margin-bottom: 2rem;
-        font-size: var(--font-size-std);
-        line-height: var(--line-height-base);
-        color: var(--color-primary);
-	}
-
-	@media (max-width: 768px) {
-		.col-2 > * {
-			flex: 1 1 100%;
-		}
-
+	</body><style is:global>
 		:root {
-			--padding-side: 1rem;
+			--primary-color: #fbe094;
+			/* --secondary-color: #0f0d0d; */
+			--secondary-color: #101014;
+			--tertiary-color: #aaaaaa;
+			--offwhite-color: #e6e6ea;
+
+			--content-width: 80rem;
+			--journal-width: 56.25rem;
+			--thin-width: 40rem;
+
+			/* !!!NEW VARIABLES!!! */
+
+			/* Color */
+			--color-primary: #e6e6ea;
+			--color-secondary: #aaaaae;
+			--color-accent: #fbe094;
+
+			--color-dark-1: #101014;
+			--color-dark-2: #18181c;
+			--color-dark-3: #202024;
+
+			/* Widths */
+			--width-container: 80rem;
+			--width-medium: 56.25rem;
+			--width-paragraph: 40rem;
+
+			/* Spacing */
+			--padding-base: 2rem;
+			--padding-side: 2rem;
+
+			/* Border */
+			--border-radius: 1rem;
+
+			/* Font */
+			--font-primary: "Inter", sans-serif;
+			--font-mono: "JetBrains Mono", monospace;
+
+			--font-size-xs: 0.875rem;
+			--font-size-sm: 1rem;
+			--font-size-std: 1.25rem;
+			--font-size-lg: 1.5rem;
+			--font-size-xl: 2rem;
+
+			--font-size-xs: 0.75rem;
+			--font-size-md: 1rem;
+			--font-size-2xl: 1.5rem;
+			--font-size-3xl: 1.875rem;
+			--font-size-4xl: 2.25rem;
+			--font-size-5xl: 3rem;
+			--font-size-6xl: 4rem;
+
+			--font-weight-light: 300;
+			--font-weight-normal: 400;
+			--font-weight-medium: 500;
+			--font-weight-semibold: 600;
+			--font-weight-bold: 700;
+			--font-weight-extrabold: 800;
+
+			/* Line height */
+			--line-height-base: 1.65;
+			--line-height-heading: 1.2;
+
+			--letter-spacing-1: -0.03rem;
+			--spacing-2: -0.05rem;
+
+			--gradient-primary: linear-gradient(
+				109.6deg,
+				#89102e 12%,
+				#fd4e43 24%,
+				#feae66 36%,
+				#ffed81 50%,
+				#ccd58a 62%,
+				#129d8a 74%,
+				#065264 100%
+			);
+
+			--gradient-secondary: linear-gradient(
+				109.6deg,
+				#ff1886 11.2%,
+				#fce844 52%,
+				#35b2ef 100.2%
+			);
+
+			--gradient-double: linear-gradient(
+				109.6deg,
+				#89102e 12%,
+				#fd4e43 16%,
+				#feae66 20%,
+				#ffed81 25%,
+				#ccd58a 33%,
+				#129d8a 41%,
+				#065264 50%,
+				#89102e 58%,
+				#fd4e43 66%,
+				#feae66 75%,
+				#ffed81 83%,
+				#ccd58a 91%,
+				#129d8a 100%
+			);
 		}
-	}
-</style>
+
+		/* Main Global CSS */
+		body {
+			font-family: var(--font-primary);
+			font-size: var(--font-size-std);
+			font-weight: var(--font-weight-normal);
+			line-height: var(--line-height-base);
+			color: var(--color-primary);
+			background-color: var(--color-dark-1);
+			overflow-x: hidden;
+			/* background-image: url("/bg_test.jpg"); */
+			/* background-repeat: no-repeat; */
+			/* background-size: 100% 20%; */
+		}
+
+		a {
+			text-decoration: none;
+			color: var(--color-accent);
+		}
+
+		body.light {
+			background-color: var(--color-primary);
+			color: var(--color-dark-1);
+		}
+
+		span.rainbow-bg {
+			background: var(--gradient-primary);
+			background-clip: text;
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+			color: transparent;
+		}
+
+		pre,
+		code {
+			font-family: var(--font-mono);
+			font-size: 1rem;
+			line-height: 1.4;
+			padding: 2rem 0;
+			border-radius: 1rem;
+		}
+
+		code .line {
+			padding: 0 2rem;
+		}
+
+		/* Utility Global CSS */
+		.flex {
+			display: flex;
+			justify-content: space-between;
+			align-items: flex-start;
+			gap: 1rem;
+			flex-wrap: wrap;
+			margin-bottom: 1rem;
+		}
+
+		.col-2 > * {
+			flex: 1 1 calc(50% - 0.5rem);
+			border-radius: 1rem;
+		}
+
+		/* Blocks, mainly for content */
+		.block-text {
+			width: 100%;
+			max-width: var(--width-paragraph);
+			margin: 4rem auto;
+		}
+
+		.block-text p {
+			margin-bottom: 2rem;
+			font-size: var(--font-size-std);
+			line-height: var(--line-height-base);
+			color: var(--color-primary);
+		}
+
+		@media (max-width: 768px) {
+			.col-2 > * {
+				flex: 1 1 100%;
+			}
+
+			:root {
+				--padding-side: 1rem;
+			}
+		}
+	</style>
+</html>
