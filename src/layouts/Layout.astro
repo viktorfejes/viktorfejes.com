@@ -3,7 +3,7 @@ import "../styles/normalize.css";
 import "../styles/fonts.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
-import Fluid from "../components/Fluid.astro";
+import FluidGradient from "../components/FluidGradient.astro";
 import { ViewTransitions } from "astro:transitions";
 
 interface Props {
@@ -21,12 +21,11 @@ const { title, theme="dark" } = Astro.props;
 		<meta name="description" content="Astro description" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<!-- <meta name="generator" content={Astro.generator} /> -->
 		<title>{title}</title>
 		<ViewTransitions />
 	</head>
 	<body class={theme}>
-		<Fluid client:load />
+		<FluidGradient client:load />
 		<Header />
 		<slot />
 		<Footer />
