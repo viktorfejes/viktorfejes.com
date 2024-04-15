@@ -1,4 +1,6 @@
 ---
+import Tags from "../components/Tags.astro";
+import ToolTags from "../components/ToolTags.astro";
 import BtnRainbowRound from "../components/buttons/BtnRainbowRound.astro";
 import Layout from "../layouts/Layout.astro";
 ---
@@ -21,21 +23,60 @@ import Layout from "../layouts/Layout.astro";
                     >
                 </div>
                 <div class="about-right">
-                    <video src="/video/reel2018.mp4" autoplay muted loop
-                    ></video>
+                    <video
+                        src="/video/reel2018.mp4"
+                        autoplay
+                        muted
+                        loop
+                        playsinline></video>
                 </div>
             </div>
         </div>
         <div class="about-main">
             <div class="about-main-inner">
-                <div>
+                <div class="about-attributes">
+                    <h2>Skills</h2>
+                    <Tags
+                        class="skill-tags"
+                        tags={[
+                            "Art Direction",
+                            "Retouching",
+                            "3D Modelling",
+                            "Digital Sculpting",
+                            "Texturing",
+                            "Programming",
+                        ]}
+                    />
+                    <h2>Software Proficiency</h2>
+                    <ToolTags
+                        tags={[
+                            "Photoshop",
+                            "Lightroom",
+                            "3Ds Max",
+                            "Maya",
+                            "Blender",
+                            "Substance Painter",
+                            "Substance Designer",
+                            "Marvelous Designer",
+                            "ZBrush",
+                            "Rizom",
+                            "Wrap",
+                            "V-Ray",
+                            "Corona",
+                        ]}
+                    />
+
+                    <h2>Programming Languages</h2>
+                    <ToolTags tags={["C++", "Rust", "Javascript"]} />
+                </div>
+                <div class="about-long-text">
                     <p>
                         Currently working as the Creative Director of <a
                             href="https://gildstudios.com">Gild Studios</a
-                        >, I specialize in retouching, CGI, and tool
-                        development. I have a passion for creating beautiful
-                        images and tools that help others create beautiful
-                        images.
+                        >, I specialize in Art Direction, Retouching, CGI, and
+                        Tool development. I have a passion for creating
+                        beautiful images and tools that help others create
+                        beautiful images.
                     </p>
 
                     <p>
@@ -52,8 +93,6 @@ import Layout from "../layouts/Layout.astro";
                         campaigns. I have worked with clients such as Amazon,
                         Microsoft, CBS, and AT&T.
                     </p>
-                </div>
-                <div>
                     <p>
                         I am also an educator and a speaker, and I have spoken
                         at events, such as <a
@@ -114,7 +153,14 @@ import Layout from "../layouts/Layout.astro";
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 2rem;
-            text-align: justify;
+        }
+
+        .about-long-text {
+            margin-bottom: 4rem;
+        }
+
+        .about-long-text p {
+            margin-top: 0;
         }
 
         .about-main-inner a {
@@ -122,12 +168,10 @@ import Layout from "../layouts/Layout.astro";
             border-bottom: 3px solid var(--color-accent);
             border-image-slice: 1;
             border-image-source: var(--gradient-primary);
-            /* border-width: 0 0 2px 0; */
         }
 
         .about-main-inner div {
-            flex: 1 1 calc(50% - 1rem);
-            /* min-width: 25rem; */
+            flex: 0 1 calc(50% - 1rem);
         }
 
         .about-header p {
@@ -145,7 +189,6 @@ import Layout from "../layouts/Layout.astro";
 
         .about-right {
             flex: 1 1 calc(50% - 1rem);
-            /* position: absolute; */
             aspect-ratio: 16 / 9;
         }
 
@@ -163,7 +206,51 @@ import Layout from "../layouts/Layout.astro";
             border-radius: 0.5rem;
         }
 
+        h2 {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-bold);
+            letter-spacing: var(--letter-spacing-1);
+            color: var(--color-primary);
+            margin-top: 0;
+            margin-bottom: 2rem;
+        }
+
+        .about-attributes {
+            max-width: 32rem;
+        }
+
+        .about-attributes :global(ul) {
+            margin: 0;
+            margin-bottom: 4rem;
+        }
+
+        .about-attributes :global(.skill-tags) {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .about-attributes :global(.skill-tags li) {
+            font-size: var(--font-size-sm);
+            border: 1px solid var(--color-secondary);
+            border-radius: 0.5rem;
+        }
+
+        .about-attributes :global(.skill-tags li a) {
+            display: inline-block;
+            /* background: var(--color-dark-2); */
+            padding: 0.3rem 1rem;
+            color: var(--color-secondary);
+        }
+
         @media (max-width: 800px) {
+            .about-main-inner {
+                flex-direction: column-reverse;
+            }
+
             .about-left,
             .about-right,
             .about-main-inner div {

@@ -12,10 +12,7 @@ const { tags } = Astro.props;
     {
         tags.map((tag) => (
             <li class="tool-tag">
-                <a
-                    href={`/tags/${slugify(tag)}`}
-                    class={`tool-tag-link ${slugify(tag)}-icon`}
-                >
+                <a href={`#`} class={`tool-tag-link ${slugify(tag)}-icon`}>
                     {tag}
                 </a>
             </li>
@@ -108,11 +105,19 @@ const { tags } = Astro.props;
         background-position: -3rem -1rem;
     }
 
+    .tool-tag-link.lightroom-icon::before {
+        background-position: -4rem -1rem;
+    }
+
     .tool-tag-link.javascript-icon::before {
         background-position: -6rem -1rem;
     }
 
     .tool-tag-link.cpp-icon::before {
         background-position: -7rem -1rem;
+    }
+
+    .tool-tag-link.rust-icon::before {
+        background-position: -5rem -1rem;
     }
 </style>
