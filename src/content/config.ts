@@ -4,26 +4,21 @@ const caseStudiesCollection = defineCollection({
     type: "content",
     schema: z.object({
         title: z.string(),
-        draft: z.boolean().default(false),
-        featured: z.boolean().default(false),
-        thumbnail: z.string(),
-        tags: z.array(z.string()),
-        software: z.array(z.string()),
-        description: z.string().optional(),
+        hero: z.string(),
+        client: z.string().optional(),
+        tags: z.array(z.string()).optional(),
+        description: z.string(),
     })
 });
 
-const journalCollection = defineCollection({
+const blogCollection = defineCollection({
     type: "content",
     schema: z.object({
-        title: z.string(),
-        date: z.date(),
-        thumbnail: z.string(),
-        draft: z.boolean().default(false),
+        title: z.string()
     })
 });
 
 export const collections = {
     "case-studies": caseStudiesCollection,
-    "journal": journalCollection,
+    "blog": blogCollection
 };

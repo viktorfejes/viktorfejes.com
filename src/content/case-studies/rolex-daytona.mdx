@@ -1,22 +1,22 @@
 ---
 title: Rolex Daytona
 tags: [CGI, Retouching, Art Direction]
-software: [3Ds Max, Substance Painter, Substance Designer, Rizom, Photoshop, Corona]
-thumbnail: rolex_daytona_01_16bit.jpg
-
+hero: rolex_daytona_01_16bit.jpg
 description: Personal project of a Rolex Daytona luxury watch to be used for high detail close-up renderings. The model and all textures were created from scratch utilizing 3Ds Max and Substance Painter.
 ---
-import ContentImg from "../../components/ContentImg.astro";
-import Caption from "../../components/Caption.astro";
+import Img from "../../components/Img.astro";
 
-<ContentImg src="rolex_daytona_01_16bit.jpg" alt="Something" dir="cs" />
+<div class="max-w-7xl mx-auto">
+    <Img src="rolex_daytona_01_16bit.jpg" alt="Something" dir="" />
 
-<div class="block-text">
-For the hero image I wanted to make sure the lighting style would fit with the brand's aesthetic. I used numerous area lights to create sharp reflections around the bezel in a familiar pattern that is often seen in Rolex's marketing material. The watch was modeled in 3Ds Max and textured in Substance Painter. The final render was done in Corona Renderer.
+    <div class="my-24">
+        For the hero image I wanted to make sure the lighting style would fit with the brand's aesthetic. I used numerous area lights to create sharp reflections around the bezel in a familiar pattern that is often seen in Rolex's marketing material. The watch was modeled in 3Ds Max and textured in Substance Painter. The final render was done in Corona Renderer.
+    </div>
+
+    <div class="grid grid-cols-1 gap-4">
+        <Img src="rolex_daytona_02.jpg" alt="Something" dir="case-studies/rolex-daytona" />
+        <Img src="rolex_daytona_03.jpg" alt="Something" dir="case-studies/rolex-daytona" />
+
+        <Img src="rolex_daytona_uvs.jpg" alt="Something" dir="case-studies/rolex-daytona" />
+    </div>
 </div>
-
-<ContentImg src="rolex_daytona_02.jpg" alt="Something" dir="cs" />
-<ContentImg src="rolex_daytona_03.jpg" alt="Something" dir="cs/rolex-daytona" />
-
-<ContentImg src="rolex_daytona_uvs.jpg" alt="Something" dir="cs/rolex-daytona" />
-<Caption>UV preview for the model</Caption>

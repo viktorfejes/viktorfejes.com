@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+@import url("./reset.css");
+@import url("./vars.css");
+@import url("./icons.css");
+
+/* ::-moz-selection,
+::selection {
+} */
+
+html {
+    font-family: var(--font-primary);
+    color: var(--color-neutral-900);
+    background: var(--color-neutral-100);
+    scroll-behavior: smooth;
+    text-rendering: optimizeLegibility;
+}
+
+/* html, body {
+    overflow-x: hidden;
+} */
+
+code { font-family: var(--font-secondary); }
+
+/* Animations */
+.element-animate.element-fade-in {
+    opacity: 0;
+    transition: opacity 1s;
+}
+
+.element-animate.element-fade-in.element-enter {
+    opacity: 1;
+}
+
+.element-animate.element-slide-up {
+    transform: translateY(100%);
+    transition: transform 0.5s cubic-bezier(0,.5,.41,1);
+}
+
+.element-animate.element-slide-up.element-enter {
+    transform: translateY(0);
+}
+
+.col-span-1 { grid-column: span 1; }
+.col-span-2 { grid-column: span 2; }
+.col-span-3 { grid-column: span 3; }
+.col-span-4 { grid-column: span 4; }
+.col-span-5 { grid-column: span 5; }
+.col-span-6 { grid-column: span 6; }
+
+.row-span-1 { grid-row: span 1; }
+.row-span-2 { grid-row: span 2; }
+.row-span-3 { grid-row: span 3; }
+.row-span-4 { grid-row: span 4; }
+.row-span-5 { grid-row: span 5; }
+.row-span-6 { grid-row: span 6; }

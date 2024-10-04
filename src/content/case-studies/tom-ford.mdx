@@ -1,15 +1,16 @@
 ---
 title: Tom Ford
-thumbnail: tom-ford-neroli-portofino-1.jpg
+hero: tom-ford-neroli-portofino-1.jpg
 tags: [CGI, Art Direction]
-software: [Maya, V-Ray, Photoshop]
-
 description: Using simulation, grooming, and precise lighting, I wanted to create almost identical images for these iconic Tom Ford perfume bottles. The shape is the same on all images but the environment and the lighting makes all the images feel different.
 ---
-import ContentImg from "../../components/ContentImg.astro";
+import Img from "../../components/Img.astro";
 
-<div class="flex col-2">
-    <ContentImg src="tom-ford-fucking-fabulous-1.jpg" alt="Something" dir="cs" />
-    <ContentImg src="tom-ford-soleil-neige-1.jpg" alt="Something" dir="cs" />
+<div class="max-w-7xl ml-auto mr-auto grid grid-cols-2 gap-4">
+    <Img src="tom-ford-fucking-fabulous-1.jpg" alt="Something" dir="case-studies/tom-ford" />
+    <Img src="tom-ford-soleil-neige-1.jpg" alt="Something" dir="case-studies/tom-ford" />
+
+    <div class="col-span-2">
+        <Img src="tom-ford-neroli-portofino-1.jpg" alt="Something" dir="" />
+    </div>
 </div>
-<ContentImg src="tom-ford-neroli-portofino-1.jpg" alt="Something" dir="cs" />

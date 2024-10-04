@@ -1,8 +1,8 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { getCollection } from "astro:content";
-import { injectSpanLetters, slugify } from "../../assets/scripts/utils.js";
-import ToolTags from "../../components/ToolTags.astro";
+import { slugify } from "../../assets/scripts/utils.js";
+import Img from "../../components/Img.astro";
 
 export async function getStaticPaths() {
     const caseStudies = await getCollection("case-studies");
@@ -14,232 +14,160 @@ export async function getStaticPaths() {
 
 const { caseStudy } = Astro.props;
 const { Content } = await caseStudy.render();
-
-const titleLetters = injectSpanLetters(caseStudy.data.title);
 ---
 
-<Layout title=`${caseStudy.data.title} by Viktor Fejes` theme="dark">
+<Layout title=`${caseStudy.data.title} by Viktor Fejes`>
     <article class="case-study">
-        <header class="case-study-header">
-            <p class="case-study-marker">Case Study</p>
-            <h1 class="case-study-title">
-                {
-                    titleLetters.map((letter) =>
-                        letter.class ? (
-                            <span class={letter.class}>{letter.char}</span>
-                        ) : (
-                            letter.char
-                        ),
-                    )
-                }
-            </h1>
-            <div class="case-study-desc">
-                <p>{caseStudy.data.description}</p>
-            </div>
-        </header>
-        <div class="case-study-body">
-            <Content />
+        <div class="header">
+            <div class="des">Case Study</div>
+            <h1 class="title">{caseStudy.data.title}</h1>
+            <div class="desc">{caseStudy.data.description}</div>
         </div>
-        <div class="case-study-meta">
-            <ToolTags tags={caseStudy.data.software} />
+        <!-- <dl class="meta">
+            {caseStudy.data.tags &&
+            <div>
+                <dt>Role</dt>
+                <dd>
+                    {caseStudy.data.tags.map((tag) =>
+                    <span class="tag">{tag}</span>
+                    )}
+                </dd>
+            </div>
+            }
+            <div>
+                <dt>Software</dt>
+                <dd>Maya, Photoshop, Quixel</dd>
+            </div>
+            {caseStudy.data.client &&
+            <div>
+                <dt>Client</dt>
+                <dd>{caseStudy.data.client}</dd>
+            </div>
+            }
+        </dl> -->
+        <div class="md-content">
+            <Content />
         </div>
     </article>
 </Layout>
 
 <style>
-    .case-study {
-        padding: 5rem var(--padding-side);
-        /* padding-top: 5rem; */
+    .header {
+        margin-top: 8rem;
     }
 
-    .case-study-header {
+    .desc {
+        font-size: var(--font-size-md);
+        font-weight: 500;
+        text-align: center;
+        color: var(--color-neutral-700);
+        max-width: 42rem;
+        margin: 0 auto;
+        margin-bottom: 4rem;
+        line-height: 1.6;
+    }
+
+    .des {
+        font-size: var(--font-size-sm);
+        font-weight: 700;
+        text-align: center;
+        color: var(--color-secondary-500);
+        text-transform: uppercase;
+        letter-spacing: 0.3em;
+    }
+
+    .title {
+        font-size: var(--font-size-4xl);
+        font-weight: 700;
+        text-align: center;
+        letter-spacing: -.022em;
+        color: var(--color-neutral-900);
+        margin-bottom: 1rem;
+    }
+
+    .hero-image {
         width: 100%;
-        max-width: var(--journal-width);
+        max-width: var(--max-width-lg);
+        margin: 0 auto;
+        overflow: hidden;
+        border-radius: 0.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .meta {
+        display: flex;
+        align-items: start;
+        justify-content: start;
         margin: 0 auto;
         margin-bottom: 8rem;
-    }
-
-    .case-study-marker {
-        font-weight: 400;
-        color: var(--tertiary-color);
-        margin-bottom: 0;
-    }
-
-    .case-study-title {
-        font-size: 5rem;
-        font-weight: 650;
-        margin: 0;
-        margin-bottom: 3rem;
-        color: var(--primary-color);
-
-        font-size: 3.5rem;
-        font-weight: 800;
-        letter-spacing: -0.02em;
-        color: var(--offwhite-color);
-        /* cursor: default;
-        background: linear-gradient(
-            109.6deg,
-            #ff1886 11.2%,
-            #fce844 52%,
-            #35b2ef 100.2%
-        );
-        background-clip: text; */
-    }
-
-    /* .case-study-title span {
-        transition: color 0.3s;
-        transition-delay: 1s;
-    }
-    .case-study-title span:hover {
-        color: transparent;
-        transition-delay: 0s;
-    } */
-
-    .case-study-desc p {
-        font-size: 1.25rem;
-        font-weight: 400;
-        color: var(--tertiary-color);
-        line-height: 1.65;
-        max-width: 40rem;
-    }
-
-    .case-study-body {
         width: 100%;
-        max-width: var(--content-width);
-        margin: 0 auto;
+        max-width: var(--max-width-lg);
     }
 
-    .case-study-body :global(img),
-    .case-study-body :global(video) {
-        width: 100%;
-        height: auto;
+    .meta dt {
+        font-size: var(--font-size-sm);
+        font-weight: 600;
+        color: var(--color-neutral-600);
     }
 
-    .case-study-body :global(p) {
-        width: 100%;
-        max-width: var(--thin-width);
-        margin: 0 auto;
-        margin-top: 2rem;
-        margin-bottom: 2rem;
-        font-size: 1.25rem;
-        line-height: 1.65;
-        color: var(--offwhite-color);
+    .meta dd {
+        font-size: var(--font-size-base);
+        font-weight: 600;
+        color: var(--color-neutral-900);
     }
 
-    .case-study-body :global(h2) {
-        font-size: 2.125rem;
-        font-weight: 700;
-        letter-spacing: -0.02rem;
-        line-height: 1.2;
-        max-width: var(--thin-width);
-        margin: 0 auto;
-        margin-top: 5rem;
-        margin-bottom: 2rem;
-        color: var(--offwhite-color);
+    .meta div {
+        padding: 0.1rem 2.5rem;
+        border-right: 1px solid var(--color-neutral-200);
     }
 
-    .case-study-body :global(a) {
-        color: var(--primary-color);
-        text-decoration: none;
-        border-bottom: 2px solid transparent;
-        transition: border-color 0.3s;
+    .meta div:last-child {
+        border-right: 0;
     }
 
-    .case-study-body :global(a:hover) {
-        border-color: var(--primary-color);
+    .tag::after {
+        content: ", ";
     }
 
-    .case-study-meta {
-        width: 100%;
-        max-width: var(--journal-width);
-        margin: 0 auto;
-        margin-top: 5rem;
-    }
-
-    .software-tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-
-    li.software {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        font-weight: 400;
-        background-color: #191919;
-        color: var(--tertiary-color);
-        /* border: 4px solid #131313; */
-        border: 1px solid #222;
-        padding: 0.5rem 0.825rem;
-        border-radius: 0.5rem;
-        font-size: 0.875rem;
-    }
-
-    li.software a {
-        color: var(--tertiary-color);
-        text-decoration: none;
-    }
-
-    li.software::before {
+    .tag:last-of-type::after {
         content: "";
-        display: inline-block;
-        width: 1rem;
-        height: 1rem;
-        margin-right: 0.5rem;
-        background: url("/software-icons.png");
-        background-position: 0 0;
-        background-size: 128px 64px;
+    }
+</style>
+
+<style is:global>
+    .md-content p {
+        width: 100%;
+        max-width: var(--max-width-sm);
+        font-size: var(--font-size-md);
+        font-weight: 500;
+        color: var(--color-neutral-700);
+        line-height: 1.6;
+        margin: 0 auto;
+        margin-bottom: 2rem;
     }
 
-    li.software.marvelous-designer-icon::before {
-        background-position: -1rem -2rem;
+    .md-content img,
+    .md-content video {
+        /* max-width: var(--max-width-lg); */
+        /* margin: 0 auto; */
+        /* margin-bottom: 4rem; */
+        /* margin-top: 4rem; */
+        border-radius: 0.5rem;
     }
 
-    li.software.rizom-icon::before {
-        background-position: -1rem 0;
+    .md-content h2 {
+        font-size: var(--font-size-3xl);
+        font-weight: 600;
+        letter-spacing: -0.022em;
+        margin: 0 auto;
+        max-width: var(--max-width-sm);
+        margin-bottom: 1rem;
+        margin-top: 4rem;
     }
 
-    li.software.max-icon::before {
-        background-position: -2rem 0;
-    }
-
-    li.software.maya-icon::before {
-        background-position: -3rem 0;
-    }
-
-    li.software.blender-icon::before {
-        background-position: -4rem 0;
-    }
-
-    li.software.v-ray-icon::before {
-        background-position: -5rem 0;
-    }
-
-    li.software.corona-icon::before {
-        background-position: -6rem 0;
-    }
-
-    li.software.zbrush-icon::before {
-        background-position: -7rem 0;
-    }
-
-    li.software.photoshop-icon::before {
-        background-position: 0 -1rem;
-    }
-
-    li.software.substance-designer-icon::before {
-        background-position: -1rem -1rem;
-    }
-
-    li.software.substance-painter-icon::before {
-        background-position: -2rem -1rem;
-    }
-
-    li.software.wrap-icon::before {
-        background-position: -3rem -1rem;
+    .md-content hr {
+        border-color: var(--color-neutral-200);
+        margin: 8rem auto;
+        max-width: var(--max-width-md);
     }
 </style>

@@ -1,83 +1,449 @@
 ---
+import IntroCard from "../components/IntroCard.astro";
 import Layout from "../layouts/Layout.astro";
-import Intro from "../components/Intro.astro";
-import CaseStudiesGrid from "../components/case-studies/CaseStudiesGrid.astro";
-import BtnRainbowRound from "../components/buttons/BtnRainbowRound.astro";
-import AboutIndex from "../components/about/AboutIndex.astro";
-import JournalGrid from "../components/journal/JournalGrid.astro";
-import ProjectsGrid from "../components/projects/ProjectsGrid.astro";
-import FluidGradient from "../components/FluidGradient.astro";
+import WorkGrid from "../components/WorkGrid.astro";
+import Conway from "../components/Conway.astro";
+import Hero from "../components/Hero.astro";
+import Button from "../components/Button.astro";
+import { Image } from "astro:assets";
+
+import scopeIllustration from "../assets/images/scope.png";
+
+import satIllust from "../assets/images/falsecolor_sat.jpg";
+import hueIllust from "../assets/images/falsecolor_hue.jpg";
+import solIllust from "../assets/images/falsecolor_sol.jpg";
+import lightIllust from "../assets/images/falsecolor_light.jpg";
+import ClientsCarousel from "../components/ClientsCarousel.astro";
+import Carousel from "../components/Carousel.astro";
+import CarouselItem from "../components/CarouselItem.astro";
+import Img from "../components/Img.astro";
+import InfiniteCarousel from "../components/InfiniteCarousel.astro";
+import Alert from "../components/Alert.astro";
+import Light from "../components/Light.astro";
 ---
 
-<Layout title="Viktor Fejes" theme="dark">
-	<!-- <FluidGradient /> -->
-	<main class="main">
-		<Intro />
-		<section class="case-studies">
-			<div class="section-header">
-				<h2 class="section-header-title">Case Studies</h2>
-				<BtnRainbowRound href="/case-studies">
-					View All
-				</BtnRainbowRound>
+<Layout title="Viktor Fejes">
+	<Light />
+	<section class="intro">
+		<div class="intro-inner">
+			<Hero />
+		</div>
+	</section>
+	<section class="work">
+		<div class="work-inner work-collapse">
+			<WorkGrid />
+		</div>
+		<div class="work-more">
+			<Button id="more-work">Show more</Button>
+		</div>
+	</section>
+	<section class="about">
+		<div class="about-wrap">
+			<h3>Always learning.<br>Ever improving.</h3>
+			<p><span class="highlight">Started my career as a retoucher then incorporated CGI into my toolbox.</span> Thanks to my unquenchable thirst for learning is why I have been able to keep adapting and improving in my field. This also led to the creation of various tools that make my life easier and my work more precise.</p>
+		</div>
+	</section>
+	<section class="tools">
+		<div class="tools-inner">
+			<div class="tool">
+				<div class="illustration side-gradient">
+					<div class="lut-panels">
+						<div class="lut-panel">
+							<Image
+								src={hueIllust}
+								alt="Scope Illustration"
+							/>
+						</div>
+						<div class="lut-panel">
+							<Image
+							src={satIllust}
+							alt="Scope Illustration"
+							/>
+						</div>
+						<div class="lut-panel">
+							<Image
+							src={lightIllust}
+							alt="Scope Illustration"
+							/>
+						</div>
+					</div>
+				</div>
+				<h3>False Color LUTs</h3>
+				<p>Developed high quality false color utility LUTs for retouchers to help in visualizing different aspects of images.</p>
+				<Button light>Learn more</Button>
 			</div>
-			<CaseStudiesGrid show={6} featured={true} />
-		</section>
-		<section class="about">
-			<div class="about-inner">
-				<AboutIndex />
+			<div class="tool">
+				<div class="illustration">
+					<Image
+					src={scopeIllustration}
+					alt="Scope Illustration"
+					/>
+				</div>
+				<h3>Image scopes</h3>
+				<p>Native application to visualize vectorscope, waveform, and parade while interacting with your favorite image processing app.</p>
+				<Button light>Learn more</Button>
 			</div>
-		</section>
-		<section class="journal">
-			<div class="section-header">
-				<h2 class="section-header-title">Journal</h2>
-				<BtnRainbowRound href="/journal">View all</BtnRainbowRound>
+		</div>
+	</section>
+	<section class="clients">
+		<div class="clients-inner">
+			<h2>Some of the people I have worked with.</h2>
+			<p>Small and large — they are all fantastic.</p>
+			<!-- <ClientsCarousel /> -->
+			<InfiniteCarousel />
+		</div>
+	</section>
+	<section class="physics">
+		<div class="physics-inner">
+			<h2>Explore simulated physics in your browser</h2>
+			<p><span class="highlight">Performant physics library</span> made from scratch for simulations and collisions in games and applications. Written natively in C with a convenient JavaScript port.</p>
+			<div class="wip">
+				<Alert title="Work In Progress" type="wip">I'm building this website live, so there may be parts that are still under construction, like this one. Please, check back a bit later.</Alert>
 			</div>
-			<JournalGrid show={3} />
-		</section>
-		<section class="projects">
-			<div class="section-header">
-				<h2 class="section-header-title">Projects</h2>
-				<BtnRainbowRound href="/projects">View all</BtnRainbowRound>
-			</div>
-			<ProjectsGrid show={3} />
-		</section>
-	</main>
+		</div>
+	</section>
+	<section class="blog">
+		<!-- <h2>Blog</h2> -->
+		<!-- <p>Archiving what I learn and find interesting in the form of text and (sometimes interactive) visuals.</p> -->
+		<!-- <div class="featured">
+			<ul>
+				<li>
+					<a href="#">
+						<h3>Title of the post here</h3>
+						<p>A small description of the post that we are linking here. Maybe we do not need anymore...</p>
+					</a>
+				</li>
+				<li>
+					<a href="#">
+						<h3>Title of the post here</h3>
+						<p>A small description of the post that we are linking here. Maybe we do not need anymore...</p>
+					</a>
+				</li>
+				<li>
+					<a href="#">
+						<h3>Title of the post here</h3>
+						<p>A small description of the post that we are linking here. Maybe we do not need anymore...</p>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<div class="more-articles">
+			
+		</div> -->
+	</section>
 </Layout>
 
 <style>
-	.main {
+	.wip {
+		margin-top: 4rem;
+		max-width: var(--max-width-sm);
 	}
 
-	.section-header {
+	.intro,
+	.about {
 		width: 100%;
-		max-width: var(--content-width);
-		margin: 0 auto;
-		margin-bottom: 2rem;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
-
-	.section-header-title {
-		font-size: var(--font-size-xl);
-		font-weight: var(--font-weight-extrabold);
-		letter-spacing: var(--letter-spacing-1);
-		color: var(--color-primary);
-		margin: 0;
-	}
-
-	.case-studies,
-	.about,
-	.journal,
-	.projects {
-		padding: 0 var(--padding-side);
+		padding-left: 2rem;
+		padding-right: 2rem;
 		margin-bottom: 12rem;
 	}
 
-	.about {
-		background-color: #18181c;
+	.intro {
 		padding-top: 8rem;
-		padding-bottom: 8rem;
-		margin-bottom: 8rem;
 	}
+	
+	.intro-inner,
+	.about-wrap {
+		margin: 0 auto;
+		max-width: var(--max-width-md);
+	}
+
+	.work {
+		position: relative;
+		margin: 0 auto;
+		/* padding-left: 5rem; */
+		/* padding-right: 5rem; */
+		max-width: var(--max-width-lg);
+		margin-bottom: 12rem;
+	}
+
+	.work-inner {
+		overflow: hidden;
+		transition: all 0.2s ease-out;
+	}
+
+	.work-collapse { max-height: 64rem; }
+
+	.work-more {
+		display: flex;
+		align-items: end;
+		justify-content: center;
+		position: absolute;
+		bottom: 0;
+		width: 100%;
+		height: 20rem;
+		background: linear-gradient(transparent, var(--color-neutral-100));
+		pointer-events: none;
+	}
+
+	.about-wrap {
+		display: flex;
+		align-items: start;
+		justify-content: space-between;
+
+		font-size: var(--font-size-lg);
+		color: var(--color-neutral-600);
+		line-height: 1.4;
+		font-weight: 500;
+	}
+
+	.highlight {
+		color: var(--color-neutral-900);
+	}
+
+	.about-wrap > * {
+		max-width: 50%;
+	}
+
+	.about-wrap h3 {
+		font-size: var(--font-size-4xl);
+		font-weight: 600;
+		line-height: 1.2;
+		color: var(--color-neutral-900);
+	}
+
+	.blog p {
+		font-size: 1.333rem;
+		/* max-width: 50ch; */
+		color: rgb(150, 150, 153);
+	}
+
+	.blog h2 {
+		font-size: 3.157rem;
+		margin-bottom: 1.5rem;
+	}
+
+	.featured ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.featured ul li {
+		margin-bottom: 0.5rem;
+	}
+
+	.featured ul li a {
+		display: block;
+		background: rgb(18, 18, 23);
+		border-radius: 0.5rem;
+		padding: 1.5rem;
+		text-decoration: none;
+	}
+
+	.featured h3 {
+		font-size: 1.5rem;
+	}
+
+	.featured p {
+		font-size: 1rem;
+		line-height: 1.6;
+	}
+
+	.tools {
+		padding-left: 2rem;
+		padding-right: 2rem;
+		margin-bottom: 12rem;
+	}
+
+	.tools-inner {
+		display: flex;
+		margin: 0 auto;
+		max-width: var(--max-width-md);
+		align-items: start;
+		justify-content: space-between;
+	}
+
+	.tool {
+		width: 50%;
+		flex-grow: 1;
+		/* height: 20rem; */
+		border: 1px solid var(--color-neutral-200);
+		padding-top: 4rem;
+		padding-bottom: 4rem;
+	}
+	
+	.tool h3 {
+		font-size: var(--font-size-lg);
+		font-weight: 600;
+		color: var(--color-neutral-900);
+		margin-bottom: 0.5rem;
+	}
+	
+	.tool p {
+		font-size: var(--font-size-base);
+		font-weight: 500;
+		line-height: 1.45;
+		color: var(--color-neutral-600);
+		max-width: 36ch;
+		margin-bottom: 1.5rem;
+	}
+	
+	.tool:first-child {
+		border-left: 0;
+		padding-right: 4rem;
+	}
+	
+	.tool:nth-child(2) {
+		border-left: 0;
+		border-right: 0;
+		/* border-left: 1px solid var(--color-neutral-200); */
+		padding-left: 4rem;
+	}
+
+	.illustration {
+		width: 100%;
+		padding-top: 100%;
+		position: relative;
+		/* border: 0.5rem solid transparent; */
+		/* outline: 1px solid var(--color-neutral-200); */
+		border-radius: 1rem;
+		overflow: hidden;
+		margin-bottom: 4rem;
+	}
+
+	.illustration img {
+		position: absolute;
+		display: block;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		object-position: top left;
+		object-fit: cover;
+	}
+
+	.illustration::after {
+		content: "";
+		display: block;
+		position: absolute;
+		top: 0; left: 0; right: 0; bottom: 0;
+		background: radial-gradient(circle at top left, transparent, var(--color-neutral-100) 90%);
+		pointer-events: none;
+	}
+
+	.side-gradient.illustration::after {
+		background: linear-gradient(90deg, transparent, var(--color-neutral-100));
+	}
+
+	.illustration .lut-panels {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		/* display: flex; */
+		/* align-items: center; */
+		/* justify-content: center; */
+	}
+
+	.illustration .lut-panel {
+		position: absolute;
+		top: 50%;
+		/* transform: translateY(-50%) skewY(-4deg) rotateX(-14deg) rotateY(20deg); */
+		transform-style: preserve-3d;
+		width: 100%;
+		overflow: hidden;
+		border-radius: 1rem;
+		border: 1px solid hsla(0,0%,100%,.1);
+		height: 15rem;
+		opacity: 0.8;
+		transition: all 0.4s;
+	}
+
+	.illustration .lut-panel:first-child {
+		transform: translateX(0) translateY(-65%) translateZ(-180px) skewY(-4deg) rotateX(-14deg) rotateY(20deg);
+	}
+	.illustration .lut-panel:nth-child(2) {
+		transform: translateX(3rem) translateY(-50%) translateZ(0) skewY(-4deg) rotateX(-14deg) rotateY(20deg);
+	}
+	.illustration .lut-panel:nth-child(3) {
+		transform: translateX(6rem) translateY(-35%) translateZ(180px) skewY(-4deg) rotateX(-14deg) rotateY(20deg);
+	}
+
+	.illustration .lut-panel:first-child:hover {
+		transform: translateX(0) translateY(-70%) translateZ(-180px) skewY(-4deg) rotateX(-14deg) rotateY(20deg);
+	}
+	.illustration .lut-panel:nth-child(2):hover {
+		transform: translateX(3rem) translateY(-55%) translateZ(0) skewY(-4deg) rotateX(-14deg) rotateY(20deg);
+	}
+	.illustration .lut-panel:nth-child(3):hover {
+		transform: translateX(6rem) translateY(-40%) translateZ(180px) skewY(-4deg) rotateX(-14deg) rotateY(20deg);
+	}
+
+	.clients {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0 2rem;
+		margin-bottom: 12rem;
+	}
+
+	.clients-inner {
+		width: 100%;
+		max-width: var(--max-width-md);
+	}
+
+	.clients h2 {
+        font-size: var(--font-size-lg);
+        font-weight: 500;
+        text-align: center;
+    }
+
+    .clients p {
+        font-size: var(--font-size-md);
+        color: var(--color-neutral-500);
+        text-align: center;
+        margin-bottom: 4rem;
+        max-width: 450px;
+        margin: 0 auto 4rem auto;
+    }
+
+	.physics {
+		display: flex;
+		align-items: start;
+		justify-content: center;
+		padding: 0 2rem;
+		margin-bottom: 12rem;
+	}
+
+	.physics-inner {
+		width: 100%;
+		max-width: var(--max-width-md);
+	}
+
+	.physics-inner h2 {
+		font-size: var(--font-size-3xl);
+		font-weight: 500;
+		line-height: 1.2;
+		margin-bottom: 2rem;
+		max-width: 18ch;
+	}
+
+	.physics-inner p {
+		font-size: var(--font-size-md);
+		font-weight: 500;
+		color: var(--color-neutral-600);
+		line-height: 1.6;
+		max-width: 40ch;
+	}
+
 </style>
+
+<script>
+	const moreWorkBtn = document.getElementById("more-work");
+	const workWrap = document.querySelector(".work-inner");
+	const workMore = document.querySelector(".work-more");
+	moreWorkBtn.addEventListener("pointerdown", (e) => {
+		workWrap.classList.remove("work-collapse");
+		(workMore as HTMLElement).style.display = "none";
+	});
+</script>

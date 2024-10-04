@@ -1,42 +1,41 @@
 ---
 title: Acura MDX
-featured: true
-thumbnail: gildstudios-acuramdx-1_Zwm7ek.jpg
-tags: [CGI, Art Direction, Retouching, Photography]
-software: [3Ds Max, Photoshop, V-Ray]
+tags: [CG Artist, Photographer, Retoucher]
+hero: gildstudios-acuramdx-1_Zwm7ek.jpg
 description: I was inspired by the Angeles Crest Canyon in Los Angeles and the 2022 Acura MDX to create a series of CGI images that showcase the car in a natural environment in the style of a car commercial.
 ---
-import Caption from "../../components/Caption.astro";
-import ContentImg from "../../components/ContentImg.astro";
-import ContentVideo from "../../components/ContentVideo.astro";
-import ContentFlex from "../../components/ContentFlex.astro";
+import Img from "../../components/Img.astro";
 
-<ContentImg src="gildstudios-acuramdx-1_Zwm7ek.jpg" alt="Something" dir="cs" />
-<ContentImg src="gildstudios-acuramdx-2.jpg" alt="Something" dir="cs" />
+<div class="max-w-7xl mx-auto grid grid-cols-2 gap-4">
+    <div class="col-span-2">
+        <Img src="gildstudios-acuramdx-1_Zwm7ek.jpg" alt="something" dir="/" />
+    </div>
+    <div class="col-span-2">
+        <Img src="gildstudios-acuramdx-2.jpg" alt="something" dir="/" />
+    </div>
 
-<div class="block-text">
-## Behind the scenes
+    <Img src="gildstudios-acuramdx-3.jpg" alt="Something" dir="/" />
+    <Img src="gildstudios-acuramdx-4.jpg" alt="Something" dir="/" />
+</div>
 
+<div class="max-w-2xl mx-auto my-16">
+## Custom HDRIs
 To create an immersive environment for the car, I drove to the Angeles Crest Canyon and took photos of the environment to capture 360° HDRIs and backplates. These would be used to provide realistic lighting information, and backgrounds to be placed behind the car.
 
 Since the foreground in the images did not offer too much in terms of interest or depth, I decided to add in some rocks and plants to make the scene more dynamic.
 </div>
 
-<ContentImg src="gildstudios-acuramdx-hdr-1.jpg" alt="Something" dir="cs" />
-<ContentImg src="gildstudios-acuramdx-hdr-2.jpg" alt="Something" dir="cs" />
-<Caption>HDRI's captured at Angeles Crest Canyon</Caption>
+<div class="max-w-7xl mx-auto grid grid-cols-1 gap-4">
+    <Img src="gildstudios-acuramdx-hdr-1.jpg" alt="something" dir="/" />
+    <Img src="gildstudios-acuramdx-hdr-2.jpg" alt="something" dir="/" />
+</div>
 
-After photographing the environment, I spent a few days carefully lookdeving the most important materials in the scene, including the car paint and the tires. I managed to get a realistic look for the car paint in V-Ray, and using references from the interwebs I was able to recreate the tires' sidewall texture in vector format.
+<div class="max-w-2xl mx-auto my-16">
+    ## CG foreground
+    After photographing the environment, I spent a few days carefully lookdeving the most important materials in the scene, including the car paint and the tires. I managed to get a realistic look for the car paint in V-Ray, and using references from the interwebs I was able to recreate the tires' sidewall texture in vector format.
+</div>
 
-<ContentFlex cols={2}>
-    <ContentVideo src="/video/carpaint_green_test.mp4" formats={["mp4"]} loop={true} autoplay={true} muted={true} controls={true} />
-    <ContentVideo src="/video/gildstudios-tyrebump-test.webm" formats={["webm"]} loop={true} autoplay={true} muted={true} controls={true} />
-</ContentFlex>
-<Caption>Turntables car paint and tire sidewall</Caption>
-
-<ContentImg src="gildstudios-acuramdx-clay-1.jpg" alt="Something" dir="cs" />
-<ContentImg src="gildstudios-acuramdx-clay-2.jpg" alt="Something" dir="cs" />
-<Caption>Clay renders with the backplates</Caption>
-
-<ContentImg src="gildstudios-acuramdx-3.jpg" alt="Something" dir="cs" />
-<ContentImg src="gildstudios-acuramdx-4.jpg" alt="Something" dir="cs" />
+<div class="max-w-7xl mx-auto grid grid-cols-1 gap-4">
+    <Img src="gildstudios-acuramdx-clay-1.jpg" alt="Something" dir="/" />
+    <Img src="gildstudios-acuramdx-clay-2.jpg" alt="Something" dir="/" />
+</div>

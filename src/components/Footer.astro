@@ -1,124 +1,25 @@
-<footer class="site-footer">
+<footer>
     <div class="footer-inner">
-        <div class="footer-contact">
-            <h2>Say Hello!</h2>
-            <p>
-                Whether you want to work together or just want to say hi, please
-                don't hesitate to get in touch.
-            </p>
-            <a href="mailto:viktor@viktorfejes.com" class="footer-email"
-                >Contact</a
-            >
-            <ul class="footer-socials">
-                <li>
-                    <a
-                        href="https://instagram.com/vfejes"
-                        class="icon-instagram"></a>
-                </li>
-                <li>
-                    <a
-                        href="https://youtube.com/c/ViktorFejes"
-                        class="icon-youtube-play"></a>
-                </li>
-                <li>
-                    <a
-                        href="https://github.com/viktorfejes"
-                        class="icon-github-circled"></a>
-                </li>
-                <li>
-                    <a href="https://twitter.com/vfejes" class="icon-twitter"
-                    ></a>
-                </li>
-                <li>
-                    <a
-                        href="https://www.linkedin.com/in/viktorfejes"
-                        class="icon-linkedin"></a>
-                </li>
-            </ul>
-        </div>
-        <div class="footer-copyright">© 2023 Viktor Fejes</div>
+        Copyright © 2024 Viktor Fejes, Los Angeles, CA
     </div>
 </footer>
 
 <style>
-    .site-footer {
-        width: 100%;
+    footer {
+        border-top: 1px solid var(--color-neutral-200);
+        padding: 2rem;
+        margin-top: 4rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        font-size: var(--font-size-base);
+        color: var(--color-neutral-300);
+        font-weight: 600;
     }
 
     .footer-inner {
-        background-color: #18181c;
-        padding: 4rem 2rem;
-    }
-
-    .footer-contact {
-        text-align: center;
-    }
-
-    .footer-contact h2 {
-        font-size: 2.5rem;
-        margin-bottom: 1rem;
-        color: var(--offwhite-color);
-        font-weight: 800;
-        letter-spacing: -0.03rem;
-    }
-
-    .footer-contact p {
-        font-size: 1.25rem;
-        color: var(--tertiary-color);
-        max-width: 40ch;
-        margin: 0 auto;
-        margin-bottom: 2rem;
-        line-height: 1.8;
-    }
-
-    .footer-email {
-        display: inline-block;
-        font-size: 1rem;
-        color: var(--secondary-color);
-        font-weight: 500;
-        text-decoration: none;
-        padding: 0.8rem 1.6rem;
-        border-radius: 0.5rem;
-        background-color: var(--primary-color);
-        transition: background-color 0.3s;
-    }
-
-    .footer-email:hover {
-        background-color: #ffeec1;
-    }
-
-    .footer-email::after {
-        font-family: "vf-icons";
-        content: "\e800";
-        font-size: 0.7rem;
-        display: inline-block;
-        margin-left: 0.5rem;
-    }
-
-    .footer-socials {
-        display: flex;
-        justify-content: center;
-        gap: 0.2rem;
-        list-style-type: none;
-        padding: 0;
-        font-size: 1.5rem;
-        margin: 3.5rem 0;
-    }
-
-    .footer-socials a {
-        text-decoration: none;
-        color: var(--tertiary-color);
-        transition: color 0.3s;
-    }
-
-    .footer-socials a:hover {
-        color: var(--primary-color);
-    }
-
-    .footer-copyright {
-        text-align: center;
-        font-size: 1rem;
-        font-weight: 600;
-        color: var(--offwhite-color);
+        width: 100%;
+        max-width: var(--max-width-lg);
     }
 </style>

@@ -10,34 +10,3 @@ export function slugify(text) {
         .replace(/\s+/g, '-')
         .replace(/[^\w-]+/g, '');
 }
-
-export function formatDate(dateString, options) {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', options);
-}
-
-export function injectSpanLetters(text, className = "letter") {
-    const result = [];
-    for (let i = 0; i < text.length; i++) {
-        const char = text[i];
-        if (char === " ") {
-            result.push({
-                char: char,
-                class: null,
-            });
-        } else {
-            result.push({
-                char: char,
-                class: `${className} ${className}-${i}`,
-            });
-        }
-    }
-    return result;
-}
-
-export function calcReadTime(text) {
-    const wordsPerMinute = 238;
-    const cleanText = text.replace(/\s+/g, ' ');
-    const words = text.trim().split(/\s+/).length;
-    return Math.ceil(words / wordsPerMinute);
-}

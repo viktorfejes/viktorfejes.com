@@ -1,28 +1,26 @@
 ---
 title: Woman
-thumbnail: charWoman-FLAT.jpg
+hero: charWoman-FLAT.jpg
 tags: [Art Direction, CGI]
-software: [ZBrush, Maya, Substance Painter, Wrap, Marvelous Designer]
-
 description: Originally created for a personal study, but then I decided to take it further and attempted to create a photorealistic portrait of a woman. The intention was to make it as simple as possible, so it feels like a real person, but without the need for a lot of character development.
 ---
-import ContentImg from "../../components/ContentImg.astro";
-import ContentVideo from "../../components/ContentVideo.astro";
-import Caption from "../../components/Caption.astro";
+import Img from "../../components/Img.astro";
 
-<ContentImg src="charWoman-FLAT.jpg" alt="Something" dir="cs" />
+<div class="max-w-7xl mx-auto">
+    <Img src="charWoman-FLAT.jpg" alt="Something" dir="/" />
 
-<div class="block-text">
-## Eyes
-For this portrait I created a new high resolution eye (I have a couple different ones in my library). However, this time I took macro images of my own and my wife's eyes to get the most realistic textures possible, mainly for the sclera and iris. I also created a new model for them to fit the new textures.
+    <div class="my-24">
+        ## Eyes
+        For this portrait I created a new high resolution eye (I have a couple different ones in my library). However, this time I took macro images of my own and my wife's eyes to get the most realistic textures possible, mainly for the sclera and iris. I also created a new model for them to fit the new textures.
+    </div>
+
+    <div class="grid grid-cols-1 gap-4">
+        <video loop autoplay muted controls>
+            <source src="/videos/eye-turntable.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+        </video>
+
+        <Img src="woman_closeup-01.jpg" alt="Something" dir="case-studies/cgi-character" />
+        <Img src="woman_clay.jpg" alt="Something" dir="case-studies/cgi-character" />
+    </div>
 </div>
-
-<video loop autoplay muted controls>
-    <source src="/video/eye-turntable.mp4" type="video/mp4" />
-    Your browser does not support the video tag.
-</video>
-<Caption>Turntable WIP for the new eye</Caption>
-
-<ContentImg src="woman_closeup-01.jpg" alt="Something" dir="cs/woman" />
-<ContentImg src="woman_clay.jpg" alt="Something" dir="cs/woman" />
-<Caption>Clay render</Caption>

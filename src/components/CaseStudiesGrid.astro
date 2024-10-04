@@ -1,0 +1,31 @@
+---
+import CaseStudiesItem from "./CaseStudiesItem.astro";
+---
+
+<div class="case-studies-grid">
+    <CaseStudiesItem
+        title="Acura MDX"
+        imagePath="gildstudios-acuramdx-1_Zwm7ek.jpg"
+    />
+    <CaseStudiesItem
+        title="Bravo, Bravecto!"
+        imagePath="gildstudios-bravecto-commstill-1.jpg"
+    />
+    <CaseStudiesItem
+        title="Support the Neighborhood"
+        imagePath={["gildstudios-doordash-2.jpg", "gildstudios-bravecto-commstill-1.jpg"]}
+    />
+    <CaseStudiesItem
+        title="The Incredible Egg"
+        imagePath="gildstudios-dinnereggs-thumb.jpg"
+    />
+</div>
+
+<style>
+    .case-studies-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+        row-gap: 6rem;
+    }
+</style>

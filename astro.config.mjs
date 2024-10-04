@@ -1,15 +1,11 @@
 import { defineConfig } from 'astro/config';
 
-import mdx from "@astrojs/mdx";
+import mdx from '@astrojs/mdx';
+
+import tailwind from '@astrojs/tailwind';
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [mdx()],
-  markdown: {
-    shikiConfig: {
-      theme: "catppuccin-macchiato",
-      langs: ['javascript', 'c', 'css', 'html', 'cpp', 'rust'],
-      wrap: true,
-    }
-  }
+  site: "https://viktorfejes.com",
+  integrations: [mdx(), tailwind()]
 });

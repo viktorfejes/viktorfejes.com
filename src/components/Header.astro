@@ -1,230 +1,77 @@
-<header class="site-header">
-    <nav class="main-navigation">
-        <a href="/" class="logo">
-            <svg viewBox="0 0 678 678"
-                ><path
-                    d="M607.241 139.965H239.288l99.324 198.647 81.211-162.423h169.306L338.612 677.223 0 0h677.223l-69.982 139.965z"
-                ></path></svg
-            >
-        </a>
-        <ul class="nav-list">
-            <li><a href="/case-studies">Case Studies</a></li>
-            <li><a href="/about">About</a></li>
-            <li><a href="/journal">Journal</a></li>
-            <li><a href="/projects">Projects</a></li>
-            <li><a href="mailto:viktor@viktorfejes.com">Contact</a></li>
-        </ul>
-        <div class="nav-hamburger-group">
-            <input type="checkbox" name="hamburger-opener" id="hambox" />
-            <label for="hambox" class="hamburger-btn">
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-            </label>
+---
+const { pathname } = Astro.url;
+---
 
-            <div class="hidden-nav-container">
-                <ul class="hidden-nav">
-                    <li><a href="/case-studies">Case Studies</a></li>
-                    <li><a href="/about">About</a></li>
-                    <li><a href="/journal">Journal</a></li>
-                    <li><a href="/projects">Projects</a></li>
-                    <li><a href="#">Contact</a></li>
-                </ul>
-            </div>
-        </div>
+<header class="site-header">
+    <nav class="site-nav">
+        <a href="/" class="site-logo">
+            <svg viewBox="0 0 678 678">
+                <path d="M607.241 139.965H239.288l99.324 198.647 81.211-162.423h169.306L338.612 677.223 0 0h677.223l-69.982 139.965z">
+                </path>
+            </svg>
+        </a>
+        <ul class="site-links">
+            <li><a href="/" class={pathname === "/" ? "active" : ""}>Home</a></li>
+            <li><a href="/blog" class={pathname.startsWith("/blog") ? "active" : ""}>Blog</a></li>
+        </ul>
     </nav>
 </header>
 
 <style>
     .site-header {
+        position: sticky;
+        top: 0;
         width: 100%;
-        /* height: 5rem; */
-        padding: 0 var(--padding-side);
-        margin-top: 2.5rem;
-    }
-
-    .main-navigation {
-        /* padding: 0 2rem; */
+        height: var(--header-height);
+        padding: 0 2rem;
+        z-index: 99;
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        height: 100%;
-        width: 100%;
-        max-width: var(--content-width);
-        margin: 0 auto;
-    }
-
-    .nav-list {
-        display: flex;
-        gap: 2rem;
-        margin: 0;
-    }
-
-    .nav-list li {
-        list-style: none;
-    }
-
-    .nav-list li a {
-        text-decoration: none;
-        color: var(--primary-color);
-        color: var(--tertiary-color);
-        font-size: 1rem;
-        font-weight: 400;
-        transition: color 0.3s ease;
-    }
-
-    .nav-list li a:hover {
-        color: var(--primary-color);
-    }
-
-    .nav-hamburger-group {
-        display: none;
-    }
-
-    #hambox {
-        display: none;
-    }
-
-    .hamburger-btn {
-        position: relative;
-        cursor: pointer;
-        user-select: none;
-        display: block;
-        width: 2rem;
-        height: 1.5rem;
-        overflow: hidden;
-        z-index: 11;
-    }
-
-    .hamburger-line {
-        position: absolute;
-        display: block;
-        width: 100%;
-        height: 3px;
-        background: var(--color-primary);
-        border-radius: 2px;
-        transition: all 0.3s ease;
-        width: 85%;
-        right: 0;
-    }
-
-    .hamburger-line:nth-child(1) {
-        /* background: #ff1886; */
-        top: 0;
-    }
-
-    .hamburger-line:nth-child(2) {
-        width: 100%;
-        top: 50%;
-        transform: translateY(-50%);
-        /* background: #fce844; */
-    }
-
-    .hamburger-line:nth-child(3) {
-        bottom: 0;
-        /* background: #35b2ef; */
-    }
-
-    #hambox:checked + .hamburger-btn .hamburger-line:nth-child(1) {
-        top: 50%;
-        transform: translateY(-50%) rotate(45deg);
-        /* background: var(--gradient-primary); */
-    }
-
-    #hambox:checked + .hamburger-btn .hamburger-line:nth-child(2) {
-        transform: translateX(100%);
-    }
-
-    #hambox:checked + .hamburger-btn .hamburger-line:nth-child(3) {
-        bottom: 50%;
-        transform: translateY(50%) rotate(-45deg);
-        /* background: var(--gradient-primary); */
-    }
-
-    .hidden-nav-container {
-        position: absolute;
-        z-index: 10;
-        top: 0;
-        left: 0;
-        overflow: hidden;
-        max-height: 0;
-        transition: max-height 0.3s ease;
-        background: var(--color-dark-2);
-        width: 100%;
-        height: auto;
-        padding: 0 var(--padding-side);
-    }
-
-    #hambox:checked ~ .hidden-nav-container {
-        transition: max-height 1s ease;
-        max-height: 100%;
-    }
-
-    .hidden-nav {
-        display: flex;
-        flex-direction: column;
         justify-content: center;
+        /* margin-bottom: 8rem; */
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(0, 0, 0, 0.33);
+        backdrop-filter: blur(24px) saturate(140%);
+    }
+
+    .site-nav{
+        width: 100%;
+        /* max-width: 65rem; */
+		max-width: var(--max-width-md);
+        display: flex;
         align-items: center;
-        gap: 1rem;
-        padding: 2rem 0;
+        justify-content: space-between;
+    }
+
+    .site-logo {
+        display: block;
+        width: 1.5rem;
+        fill: var(--color-neutral-900);
+    }
+
+    .site-links {
+        display: flex;
+        justify-content: flex-end;
+        margin: 0;
+        padding: 0;
         list-style: none;
-        margin: 4rem 0 0 0;
+        gap: 2rem;
+        font-size: var(--font-size-base);
+        font-weight: var(--font-weight-medium);
+        color: var(--color-neutral-900);
     }
 
-    .hidden-nav li {
-        width: 100%;
-        text-align: center;
-    }
-
-    .hidden-nav li a {
-        border-radius: 0.5rem;
-        background: var(--color-dark-3);
-        display: block;
-        width: 100%;
-        padding: 1rem 0;
-        color: var(--color-primary);
-        font-size: 1.2rem;
-        font-weight: 400;
+    .site-links li a {
+        opacity: 0.5;
         text-decoration: none;
-        transition:
-            color 0.3s ease,
-            background 0.3s ease;
+        transition: all 0.2s;
     }
 
-    .hidden-nav li a:hover {
-        color: var(--color-dark-1);
-        background: var(--color-accent);
+    .site-links li a:hover {
+        opacity: 0.8;
     }
-
-    .logo {
-        display: block;
-        width: 2rem;
-        height: 2rem;
-        /* background: var(--color-primary); */
-        border-radius: 50%;
-        /* padding: 0.9rem 0.75rem 0.75rem; */
-        z-index: 11;
-    }
-
-    .logo svg {
-        display: block;
-        fill: var(--color-primary);
-    }
-
-    :global(body.light) .logo {
-        /* background: var(--color-dark-1); */
-    }
-
-    :global(body.light) .logo svg {
-        fill: var(--color-dark-1);
-    }
-
-    @media (max-width: 720px) {
-        .nav-list {
-            display: none;
-        }
-        .nav-hamburger-group {
-            display: block;
-        }
+    
+    .site-links li a.active {
+        opacity: 1;
     }
 </style>

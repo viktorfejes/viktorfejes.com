@@ -1,0 +1,101 @@
+---
+import Button from "./Button.astro"
+---
+
+<div class="hero">
+    <h1 class="intro-headline">I’m an artist and engineer creating images and tools.</h1>
+    <p class="intro-text">Using my expertise in design, image processing, color science, and programming I have solved problems for my clients the past 15 years in the advertising, editorial, and gaming industries.</p>
+
+    <div class="cta">
+        <a
+            class="transition hover:bg-gray-100 bg-gray-200 text-gray-900 inline-flex px-[1.25rem] h-12 rounded-md font-semibold items-center"
+            href="#"
+            data-contact="dmlrdG9yQHZpa3RvcmZlamVzLmNvbQ=="
+            data-subject="RnJvbSB0aGUgd2Vic2l0ZQ=="
+            onclick="this.href='mailto:' + atob(this.dataset.contact) + '?subject=' + atob(this.dataset.subject || '')"
+            role="button"
+        >Contact me</a>
+        <button class="quick-search">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <span class="placeholder">Search…</span>
+            <kbd class="shortcut">F</kbd>
+        </button>
+        <!-- <Button>Contact me</Button> -->
+    </div>
+</div>
+
+<style>
+    .hero {
+        /* text-align: center; */
+    }
+    
+    .intro-headline {
+        font-size: var(--font-size-5xl);
+        font-weight: var(--font-weight-semibold);
+        line-height: 1.1;
+        letter-spacing: var(--letter-spacing-tight);
+        margin-bottom: 1.5rem;
+        color: var(--color-neutral-900);
+        max-width: 22ch;
+        /* margin-left: auto; */
+        /* margin-right: auto; */
+    }
+    
+    .intro-text {
+        max-width: var(--max-width-sm);
+        font-size: var(--font-size-lg);
+        line-height: 1.45;
+        margin-bottom: 2.5rem;
+        color: var(--color-neutral-600);
+        max-width: 48ch;
+        font-weight: var(--font-weight-medium);
+        /* margin-left: auto; */
+        /* margin-right: auto; */
+    }
+
+    .cta {
+        display: flex;
+        gap: 2rem;
+    }
+
+    .quick-search {
+        display: flex;
+        place-items: center;
+        background: var(--color-neutral-200);
+        /* border: 1px solid var(--color-neutral-200); */
+        border-top: 1px solid var(--color-neutral-300);
+        /* border: 1px solid var(--color-neutral-300); */
+        width: 18rem;
+        height: 3rem;
+        border-radius: 0.5rem;
+        padding-right: 1rem;
+        padding-left: 1rem;
+    }
+
+    .search-icon {
+        width: 1.125rem;
+        flex: none;
+        color: var(--color-neutral-400);
+    }
+
+    .placeholder {
+        text-align: left;
+        flex: 1 1 auto;
+        margin-left: 0.75rem;
+        color: var(--color-neutral-800);
+    }
+
+    .shortcut {
+        font-family: var(--font-primary);
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-regular);
+        color: var(--color-neutral-900);
+        background: var(--color-neutral-300);
+        border-radius: 0.25rem;
+        width: 1.25rem;
+    }
+
+    .shortcut abbr {
+        text-decoration: none;
+    }
+</style>

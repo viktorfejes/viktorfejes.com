@@ -1,31 +1,22 @@
 ---
 title: Conman
-thumbnail: conman_thumb.jpg
+hero: conman_thumb.jpg
 tags: [Retouching]
-software: [Photoshop]
-
 description: In collaboration with photographer John Keatley, I retouched the images for his Conman series. The idea was to present the same subject in different costumes, while making sure the images otherwise looked identical. This was a fun challenge, as it required a lot of attention to detail to make sure the images were consistent.
 ---
-import ContentImg from "../../components/ContentImg.astro";
-import ContentVideo from "../../components/ContentVideo.astro";
-import Caption from "../../components/Caption.astro";
+import Img from "../../components/Img.astro";
 
-<div class="flex col-2">
-    <ContentImg src="viktorfejes-conman-01.jpg" alt="Something" dir="cs/conman" />
-    <ContentImg src="viktorfejes-conman-02.jpg" alt="Something" dir="cs/conman" />
-    <ContentImg src="viktorfejes-conman-03.jpg" alt="Something" dir="cs/conman" />
-    <ContentImg src="viktorfejes-conman-04.jpg" alt="Something" dir="cs/conman" />
-</div>
-
-<video loop autoplay muted controls>
-    <source src="/video/conman-breakdown.mp4" type="video/mp4" />
-    Your browser does not support the video tag.
-</video>
-<Caption>Retouching breakdown</Caption>
-
-<div class="flex col-2">
-    <ContentImg src="viktorfejes-conman-05.jpg" alt="Something" dir="cs/conman" />
-    <ContentImg src="viktorfejes-conman-06.jpg" alt="Something" dir="cs/conman" />
-    <ContentImg src="viktorfejes-conman-07.jpg" alt="Something" dir="cs/conman" />
-    <ContentImg src="viktorfejes-conman-08.jpg" alt="Something" dir="cs/conman" />
+<div class="max-w-7xl ml-auto mr-auto gap-4 grid grid-cols-2">
+    <Img src="viktorfejes-conman-01.jpg" alt="Something" dir="case-studies/conman" />
+    <Img src="viktorfejes-conman-02.jpg" alt="Something" dir="case-studies/conman" />
+    <Img src="viktorfejes-conman-03.jpg" alt="Something" dir="case-studies/conman" />
+    <Img src="viktorfejes-conman-04.jpg" alt="Something" dir="case-studies/conman" />
+    <video class="col-span-2" loop autoplay muted controls>
+        <source src="/videos/conman-breakdown.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+    </video>
+    <Img src="viktorfejes-conman-05.jpg" alt="Something" dir="case-studies/conman" />
+    <Img src="viktorfejes-conman-06.jpg" alt="Something" dir="case-studies/conman" />
+    <Img src="viktorfejes-conman-07.jpg" alt="Something" dir="case-studies/conman" />
+    <Img src="viktorfejes-conman-08.jpg" alt="Something" dir="case-studies/conman" />
 </div>
