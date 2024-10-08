@@ -14,7 +14,8 @@ const caseStudiesCollection = defineCollection({
 const blogCollection = defineCollection({
     type: "content",
     schema: z.object({
-        title: z.string()
+        title: z.string(),
+        publishDate: z.date()
     })
 });
 

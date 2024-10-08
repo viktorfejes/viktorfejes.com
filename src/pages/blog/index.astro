@@ -1,6 +1,24 @@
 ---
 import Alert from "../../components/Alert.astro";
 import Layout from "../../layouts/Layout.astro";
+
+import { getCollection } from "astro:content";
+const blog = await getCollection("blog");
+
+// Sort posts
+blog.sort((a, b) => {
+    return new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime();
+});
+
+// Grouping by year
+const postsByYear = blog.reduce((acc, post) => {
+    const year = new Date(post.data.publishDate).getFullYear();
+    if (!acc[year]){
+        acc[year] = [];
+    }
+    acc[year].push(post);
+    return acc;
+}, {});
 ---
 
 <Layout title="Viktor Fejes - Blog">
@@ -17,9 +35,81 @@ import Layout from "../../layouts/Layout.astro";
     <div class="wip">
         <Alert title="Work In Progress" type="wip">I'm building this website live, so there may be parts that are still under construction, like this one. Please, check back a bit later.</Alert>
     </div>
+    <div class="posts">
+        {
+            blog.map((post) => (
+                <article class="post">
+                    <div class="post-meta">
+                        <time class="date" datetime={post.data.publishDate.toISOString()}>{post.data.publishDate.toLocaleDateString("en-US", {
+                            month: "long",
+                            day: "numeric",
+                            year: "numeric"
+                        })}</time>
+                    </div>
+                    <div class="post-rest">
+                        <h3 class="post-title">{post.data.title}</h3>
+                        <div class="excerpt">
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. At debitis enim facere, dolorum, temporibus aperiam animi ea excepturi aliquam iure totam commodi minima alias veniam neque sapiente molestias doloribus veritatis.</p>
+                        </div>
+                    </div>
+                </article>
+            ))
+        }
+<!--             
+        {Object.keys(postsByYear).sort((a, b) => b - a).map((year) => (
+            <h2>{year}</h2>
+            <ul>
+                {postsByYear[year].map((post) => (
+                    <li>{post.data.title}</li>
+                ))}
+            </ul>
+        ))} -->
+    </div>
 </Layout>
 
 <style>
+    .posts {
+        max-width: calc(var(--max-width-md) + var(--padding-page-left) + var(--padding-page-right));
+        padding-left: var(--padding-page-left);
+        padding-right: var(--padding-page-right);
+        margin: 0 auto;
+    }
+
+    .post {
+        margin-bottom: 4rem;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 8rem;
+    }
+
+    .post-title {
+        font-size: var(--font-size-md);
+        font-weight: var(--font-weight-bold);
+        color: var(--color-neutral-900);
+    }
+
+    .excerpt {
+        font-size: var(--font-size-base);
+        font-weight: var(--font-weight-regular);
+        color: var(--color-neutral-600);
+        line-height: 1.4;
+    }
+
+    .post-meta {
+        flex-shrink: 0;
+        width: 10rem;
+    }
+
+    .date {
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-regular);
+        color: var(--color-neutral-600);
+        white-space: nowrap;
+        text-align: right;
+        display: block;
+    }
+
     .wip {
         max-width: var(--max-width-xs);
         margin: 4rem auto;

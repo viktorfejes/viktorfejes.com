@@ -23,7 +23,7 @@ if (!images[imgSrc]) throw new Error(`"${imgSrc}" not found in "/src/assets/imag
         <div class="thumbnail">
             <Image
                 src={images[imgSrc]()}
-                alt={title}
+                alt=`${title} thumbnail`
                 loading="lazy"
                 widths={[240, 540, 720, 1300]}
                 sizes={`(max-width: 639px) 240px, (max-width: 767px) 540px, (max-width: 1023px) 720px, 1300px`}
