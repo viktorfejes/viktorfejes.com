@@ -92,12 +92,12 @@ const { Content } = await post.render();
     .prose :global(p) {
         font-size: var(--font-size-md);
         font-weight: var(--font-weight-regular);
-        line-height: 1.45;
+        line-height: 1.5;
         color: var(--color-neutral-700);
         max-width: var(--max-width-xs);
         margin-left: auto;
         margin-right: auto;
-        margin-bottom: calc(1.45 * var(--font-size-md));
+        margin-bottom: 1.45em;
     }
 
     .prose :global(h2) {
@@ -114,5 +114,12 @@ const { Content } = await post.render();
 
     .prose :global(img) {
         border-radius: 0.5rem;
+    }
+    
+    .prose :global(.before-after-slider) {
+        max-width: var(--max-width-xs);
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 1.45em;
     }
 </style>
