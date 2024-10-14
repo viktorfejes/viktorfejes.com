@@ -1,9 +1,10 @@
 ---
-title: What is false color in retouching?
-publishDate: 2024-10-07
-updateDate: 2024-10-08
+title: How false color helps with retouching?
+publishDate: 2024-10-14
+# updateDate: 2024-10-14
 ---
 import BeforeAfter from "../../components/BeforeAfter.astro"
+import Alert from "../../components/Alert.astro"
 
 In science, false color is a color rendering method for data visualization where the object is not shown in its true colors -- the way we would normally see them -- but using a different color rendering method depicting one or more aspects of the data. Think of a thermal imaging camera, an elevation map, or an MRI scan.
 
@@ -16,7 +17,48 @@ Used in cinematography, and consequently, photography, the term usually refers t
 
 {/* ![An image in false color depicting exposure ranges in different colors](/images/false-color-image.jpg) */}
 
-However, just like in science, we are not limited to only using exposure visualizations, we could visualize any aspect of an image to take advantage of this powerful method.
+## Mapping data for retouching
+In retouching, we often want to deal with aspects of an image, like tone, colors, and texture, separately. Sometimes we only need to correct a small color inconsistency without changing the brightness of the same spot, or we just want to change the texture and nothing else. In these cases context really matters as other aspects can influence the way we perceive the values we would like to manipulate.
 
-## The sky is the limit
-As retouching still images requires us to care about the minutia, it helps if we can concentrate on a single aspect of an image at a time. This is where false colour comes in -- we are able to visualize any aspect of an image from exposure levels through colour density to hue variations. The sky is the limit.
+A good example on how much influence context has on our perception is the following Munker optical illusion: the two balls appear to have different colors. In reality, they are exactly the same, and only appear to be different because of their surroundings.
+
+![Munker illusion image showing two balls with identical colors appearing to be two different colors](/images/munker-illusion-2balls.jpg)
+
+In this case, I could map the neon green and magenta colors to 50% grey and apply it to the image as a very specific "false color" overlay. This would show that the colors are in fact, identical. Of course, this is a bit silly as this mapping would only be helpful on this particular image but it shows the power of data mapping and isolation.
+
+![Two identical balls next to one another on a 50% grey background with grey holes on them](/images/munker-illusion-2balls_mapped.jpg)
+
+A more practical example would be brightness mapping to aid dodging and burning. The act of dodging and burning is about changing the brightness (lightening and darkening) of targeted areas. Therefore, during this operation we have no need for color information, and in fact, having color present can negatively influence the way we perceive levels of brightness in our image.
+
+Creating the brightness mapping is actually quite straightforward. Take the RGB value of a pixel, calculate how bright it is -- preferably using a method that takes human perception into account --, then apply that value to all channels (red, green, and blue) creating a monochromatic representation of the underlying color values. This eliminates the color information from the image and aids you in making better decisions about what to darken or lighten.
+
+![Man holding up a color checker shown in black and white](/images/brightness_mapping.jpg)
+
+If this was not enough to convince you how useful false color is in retouching, let me show you another example. One of the main pillars of retouching is the smoothing of gradients. This includes all gradients: in hue, in saturation, in brightness, and sometimes even in texture. However, some of it is hard to see because they are so intertwined (e.g. hue and saturation). This is where my next example comes in: saturation mapping.
+
+Using saturation mapping we are able to map, you guessed it, saturation values to any other value. You could take all 0% saturation pixels and color them black, while 100% saturation pixels would be colored to white while interpolating between those to get the values in between. Of course, if you wanted to you could use any other color, as well.
+
+![Connected node setup depicting a saturation mapping pipeline](/images/satmap_node-illustration.svg)
+
+The process is similar to brightness mapping with a few differences. The RGB value is now first converted to a cylindrical color model that has a chroma or saturation component, like HSL, HSV, or LCh. Then, we take only the saturation/chroma component and remap it to our RGB values according to the bit depth (255 for 8-bit, 65,535 for 16-bit). Finally, we apply the remapped saturation value to all three color channels.
+
+This, just like the previously described brightness mapping method produces a monochromatic result. However, you can always recolor it; I just find black and white to be sufficient for this.
+
+![Man holding up a color checker shown in black and white depicting saturation values in the image](/images/sat_mapping.jpg)
+
+<Alert title="Note" type="info">Depending on which cylindrical color model you choose when mapping saturation values you will get different results because all of them interpret colorfulness (chroma, saturation...etc.) differently.</Alert>
+
+## How to use in retouching
+Now that we understand how powerful false color is and what we can use it for in retouching, we need to talk about how to use it.
+
+The easiest way is, if the processes I described above can be applied in your image processing application in a non-destructive way, to just create it as separate layers above everything else. In Photoshop, for example, it is remarkably simple to map brightness values to corresponding monochromatic values in a way that is perceptually accurate.
+
+Simply create a Solid color adjustment layer on top of your layer stack, set its color to any grey values (black, white, or anything in between with 0% saturation), and then set the blending mode to either Saturation or Color. This will preserve the luma of everything that is below, while adopting the saturation of the top layer. The reason you can choose Color blending mode as well, is because the Hue component will be discarded as the Saturation is set to zero.
+
+Another, arguably better, method is to create LUTs for these conversions. LUTs, as their name suggests, convert one color value to another based on a lookup table. Hence, it is easy to see how the previously described pipeline can be adapted to a LUT based workflow.
+
+Not to mention that LUTs are universal. The same LUT can be used in Photoshop, Affinity Photo, After Effects, DaVinci Resolve, and anything else that supports one of the major LUT formats.
+
+<iframe src="https://www.youtube.com/embed/ggMP06yDV4w?si=O6OtNpB3RI1yVuxU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+In this recording of a live stream I did some time ago I am authoring a couple different LUTs using C. The method I am showing can be done using any programming language. Even without any prior coding experience the VOD shines some light on how LUTs work.

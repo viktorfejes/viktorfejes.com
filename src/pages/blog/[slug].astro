@@ -17,11 +17,12 @@ const { Content } = await post.render();
 <Layout title="Viktor Fejes - Blog">
     <div class="container">
         <div class="back-link">
-            <a href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="6 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron-left"><path d="m15 18-6-6 6-6"/></svg>All posts</a>
+            <a href="/blog"><svg xmlns="http://www.w3.org/2000/svg" viewBox="6 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron-left"><path d="m15 18-6-6 6-6"/></svg>All posts</a>
         </div>
 
         <div class="post-header">
             <time class="post-date" datetime={post.data.publishDate.toISOString()}>{post.data.publishDate.toLocaleDateString("en-US", {
+                timeZone: "UTC",
                 month: "long",
                 day: "numeric",
                 year: "numeric"
@@ -83,13 +84,17 @@ const { Content } = await post.render();
         margin-bottom: calc(1.1 * var(--font-size-4xl));
     }
 
+    .prose {
+        margin-bottom: 16em;
+    }
+
     .prose :global(a) {
         color: var(--color-primary-500);
         font-weight: var(--font-weight-medium);
         text-decoration: underline;
     }
 
-    .prose :global(p) {
+    .prose > :global(p) {
         font-size: var(--font-size-md);
         font-weight: var(--font-weight-regular);
         line-height: 1.5;
@@ -118,6 +123,23 @@ const { Content } = await post.render();
     
     .prose :global(.before-after-slider) {
         max-width: var(--max-width-xs);
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 1.45em;
+    }
+    
+    .prose :global(.alert) {
+        max-width: var(--max-width-xs);
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 1.45em;
+    }
+
+    .prose :global(iframe) {
+        max-width: var(--max-width-xs);
+        width: 100%;
+        height: 100%;
+        aspect-ratio: 16/9;
         margin-left: auto;
         margin-right: auto;
         margin-bottom: 1.45em;
