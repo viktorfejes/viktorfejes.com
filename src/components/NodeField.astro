@@ -1,0 +1,236 @@
+<div class="nodes">
+    <svg class="svg-overlay" id="wires">
+        <path id="wire1" fill="none" stroke="#999" stroke-width="4" />
+    </svg>
+    <div class="node">
+        <div class="node-name">RGB Input</div>
+        <div class="node-box">
+            <div class="inputs">
+                <!-- <div class="connector"></div>
+                <span>Color</span> -->
+            </div>
+            <div class="outputs">
+                <div class="output red">
+                    <span>Red</span>
+                    <div class="connector" id="out1"></div>
+                </div>
+                <div class="output green">
+                    <span>Green</span>
+                    <div class="connector"></div>
+                </div>
+                <div class="output blue">
+                    <span>Blue</span>
+                    <div class="connector"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="node">
+        <div class="node-name">RGB to HSL</div>
+        <div class="node-box">
+            <div class="inputs">
+                <div class="input">
+                    <div class="connector" id="in1"></div>
+                    <span>RGB</span>
+                </div>
+            </div>
+            <div class="outputs">
+                <div class="output">
+                    <span>Hue</span>
+                    <div class="connector"></div>
+                </div>
+                <div class="output">
+                    <span>Saturation</span>
+                    <div class="connector"></div>
+                </div>
+                <div class="output">
+                    <span>Lightness</span>
+                    <div class="connector"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="node">
+        <div class="node-name">RGB Output</div>
+        <div class="node-box">
+            <div class="inputs">
+                <div class="input red">
+                    <div class="connector"></div>
+                    <span>Red</span>
+                </div>
+                <div class="input green">
+                    <div class="connector"></div>
+                    <span>Green</span>
+                </div>
+                <div class="input blue">
+                    <div class="connector"></div>
+                    <span>Blue</span>
+                </div>
+            </div>
+            <div class="outputs">
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .svg-overlay {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .nodes {
+        position: relative;
+        border: 1px solid #202020;
+        border-radius: 1rem;
+        max-width: var(--max-width-md);
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 8rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        gap: 6rem;
+        padding: 2rem;
+        flex-wrap: wrap;
+
+        background-color: #131313;
+        background-image:  linear-gradient(rgba(64, 64, 64, 0.1) 1px, transparent 1px), linear-gradient(to right, rgba(64, 64, 64, 0.1) 1px, #131313 1px);
+        background-size: 2rem 2rem;
+    }
+
+    .node {
+        z-index: 1;
+    }
+
+    .node-name {
+        font-weight: var(--font-weight-medium);
+        color: var(--color-neutral-900);
+        text-align: center;
+        margin-bottom: 1em;
+    }
+
+    .node-box {
+        background: radial-gradient(circle at top right, #242424, #141414);
+        border-radius: 0.5rem;
+        border: 1px solid #212121;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        gap: 4rem;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        box-shadow: 0 0 2rem rgba(0, 0, 0, 0.5);
+        flex-shrink: 0;
+    }
+
+    .inputs,
+    .outputs {
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-medium);
+        color: var(--color-neutral-700);
+    }
+
+    .inputs {
+        margin-left: -0.4rem;
+    }
+
+    .output,
+    .input {
+        display: flex;
+        align-items: center;
+    }
+
+    .input {
+        justify-content: flex-start;
+    }
+
+    .output {
+        justify-content: flex-end;
+    }
+
+    .input .connector {
+        width: 0.8rem;
+        height: 0.8rem;
+        background: #999;
+        border-radius: 50%;
+        margin-right: 0.75rem;
+        box-shadow: 0 0 30px rgba(255, 255, 255, 0.33);
+    }
+
+    .outputs {
+        margin-right: -0.4rem;
+    }
+
+    .output {
+        text-align: right;
+    }
+
+    .input + .input,
+    .output + .output {
+        margin-top: 0.5rem;
+    }
+
+    .output .connector {
+        width: 0.8rem;
+        height: 0.8rem;
+        background: #999;
+        border-radius: 50%;
+        margin-left: 0.75rem;
+        box-shadow: 0 0 30px rgba(255, 255, 255, 0.33);
+    }
+
+    .input.red .connector,
+    .output.red .connector {
+        background: red;
+        box-shadow: 0 0 30px 2px rgba(255, 0, 0, 1.0);
+    }
+    
+    .input.green .connector,
+    .output.green .connector {
+        background: rgb(0, 255, 0);
+        box-shadow: 0 0 30px 2px rgba(0, 255, 0, 0.8);
+    }
+    
+    .input.blue .connector,
+    .output.blue .connector {
+        background: blue;
+        box-shadow: 0 0 30px 2px rgba(0, 0, 255, 0.8);
+    }
+</style>
+
+<script>
+    function createPath(startX, startY, endX, endY) {
+        const midX = (startX + endX) / 2;
+        return `M${startX},${startY} C${midX},${startY} ${midX},${endY} ${endX},${endY}`;
+    }
+
+    const wire1 = document.getElementById("wire1");
+
+    const svg = document.getElementById("wires");
+    const in1 = document.getElementById("in1");
+    const out1 = document.getElementById("out1");
+
+    function updateWires() {
+        const svgX = svg.getBoundingClientRect().left + window.scrollX;
+        const svgY = svg.getBoundingClientRect().top + window.scrollY;
+
+        const in1CoordX = (in1.getBoundingClientRect().left + window.scrollX + in1.getBoundingClientRect().width / 2) - svgX;
+        const in1CoordY = (in1.getBoundingClientRect().top + window.scrollY + in1.getBoundingClientRect().height / 2) - svgY;
+        const out1CoordX = (out1.getBoundingClientRect().left + window.scrollX + out1.getBoundingClientRect().width / 2) - svgX;
+        const out1CoordY = (out1.getBoundingClientRect().top + window.scrollY + out1.getBoundingClientRect().height / 2) - svgY;
+
+        wire1.setAttribute("d", createPath(in1CoordX, in1CoordY, out1CoordX, out1CoordY));
+    }
+
+    updateWires();
+
+    window.addEventListener("resize", updateWires);
+</script>

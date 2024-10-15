@@ -96,4 +96,10 @@ import WorkItem from "./WorkItem.astro";
         /* grid-auto-rows: minmax(8rem, auto); */
         gap: 0.5rem;
     }
+    
+	@media (max-width: 720px) {
+        .work-grid {
+            grid-template-columns: repeat(1, 1fr);
+        }
+	}
 </style>

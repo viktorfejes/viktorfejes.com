@@ -20,6 +20,7 @@ import Img from "../components/Img.astro";
 import InfiniteCarousel from "../components/InfiniteCarousel.astro";
 import Alert from "../components/Alert.astro";
 import Light from "../components/Light.astro";
+import NodeField from "../components/NodeField.astro";
 ---
 
 <Layout title="Viktor Fejes">
@@ -29,6 +30,7 @@ import Light from "../components/Light.astro";
 			<Hero />
 		</div>
 	</section>
+	<!-- <NodeField /> -->
 	<section class="work">
 		<div class="work-inner work-collapse">
 			<WorkGrid />
@@ -257,6 +259,7 @@ import Light from "../components/Light.astro";
 
 	.tools-inner {
 		display: flex;
+		flex-wrap: wrap;
 		margin: 0 auto;
 		max-width: var(--max-width-md);
 		align-items: start;
@@ -298,6 +301,38 @@ import Light from "../components/Light.astro";
 		border-right: 0;
 		/* border-left: 1px solid var(--color-neutral-200); */
 		padding-left: 4rem;
+	}
+
+	@media (max-width: 720px) {
+		.about-wrap {
+			display: block;
+		}
+
+		.about-wrap h3 {
+			max-width: none;
+			margin-bottom: 1em;
+		}
+
+		.about-wrap p {
+			max-width: none;
+		}
+
+		.tool {
+			width: 100%;
+		}
+
+		.tool:first-child {
+			border-left: 0;
+			border-right: 0;
+			padding-right: 0``;
+		}
+		
+		.tool:nth-child(2) {
+			border-left: 0;
+			border-right: 0;
+			padding-left: 0;
+			border-bottom: 0;
+		}
 	}
 
 	.illustration {
@@ -435,14 +470,13 @@ import Light from "../components/Light.astro";
 		line-height: 1.6;
 		max-width: 40ch;
 	}
-
 </style>
 
 <script>
 	const moreWorkBtn = document.getElementById("more-work");
 	const workWrap = document.querySelector(".work-inner");
 	const workMore = document.querySelector(".work-more");
-	moreWorkBtn.addEventListener("pointerdown", (e) => {
+	moreWorkBtn.addEventListener("pointerup", (e) => {
 		workWrap.classList.remove("work-collapse");
 		(workMore as HTMLElement).style.display = "none";
 	});

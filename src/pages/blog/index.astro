@@ -32,9 +32,9 @@ const postsByYear = blog.reduce((acc, post) => {
             <input type="text" name="blog-search" id="search" placeholder="Search…">
         </div>
     </div>
-    <!-- <div class="wip">
+    <div class="wip">
         <Alert title="Work In Progress" type="wip">I'm building this website live, so there may be parts that are still under construction, like this one. Please, check back a bit later.</Alert>
-    </div> -->
+    </div>
     <div class="search-results"></div>
     <div class="all-posts">
         {Object.keys(postsByYear).sort((a, b) => b - a).map((year) => (
