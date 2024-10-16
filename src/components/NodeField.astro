@@ -1,7 +1,6 @@
 <div class="nodes">
-    <svg class="svg-overlay" id="wires">
-        <path id="wire1" fill="none" stroke="#999" stroke-width="4" />
-    </svg>
+    <svg class="svg-overlay" id="wires"></svg>
+    <!-- <path id="wire1" fill="none" stroke="#999" stroke-width="4" /> -->
     <div class="node">
         <div class="node-name">RGB Input</div>
         <div class="node-box">
@@ -12,15 +11,15 @@
             <div class="outputs">
                 <div class="output red">
                     <span>Red</span>
-                    <div class="connector" id="out1"></div>
+                    <div class="connector" id="out1" data-connect="in1" data-color="red"></div>
                 </div>
                 <div class="output green">
                     <span>Green</span>
-                    <div class="connector"></div>
+                    <div class="connector" data-connect="in1" data-color="green"></div>
                 </div>
                 <div class="output blue">
                     <span>Blue</span>
-                    <div class="connector"></div>
+                    <div class="connector" data-connect="in1" data-color="blue"></div>
                 </div>
             </div>
         </div>
@@ -37,15 +36,15 @@
             <div class="outputs">
                 <div class="output">
                     <span>Hue</span>
-                    <div class="connector"></div>
+                    <div class="connector" data-connect=""></div>
                 </div>
                 <div class="output">
                     <span>Saturation</span>
-                    <div class="connector"></div>
+                    <div class="connector" data-connect="in2,in3,in4"></div>
                 </div>
                 <div class="output">
                     <span>Lightness</span>
-                    <div class="connector"></div>
+                    <div class="connector" data-connect=""></div>
                 </div>
             </div>
         </div>
@@ -55,15 +54,15 @@
         <div class="node-box">
             <div class="inputs">
                 <div class="input red">
-                    <div class="connector"></div>
+                    <div class="connector" id="in2"></div>
                     <span>Red</span>
                 </div>
                 <div class="input green">
-                    <div class="connector"></div>
+                    <div class="connector" id="in3"></div>
                     <span>Green</span>
                 </div>
                 <div class="input blue">
-                    <div class="connector"></div>
+                    <div class="connector" id="in4"></div>
                     <span>Blue</span>
                 </div>
             </div>
@@ -90,13 +89,13 @@
         position: relative;
         border: 1px solid #202020;
         border-radius: 1rem;
-        max-width: var(--max-width-md);
-        margin-left: auto;
-        margin-right: auto;
-        margin-bottom: 8rem;
+        /* max-width: var(--max-width-md); */
+        /* margin-left: auto; */
+        /* margin-right: auto; */
+        margin-bottom: 1.4em;
         display: flex;
         align-items: center;
-        justify-content: space-around;
+        justify-content: space-evenly;
         gap: 6rem;
         padding: 2rem;
         flex-wrap: wrap;
@@ -204,17 +203,26 @@
         background: blue;
         box-shadow: 0 0 30px 2px rgba(0, 0, 255, 0.8);
     }
+
+    @media (max-width: 512px) {
+        .nodes {
+            padding: 1rem;
+        }
+    }
 </style>
 
 <script>
+    const nodeField = document.querySelectorAll(".nodes")[0];
+    const svg = nodeField.querySelector(".svg-overlay");
+    
     function createPath(startX, startY, endX, endY) {
         const midX = (startX + endX) / 2;
-        return `M${startX},${startY} C${midX},${startY} ${midX},${endY} ${endX},${endY}`;
+        const offset = 100;
+        return `M${startX},${startY} C${startX + offset},${startY} ${endX - offset},${endY} ${endX},${endY}`;
     }
 
     const wire1 = document.getElementById("wire1");
 
-    const svg = document.getElementById("wires");
     const in1 = document.getElementById("in1");
     const out1 = document.getElementById("out1");
 
@@ -222,12 +230,38 @@
         const svgX = svg.getBoundingClientRect().left + window.scrollX;
         const svgY = svg.getBoundingClientRect().top + window.scrollY;
 
-        const in1CoordX = (in1.getBoundingClientRect().left + window.scrollX + in1.getBoundingClientRect().width / 2) - svgX;
-        const in1CoordY = (in1.getBoundingClientRect().top + window.scrollY + in1.getBoundingClientRect().height / 2) - svgY;
-        const out1CoordX = (out1.getBoundingClientRect().left + window.scrollX + out1.getBoundingClientRect().width / 2) - svgX;
-        const out1CoordY = (out1.getBoundingClientRect().top + window.scrollY + out1.getBoundingClientRect().height / 2) - svgY;
+        while (svg.firstChild) {
+            svg.removeChild(svg.firstChild);
+        }
 
-        wire1.setAttribute("d", createPath(in1CoordX, in1CoordY, out1CoordX, out1CoordY));
+        const outputs = nodeField.querySelectorAll(".outputs .connector");
+
+        outputs.forEach((output, index) => {
+            if (output.hasAttribute("data-connect") && output.dataset.connect !== "") {
+                const targetIds = output.dataset.connect.trim().split(",");
+    
+                targetIds.forEach((targetId, targetIndex) => {
+                    const input = nodeField.querySelector(`#${targetId}`);
+        
+                    if (input) {
+                        const outCoordX = (output.getBoundingClientRect().left + window.scrollX + output.getBoundingClientRect().width / 2) - svgX;
+                        const outCoordY = (output.getBoundingClientRect().top + window.scrollY + output.getBoundingClientRect().height / 2) - svgY;
+        
+                        const inCoordX = (input.getBoundingClientRect().left + window.scrollX + input.getBoundingClientRect().width / 2) - svgX;
+                        const inCoordY = (input.getBoundingClientRect().top + window.scrollY + input.getBoundingClientRect().height / 2) - svgY;
+        
+                        const wire = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                        wire.setAttribute("id", `wire-${index + 1}`);
+                        wire.setAttribute("fill", "none");
+                        wire.setAttribute("stroke", "#999");
+                        wire.setAttribute("stroke-width", "2");
+                        wire.setAttribute("d", createPath(outCoordX, outCoordY, inCoordX, inCoordY));
+        
+                        svg.appendChild(wire);
+                    }
+                })
+            }
+        });
     }
 
     updateWires();

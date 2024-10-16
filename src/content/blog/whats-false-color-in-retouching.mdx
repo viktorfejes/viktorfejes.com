@@ -5,6 +5,7 @@ publishDate: 2024-10-14
 ---
 import BeforeAfter from "../../components/BeforeAfter.astro"
 import Alert from "../../components/Alert.astro"
+import NodeField from "../../components/NodeField.astro"
 
 In science, false color is a color rendering method for data visualization where the object is not shown in its true colors -- the way we would normally see them -- but using a different color rendering method depicting one or more aspects of the data. Think of a thermal imaging camera, an elevation map, or an MRI scan.
 
@@ -38,9 +39,11 @@ If this was not enough to convince you how useful false color is in retouching, 
 
 Using saturation mapping we are able to map, you guessed it, saturation values to any other value. You could take all 0% saturation pixels and color them black, while 100% saturation pixels would be colored to white while interpolating between those to get the values in between. Of course, if you wanted to you could use any other color, as well.
 
-![Connected node setup depicting a saturation mapping pipeline](/images/satmap_node-illustration.svg)
+{/* ![Connected node setup depicting a saturation mapping pipeline](/images/satmap_node-illustration.svg) */}
 
 The process is similar to brightness mapping with a few differences. The RGB value is now first converted to a cylindrical color model that has a chroma or saturation component, like HSL, HSV, or LCh. Then, we take only the saturation/chroma component and remap it to our RGB values according to the bit depth (255 for 8-bit, 65,535 for 16-bit). Finally, we apply the remapped saturation value to all three color channels.
+
+<NodeField />
 
 This, just like the previously described brightness mapping method produces a monochromatic result. However, you can always recolor it; I just find black and white to be sufficient for this.
 
