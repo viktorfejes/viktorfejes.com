@@ -29,15 +29,16 @@ const { pathname } = Astro.url;
         align-items: center;
         justify-content: center;
         /* margin-bottom: 8rem; */
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        background: rgba(0, 0, 0, 0.33);
-        backdrop-filter: blur(24px) saturate(140%);
+        /* border-bottom: 1px solid rgba(255, 255, 255, 0.1); */
+        /* background: rgba(0, 0, 0, 0.33); */
+        /* backdrop-filter: blur(24px) saturate(140%); */
+        mix-blend-mode: difference;
     }
 
     .site-nav{
         width: 100%;
         /* max-width: 65rem; */
-		max-width: var(--max-width-md);
+		max-width: var(--max-width-xl);
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -45,7 +46,7 @@ const { pathname } = Astro.url;
 
     .site-logo {
         display: block;
-        width: 1.5rem;
+        width: 1.875rem;
         fill: var(--color-neutral-900);
     }
 
@@ -56,8 +57,8 @@ const { pathname } = Astro.url;
         padding: 0;
         list-style: none;
         gap: 2rem;
-        font-size: var(--font-size-base);
-        font-weight: var(--font-weight-medium);
+        font-size: var(--font-size-md);
+        font-weight: var(--font-weight-regular);
         color: var(--color-neutral-900);
     }
 

@@ -9,18 +9,18 @@
                 <span>Color</span> -->
             </div>
             <div class="outputs">
-                <div class="output red">
-                    <span>Red</span>
+                <div class="output">
+                    <span>RGB</span>
                     <div class="connector" id="out1" data-connect="in1" data-color="red"></div>
                 </div>
-                <div class="output green">
+                <!-- <div class="output green">
                     <span>Green</span>
                     <div class="connector" data-connect="in1" data-color="green"></div>
                 </div>
                 <div class="output blue">
                     <span>Blue</span>
                     <div class="connector" data-connect="in1" data-color="blue"></div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
@@ -36,7 +36,7 @@
             <div class="outputs">
                 <div class="output">
                     <span>Hue</span>
-                    <div class="connector" data-connect=""></div>
+                    <div class="connector"></div>
                 </div>
                 <div class="output">
                     <span>Saturation</span>
@@ -44,7 +44,7 @@
                 </div>
                 <div class="output">
                     <span>Lightness</span>
-                    <div class="connector" data-connect=""></div>
+                    <div class="connector"></div>
                 </div>
             </div>
         </div>
@@ -82,7 +82,7 @@
         right: 0;
         bottom: 0;
         pointer-events: none;
-        z-index: 0;
+        z-index: 3;
     }
 
     .nodes {
@@ -108,25 +108,27 @@
     .node {
         z-index: 1;
     }
-
+    
     .node-name {
         font-weight: var(--font-weight-medium);
-        color: var(--color-neutral-900);
+        font-size: var(--font-size-base);
+        color: var(--color-neutral-800);
         text-align: center;
-        margin-bottom: 1em;
+        padding: 0.5rem 1.15rem 0.5rem 1.15rem;
     }
-
+    
     .node-box {
-        background: radial-gradient(circle at top right, #242424, #141414);
-        border-radius: 0.5rem;
-        border: 1px solid #212121;
         display: flex;
         align-items: center;
         justify-content: space-around;
+        background: radial-gradient(circle at top right, #242424, #141414);
+        background: #242424;
+        border-radius: 0.5rem;
+        border: 1px solid #303030;
+        box-shadow: 0 0 2rem 0.1rem rgba(0, 0, 0, 0.6);
         gap: 4rem;
         padding-top: 1rem;
         padding-bottom: 1rem;
-        box-shadow: 0 0 2rem rgba(0, 0, 0, 0.5);
         flex-shrink: 0;
     }
 
@@ -134,11 +136,11 @@
     .outputs {
         font-size: var(--font-size-sm);
         font-weight: var(--font-weight-medium);
-        color: var(--color-neutral-700);
+        color: var(--color-neutral-800);
     }
 
     .inputs {
-        margin-left: -0.4rem;
+        margin-left: -0.325rem;
     }
 
     .output,
@@ -156,16 +158,18 @@
     }
 
     .input .connector {
-        width: 0.8rem;
-        height: 0.8rem;
-        background: #999;
+        width: 0.75rem;
+        height: 0.75rem;
+        background: #0ea5e9;
         border-radius: 50%;
         margin-right: 0.75rem;
         box-shadow: 0 0 30px rgba(255, 255, 255, 0.33);
+        /* border: 2px solid #202020; */
+        /* box-shadow: 0 0 0 2px #707070; */
     }
 
     .outputs {
-        margin-right: -0.4rem;
+        margin-right: -0.325rem;
     }
 
     .output {
@@ -178,31 +182,37 @@
     }
 
     .output .connector {
-        width: 0.8rem;
-        height: 0.8rem;
-        background: #999;
+        width: 0.75rem;
+        height: 0.75rem;
+        background: #707070;
         border-radius: 50%;
         margin-left: 0.75rem;
         box-shadow: 0 0 30px rgba(255, 255, 255, 0.33);
+        /* border: 2px solid #202020; */
+        /* box-shadow: 0 0 0 2px #707070; */
     }
 
-    .input.red .connector,
+    .output .connector[data-connect] {
+        background: #0ea5e9;
+    }
+
+    /* .input.red .connector,
     .output.red .connector {
-        background: red;
+        background: rgb(180, 0, 0);
         box-shadow: 0 0 30px 2px rgba(255, 0, 0, 1.0);
     }
     
     .input.green .connector,
     .output.green .connector {
-        background: rgb(0, 255, 0);
+        background: rgb(0, 185, 0);
         box-shadow: 0 0 30px 2px rgba(0, 255, 0, 0.8);
     }
     
     .input.blue .connector,
     .output.blue .connector {
-        background: blue;
+        background: rgb(91, 132, 255);
         box-shadow: 0 0 30px 2px rgba(0, 0, 255, 0.8);
-    }
+    } */
 
     @media (max-width: 512px) {
         .nodes {
@@ -253,7 +263,7 @@
                         const wire = document.createElementNS("http://www.w3.org/2000/svg", "path");
                         wire.setAttribute("id", `wire-${index + 1}`);
                         wire.setAttribute("fill", "none");
-                        wire.setAttribute("stroke", "#999");
+                        wire.setAttribute("stroke", "#0ea5e9");
                         wire.setAttribute("stroke-width", "2");
                         wire.setAttribute("d", createPath(outCoordX, outCoordY, inCoordX, inCoordY));
         

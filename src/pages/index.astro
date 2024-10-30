@@ -21,29 +21,41 @@ import InfiniteCarousel from "../components/InfiniteCarousel.astro";
 import Alert from "../components/Alert.astro";
 import Light from "../components/Light.astro";
 import NodeField from "../components/NodeField.astro";
+import HeroSlider from "../components/HeroSlider.astro";
 ---
 
 <Layout title="Viktor Fejes">
-	<Light />
+	<!-- <Light /> -->
 	<section class="intro">
 		<div class="intro-inner">
 			<Hero />
 		</div>
 	</section>
-	<section class="work">
+	<section class="work-slider">
+		<HeroSlider />
+	</section>
+	<!-- <section class="work">
 		<div class="work-inner work-collapse">
 			<WorkGrid />
 		</div>
 		<div class="work-more">
 			<Button id="more-work">Show more</Button>
 		</div>
+	</section> -->
+	<section class="about-cont">
+		<div class="about-grid">
+			<div class="about-text">
+				<h3>Curiousty drives me to explore new ways, new tools, new methods.</h3>
+				<p>Started my career as a retoucher then incorporated CGI into my toolbox.</span> Thanks to my unquenchable thirst for learning I have been able to keep adapting and improving in my field. This also led to the creation of various tools that make my life easier and my work more precise.</p>
+			</div>
+		</div>
 	</section>
-	<section class="about">
+	<!-- <section class="about">
 		<div class="about-wrap">
 			<h3>Always learning.<br>Ever improving.</h3>
 			<p><span class="highlight">Started my career as a retoucher then incorporated CGI into my toolbox.</span> Thanks to my unquenchable thirst for learning I have been able to keep adapting and improving in my field. This also led to the creation of various tools that make my life easier and my work more precise.</p>
 		</div>
-	</section>
+	</section> -->
 	<section class="tools">
 		<div class="tools-inner">
 			<div class="tool">
@@ -135,6 +147,40 @@ import NodeField from "../components/NodeField.astro";
 </Layout>
 
 <style>
+	.about-cont {
+		max-width: var(--max-width-xl);
+		margin-left: auto;
+		margin-right: auto;
+		margin-bottom: 8rem;
+	}
+
+	.about-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+	}
+
+	.about-text {
+		grid-column: 2;
+	}
+
+	.about-text h3 {
+		font-size: var(--font-size-4xl);
+		font-weight: var(--font-weight-medium);
+		line-height: 1.25;
+		margin-bottom: 1em;
+	}
+
+	.about-text p {
+		font-size: var(--font-size-xl);
+		line-height: 1.4;
+		opacity: 0.5;
+		max-width: 45ch;
+	}
+	
+	.work-slider {
+		margin-bottom: 8rem;
+	}
+
 	.wip {
 		margin-top: 4rem;
 		max-width: var(--max-width-sm);
@@ -145,17 +191,18 @@ import NodeField from "../components/NodeField.astro";
 		width: 100%;
 		padding-left: 2rem;
 		padding-right: 2rem;
-		margin-bottom: 12rem;
+		/* margin-bottom: 12rem; */
 	}
 
 	.intro {
-		padding-top: 8rem;
+		/* padding-top: 8rem; */
 	}
 	
 	.intro-inner,
 	.about-wrap {
 		margin: 0 auto;
-		max-width: var(--max-width-md);
+		max-width: var(--max-width-xl);
+		/* max-width: 93.5rem; */
 	}
 
 	.work {

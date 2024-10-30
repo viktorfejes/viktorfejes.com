@@ -3,51 +3,73 @@ import Button from "./Button.astro"
 ---
 
 <div class="hero">
-    <h1 class="intro-headline">I’m an artist and engineer creating images and tools.</h1>
-    <p class="intro-text">Using my expertise in design, image processing, color science, and programming I have solved problems for my clients the past 15 years in the advertising, editorial, and gaming industries.</p>
+    <h1 class="intro-headline">Digital artist + engineer, creating visuals and tools.</h1>
+    <!-- <p class="intro-text">Using my expertise in design, image processing, color science, and programming I have solved problems for my clients the past 15 years in the advertising, editorial, and gaming industries.</p> -->
 
-    <div class="cta">
-        <a
-            class="transition hover:bg-gray-100 bg-gray-200 text-gray-900 inline-flex px-[1.25rem] h-12 rounded-md font-semibold items-center"
-            href="#"
-            data-contact="dmlrdG9yQHZpa3RvcmZlamVzLmNvbQ=="
-            data-subject="RnJvbSB0aGUgd2Vic2l0ZQ=="
-            onclick="this.href='mailto:' + atob(this.dataset.contact) + '?subject=' + atob(this.dataset.subject || '')"
-            role="button"
-        >Contact me</a>
-        <!-- <button class="quick-search">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-            <span class="placeholder">Search…</span>
-            <kbd class="shortcut">F</kbd>
-        </button> -->
+    <div class="hero-subtitle">
+        <div class="hero-sub-inner">
+            <p>I’m an imaging expert who combines artistic craft with technical innovation.</p>
+            <p>I solve complex visual challenges for clients who need more than standard solutions.</p>
+        </div>
     </div>
 </div>
 
 <style>
     .hero {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-height: calc(90vh - var(--header-height));
         /* text-align: center; */
+    }
+
+    .hero-subtitle {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+
+    .hero-sub-inner {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-column: 2;
+        gap: 1rem;
+    }
+
+    .hero-sub-inner p {
+        font-size: var(--font-size-xl);
+        font-weight: var(--font-weight-regular);
+        line-height: 1.38;
     }
     
     .intro-headline {
-        font-size: var(--font-size-5xl);
+        /* font-family: "Work Sans"; */
+        font-size: var(--font-size-7xl);
+        /* font-size: 5.25rem; */
         font-weight: var(--font-weight-semibold);
-        line-height: 1.1;
+        font-weight: 600;
+        line-height: 1;
         letter-spacing: var(--letter-spacing-tight);
-        margin-bottom: 1.5rem;
+        letter-spacing: -0.025em;
+        margin-bottom: 4rem;
         color: var(--color-neutral-900);
-        max-width: 22ch;
+        max-width: 20ch;
         /* margin-left: auto; */
         /* margin-right: auto; */
     }
     
     .intro-text {
+        /* font-family: "Work Sans"; */
         max-width: var(--max-width-sm);
         font-size: var(--font-size-lg);
+        font-size: var(--font-size-xl);
         line-height: 1.45;
         margin-bottom: 2.5rem;
         color: var(--color-neutral-600);
+        color: var(--color-neutral-900);
         max-width: 48ch;
         font-weight: var(--font-weight-medium);
+        font-weight: 300;
         /* margin-left: auto; */
         /* margin-right: auto; */
     }
