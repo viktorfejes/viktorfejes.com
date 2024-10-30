@@ -1,0 +1,62 @@
+---
+// `itemWidth` should be a string that is any applicable css value
+// `gap` should be a number in rem
+// `speed` should be a number
+
+const { itemWidth, gap, speed } = Astro.props;
+
+const gapRem = `${gap}rem`;
+---
+
+<div class="carousel-wrapper" id="infinite-carousel" data-gap={gap} data-speed={speed}>
+    <slot />
+</div>
+
+<style define:vars={{ itemWidth, gapRem }}>
+    .carousel-wrapper {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        display: flex;
+    }
+
+    .carousel-wrapper > :global(div) {
+        max-width: var(--itemWidth);
+        min-width: var(--itemWidth);
+        margin-right: var(--gapRem);
+    }
+</style>
+
+<script>
+    const carousel = document.getElementById("infinite-carousel");
+    const children = Array.from(carousel.children);
+    const marginRight = carousel.dataset.gap * 16;
+    const carouselLeft = carousel.offsetLeft;
+
+    const speed = carousel.dataset.speed;
+    let positions = new Array(children.length).fill(0);
+
+    function moveCarousel() {
+        children.forEach((child, index) => {
+            // Update position
+            positions[index] -= speed;
+
+            const width = child.offsetWidth;
+            const left = child.offsetLeft;
+
+            // TEMP: Debug
+            child.setAttribute("data-width", width);
+            child.setAttribute("data-left", left);
+
+            (child as HTMLDivElement).style.transform = `translateX(${positions[index]}px)`;
+
+            if (positions[index] < (index + 1) * -(width + marginRight)) {
+                positions[index] = (children.length - index - 1) * (width + marginRight);
+            }
+        });
+
+        requestAnimationFrame(moveCarousel);
+    }
+
+    moveCarousel();
+</script>

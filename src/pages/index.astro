@@ -22,6 +22,9 @@ import Alert from "../components/Alert.astro";
 import Light from "../components/Light.astro";
 import NodeField from "../components/NodeField.astro";
 import HeroSlider from "../components/HeroSlider.astro";
+import InfCarousel from "../components/InfCarousel.astro";
+import InfCarouselItem from "../components/InfCarouselItem.astro";
+import Video from "../components/Video.astro";
 ---
 
 <Layout title="Viktor Fejes">
@@ -31,9 +34,35 @@ import HeroSlider from "../components/HeroSlider.astro";
 			<Hero />
 		</div>
 	</section>
-	<section class="work-slider">
-		<HeroSlider />
+	<section class="new-slider">
+		<div class="work-cta">
+			<a href="#">View case studies</a>
+			<div class="arrow">
+				<span>(SCROLL)</span>
+			</div>
+		</div>
+		<InfCarousel itemWidth="55vw" gap={1} speed={1}>
+			<InfCarouselItem>
+				<Img src="gildstudios-acuramdx-1_Zwm7ek.jpg" alt="" dir="" />
+			</InfCarouselItem>
+			<InfCarouselItem>
+				<Video
+					src="/videos/gildstudios-bravecto-commercial-30s.mp4"
+					formats={["mp4"]}
+					autoplay={true}
+					muted={true}
+					controls={false}
+					loop={true}
+				/>
+			</InfCarouselItem>
+			<InfCarouselItem>
+				<Img src="gildstudios-myatt-10.jpg" alt="" dir="" />
+			</InfCarouselItem>
+		</InfCarousel>
 	</section>
+	<!-- <section class="work-slider">
+		<HeroSlider />
+	</section> -->
 	<!-- <section class="work">
 		<div class="work-inner work-collapse">
 			<WorkGrid />
@@ -45,7 +74,8 @@ import HeroSlider from "../components/HeroSlider.astro";
 	<section class="about-cont">
 		<div class="about-grid">
 			<div class="about-text">
-				<h3>Curiousty drives me to explore new ways, new tools, new methods.</h3>
+				<p>(About me)</p>
+				<h3>Curiousity drives me to explore new ways, new tools, new methods.</h3>
 				<p>Started my career as a retoucher then incorporated CGI into my toolbox.</span> Thanks to my unquenchable thirst for learning I have been able to keep adapting and improving in my field. This also led to the creation of various tools that make my life easier and my work more precise.</p>
 			</div>
 		</div>
@@ -147,6 +177,28 @@ import HeroSlider from "../components/HeroSlider.astro";
 </Layout>
 
 <style>
+	.work-cta {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        margin-bottom: 2rem;
+        font-size: var(--font-size-lg);
+        margin-left: auto;
+        margin-right: auto;
+        max-width: var(--max-width-xl);
+    }
+
+    .work-cta a {
+        text-decoration: underline;
+        text-underline-offset: 0.45em;
+        word-wrap: nowrap;
+    }
+
+	/* TODO: rename this from arrow */
+    .arrow {
+        display: flex;
+        justify-content: flex-end;
+    }
+
 	.about-cont {
 		max-width: var(--max-width-xl);
 		margin-left: auto;
@@ -519,11 +571,11 @@ import HeroSlider from "../components/HeroSlider.astro";
 </style>
 
 <script>
-	const moreWorkBtn = document.getElementById("more-work");
-	const workWrap = document.querySelector(".work-inner");
-	const workMore = document.querySelector(".work-more");
-	moreWorkBtn.addEventListener("pointerup", (e) => {
-		workWrap.classList.remove("work-collapse");
-		(workMore as HTMLElement).style.display = "none";
-	});
+	// const moreWorkBtn = document.getElementById("more-work");
+	// const workWrap = document.querySelector(".work-inner");
+	// const workMore = document.querySelector(".work-more");
+	// moreWorkBtn.addEventListener("pointerup", (e) => {
+	// 	workWrap.classList.remove("work-collapse");
+	// 	(workMore as HTMLElement).style.display = "none";
+	// });
 </script>
