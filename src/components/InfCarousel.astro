@@ -33,7 +33,7 @@ const gapRem = `${gap}rem`;
     const marginRight = carousel.dataset.gap * 16;
     const carouselLeft = carousel.offsetLeft;
 
-    const speed = carousel.dataset.speed;
+    let speed = carousel.dataset.speed;
     let positions = new Array(children.length).fill(0);
 
     function moveCarousel() {

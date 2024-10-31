@@ -12,6 +12,7 @@ const { pathname } = Astro.url;
         </a>
         <ul class="site-links">
             <li><a href="/" class={pathname === "/" ? "active" : ""}>Home</a></li>
+            <li><a href="/projects" class={pathname.startsWith("/projects") ? "active" : ""}>Projects</a></li>
             <li><a href="/blog" class={pathname.startsWith("/blog") ? "active" : ""}>Blog</a></li>
         </ul>
     </nav>

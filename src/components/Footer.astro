@@ -1,6 +1,10 @@
 <footer>
     <div class="footer-inner">
-        All rights reserved © Viktor Fejes 2024
+        <p class="cr">
+            All rights reserved © Viktor Fejes 2024
+        </p>
+        <p></p>
+        <a href="#">Back to top</a>
     </div>
 </footer>
 
@@ -14,12 +18,14 @@
         justify-content: center;
 
         font-size: var(--font-size-lg);
-        color: var(--color-neutral-600);
+        color: var(--color-neutral-900);
         font-weight: var(--font-weight-regular);
     }
 
     .footer-inner {
         width: 100%;
         max-width: var(--max-width-xl);
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
     }
 </style>

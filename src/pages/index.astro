@@ -19,8 +19,6 @@ import CarouselItem from "../components/CarouselItem.astro";
 import Img from "../components/Img.astro";
 import InfiniteCarousel from "../components/InfiniteCarousel.astro";
 import Alert from "../components/Alert.astro";
-import Light from "../components/Light.astro";
-import NodeField from "../components/NodeField.astro";
 import HeroSlider from "../components/HeroSlider.astro";
 import InfCarousel from "../components/InfCarousel.astro";
 import InfCarouselItem from "../components/InfCarouselItem.astro";
@@ -28,7 +26,6 @@ import Video from "../components/Video.astro";
 ---
 
 <Layout title="Viktor Fejes">
-	<!-- <Light /> -->
 	<section class="intro">
 		<div class="intro-inner">
 			<Hero />
@@ -36,12 +33,12 @@ import Video from "../components/Video.astro";
 	</section>
 	<section class="new-slider">
 		<div class="work-cta">
-			<a href="#">View case studies</a>
+			<a href="#">View all projects</a>
 			<div class="arrow">
 				<span>(SCROLL)</span>
 			</div>
 		</div>
-		<InfCarousel itemWidth="55vw" gap={1} speed={1}>
+		<InfCarousel itemWidth="55vw" gap={1} speed={0.8}>
 			<InfCarouselItem>
 				<Img src="gildstudios-acuramdx-1_Zwm7ek.jpg" alt="" dir="" />
 			</InfCarouselItem>
@@ -60,23 +57,25 @@ import Video from "../components/Video.astro";
 			</InfCarouselItem>
 		</InfCarousel>
 	</section>
-	<!-- <section class="work-slider">
-		<HeroSlider />
-	</section> -->
-	<!-- <section class="work">
-		<div class="work-inner work-collapse">
-			<WorkGrid />
-		</div>
-		<div class="work-more">
-			<Button id="more-work">Show more</Button>
-		</div>
-	</section> -->
 	<section class="about-cont">
 		<div class="about-grid">
+			<p class="about-label">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+			</p>
 			<div class="about-text">
-				<p>(About me)</p>
-				<h3>Curiousity drives me to explore new ways, new tools, new methods.</h3>
-				<p>Started my career as a retoucher then incorporated CGI into my toolbox.</span> Thanks to my unquenchable thirst for learning I have been able to keep adapting and improving in my field. This also led to the creation of various tools that make my life easier and my work more precise.</p>
+				<h3>Curiousity drives me — to explore new ways, new tools, new methods.</h3>
+				<div class="about-body">
+					<div class="left">
+						(About me)
+					</div>
+					<div class="right">
+						<p>Started my career as a retoucher then incorporated CGI into my toolbox.</span> Thanks to my unquenchable thirst for learning I have been able to keep adapting and improving in my field. This also led to the creation of various tools that make my life easier and my work more precise.</p>
+						
+						<p>Started my career as a retoucher then incorporated CGI into my toolbox.</span> Thanks to my unquenchable thirst for learning I have been able to keep adapting and improving in my field. This also led to the creation of various tools that make my life easier and my work more precise.</p>
+
+						<a href="#">Let's work together</a>
+					</div>
+				</div>
 			</div>
 		</div>
 	</section>
@@ -132,7 +131,6 @@ import Video from "../components/Video.astro";
 		<div class="clients-inner">
 			<h2>Some of the people I have worked with.</h2>
 			<p>Small and large — they are all fantastic.</p>
-			<!-- <ClientsCarousel /> -->
 			<InfiniteCarousel />
 		</div>
 	</section>
@@ -177,6 +175,10 @@ import Video from "../components/Video.astro";
 </Layout>
 
 <style>
+	.new-slider {
+		margin-bottom: 8rem;
+	}
+
 	.work-cta {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -208,7 +210,7 @@ import Video from "../components/Video.astro";
 
 	.about-grid {
 		display: grid;
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: 0.25fr 1fr;
 	}
 
 	.about-text {
@@ -216,19 +218,36 @@ import Video from "../components/Video.astro";
 	}
 
 	.about-text h3 {
-		font-size: var(--font-size-4xl);
+		font-size: var(--font-size-6xl);
 		font-weight: var(--font-weight-medium);
-		line-height: 1.25;
-		margin-bottom: 1em;
+		line-height: 1.2;
+		margin-bottom: 2em;
+		letter-spacing: var(--letter-spacing-tight);
+	}
+
+	.about-label {
+		width: 4rem;
 	}
 
 	.about-text p {
 		font-size: var(--font-size-xl);
-		line-height: 1.4;
-		opacity: 0.5;
-		max-width: 45ch;
+		line-height: 1.45;
+		opacity: 0.65;
+		/* max-width: 45ch; */
+		margin-bottom: 3em;
+	}
+
+	.about-body a {
+		text-decoration: underline;
+		text-underline-offset: 0.5em;
 	}
 	
+	.about-body {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		font-size: var(--font-size-xl);
+	}
+
 	.work-slider {
 		margin-bottom: 8rem;
 	}
