@@ -69,13 +69,31 @@ import Video from "../components/Video.astro";
 						(About me)
 					</div>
 					<div class="right">
-						<p>Started my career as a retoucher then incorporated CGI into my toolbox.</span> Thanks to my unquenchable thirst for learning I have been able to keep adapting and improving in my field. This also led to the creation of various tools that make my life easier and my work more precise.</p>
-						
+						<p class="highlight">Something. More. Innovate.</p>
 						<p>Started my career as a retoucher then incorporated CGI into my toolbox.</span> Thanks to my unquenchable thirst for learning I have been able to keep adapting and improving in my field. This also led to the creation of various tools that make my life easier and my work more precise.</p>
 
 						<a href="#">Let's work together</a>
 					</div>
 				</div>
+			</div>
+		</div>
+	</section>
+	<section class="luts">
+		<div class="luts-inner">
+			<div class="left">
+				<h2>When you need to see more.</h2>
+				<p>Developed high quality false color utility LUTs for retouchers to help in visualizing different aspects of images.</p>
+				<a href="#">Learn more</a>
+			</div>
+			<div class="right">
+				<Video
+					src="/videos/flora_luts.mp4"
+					formats={["mp4"]}
+					autoplay={true}
+					muted={true}
+					controls={false}
+					loop={true}
+				/>
 			</div>
 		</div>
 	</section>
@@ -175,6 +193,47 @@ import Video from "../components/Video.astro";
 </Layout>
 
 <style>
+	.luts-inner {
+		max-width: var(--max-width-xl);
+		margin-left: auto;
+		margin-right: auto;
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		align-items: center;
+		gap: 2rem;
+	}
+
+	.luts h2 {
+		font-size: var(--font-size-4xl);
+		line-height: 1.2;
+		margin-bottom: 1em;
+		max-width: 20ch;
+	}
+
+	.luts p {
+		font-size: var(--font-size-lg);
+		max-width: 40ch;
+		color: var(--color-neutral-600);
+		line-height: 1.45;
+		margin-bottom: 1.5em;
+	}
+
+	.luts a {
+		font-size: var(--font-size-lg);
+		text-decoration: underline;
+		text-underline-offset: 0.5em;
+	}
+
+	.luts :global(video) {
+		border-radius: 1rem;
+	}
+
+	.luts {
+		padding-left: var(--padding-page-left);
+		padding-right: var(--padding-page-right);
+		margin-bottom: 8rem;
+	}
+
 	.new-slider {
 		margin-bottom: 8rem;
 	}
@@ -205,7 +264,7 @@ import Video from "../components/Video.astro";
 		max-width: var(--max-width-xl);
 		margin-left: auto;
 		margin-right: auto;
-		margin-bottom: 8rem;
+		margin-bottom: 12rem;
 	}
 
 	.about-grid {
@@ -235,6 +294,11 @@ import Video from "../components/Video.astro";
 		opacity: 0.65;
 		/* max-width: 45ch; */
 		margin-bottom: 3em;
+	}
+
+	.about-text p.highlight {
+		margin-bottom: 1em;
+		opacity: 1;
 	}
 
 	.about-body a {
