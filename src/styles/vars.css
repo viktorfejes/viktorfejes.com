@@ -27,7 +27,7 @@
     --letter-spacing-tight: -0.022em;
 
     /* Colors */
-    --color-neutral-100: hsl(0, 0%, 4%);
+    --color-neutral-100: hsl(0, 0%, 0%);
     --color-neutral-200: hsl(240, 3%, 12%);
     --color-neutral-300: hsl(240, 2%, 25%);
     --color-neutral-400: hsl(240, 1%, 37%);
