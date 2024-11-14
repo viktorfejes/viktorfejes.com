@@ -10,8 +10,15 @@ import Video from "../components/Video.astro";
 <Layout title="Viktor Fejes - Projects">
     <section class="page-title">
         <div class="page-title-inner">
-            <h2>Selected Projects</h2>
-            <p>Here's what keeps me busy – a mix of projects spanning different industries and challenges. Take a look at some of my favorite work.</p>
+            <!-- <h2>Selected Projects</h2> -->
+            <!-- <h2>Future Stories, Immersive Experiences + Advanced Technology</h2> -->
+            <!-- <h2>Visual Stories, Creative Tools + Problem Solving.</h2> -->
+            <!-- <h2>Curiosity in Action: Art, Tech + Everything Between</h2> -->
+            <h2>Visual Stories, Technical Play, and Problem Solving.</h2>
+            <div class="grid grid-cols-2">
+                <p class="tag">(Projects)</p>
+                <p>Here's what keeps me busy — a mix of projects spanning different industries and challenges. Take a look at some of my favorite work.</p>
+            </div>
         </div>
     </section>
     <section class="projects">
@@ -30,7 +37,7 @@ import Video from "../components/Video.astro";
                         loop={true}
                     />
                 </WorkItem>
-                <WorkItem name="Support the neighborhood" client="DoorDash">
+                <WorkItem name="Support The Neighborhood" client="DoorDash">
                     <Img src="gildstudios-doordash-2.jpg" alt="Something" dir="" />
                 </WorkItem>
                 <WorkItem name="Utility LUTs" client="Personal">
@@ -50,8 +57,8 @@ import Video from "../components/Video.astro";
 
 <style>
     .page-title {
-        margin-top: 8rem;
-        margin-bottom: 8rem;
+        margin-top: 16rem;
+        margin-bottom: 16rem;
     }
 
     .page-title h2{
@@ -59,15 +66,22 @@ import Video from "../components/Video.astro";
         font-weight: var(--font-weight-medium);
         letter-spacing: var(--letter-spacing-tight);
         line-height: 1.1;
-        margin-bottom: 0.5em;
+        margin-bottom: 1em;
+        color: var(--color-neutral-900);
+        max-width: 24ch;
     }
 
     .page-title p {
+        /* display: none; */
         font-size: var(--font-size-xl);
         font-weight: var(--font-weight-regular);
-        color: var(--color-neutral-600);
-        line-height: 1.4;
-        max-width: 45ch;
+        color: var(--color-neutral-900);
+        line-height: 1.38;
+        max-width: 40ch;
+    }
+
+    .page-title .tag {
+        color: var(--color-neutral-900);
     }
     
     .page-title,
@@ -80,5 +94,9 @@ import Video from "../components/Video.astro";
     .projects-inner {
         max-width: var(--max-width-xl);
         margin: 0 auto;
+    }
+
+    .projects {
+        margin-bottom: 8rem;
     }
 </style>
