@@ -1,100 +1,13 @@
----
-import WorkItem from "./WorkItem.astro";
----
 
 <div class="work-grid">
-    <WorkItem
-        title="Acura MDX"
-        imagePath="gildstudios-acuramdx-1_Zwm7ek.jpg"
-        colSpan={4}
-        rowSpan={2}
-        href="/case-studies/acura-mdx"
-    />
-    <WorkItem
-        title="AT&T Thanks"
-        imagePath="gildstudios-att-thanks-2.jpg"
-        colSpan={4}
-        rowSpan={2}
-        href="/case-studies/att-thanks"
-    />
-    <WorkItem
-        title="Bravo, Bravecto!"
-        imagePath="gildstudios-bravecto-commstill-1.jpg"
-        colSpan={4}
-        rowSpan={4}
-        href="/case-studies/bravo-bravecto"
-    />
-    <WorkItem
-        title="Doordash"
-        imagePath="gildstudios-doordash-2.jpg"
-        colSpan={2}
-        rowSpan={2}
-        href="/case-studies/doordash"
-    />
-    <WorkItem
-        title="Hidden Horrors"
-        imagePath="gildstudios-hiddenhorrors-3.jpg"
-        colSpan={2}
-        rowSpan={2}
-        href="/case-studies/hidden-horrors"
-    />
-    <WorkItem
-        title="The Stranger with Horns"
-        imagePath="charDemon-Final-edited_smallFile-jpeg6.jpg"
-        colSpan={2}
-        rowSpan={2}
-        href="/case-studies/stranger-horns"
-    />
-    <WorkItem
-        title="Woman"
-        imagePath="charWoman-FLAT.jpg"
-        colSpan={2}
-        rowSpan={2}
-        href="/case-studies/woman"
-    />
-    <WorkItem
-        title="Rolex"
-        imagePath="rolex_daytona_01_16bit.jpg"
-        colSpan={2}
-        rowSpan={4}
-        href="/case-studies/rolex-daytona"
-    />
-    <WorkItem
-        title="The Incredible Egg"
-        imagePath="gildstudios-incredibleegg-still-4_WP0LQ.jpg"
-        colSpan={2}
-        rowSpan={2}
-        href="/case-studies/the-incredible-egg"
-    />
-    <WorkItem
-        title="Tom Ford"
-        imagePath="tom-ford-neroli-portofino-1.jpg"
-        colSpan={2}
-        rowSpan={4}
-        href="/case-studies/tom-ford"
-    />
-    <WorkItem
-        title="Lagos Jewelry"
-        imagePath="gildstudios-lagos-1.jpg"
-        colSpan={2}
-        rowSpan={2}
-        href="/case-studies/lagos-jewelry"
-    />
-    <WorkItem
-        title="Conman"
-        imagePath="conman_thumb.jpg"
-        colSpan={2}
-        rowSpan={2}
-        href="/case-studies/conman"
-    />
+    <slot />
 </div>
 
 <style>
     .work-grid {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        /* grid-auto-rows: minmax(8rem, auto); */
-        gap: 0.5rem;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 4rem 1rem;
     }
     
 	@media (max-width: 720px) {

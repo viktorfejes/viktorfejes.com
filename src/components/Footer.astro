@@ -1,10 +1,13 @@
 <footer>
     <div class="footer-inner">
         <p class="cr">
-            All rights reserved © Viktor Fejes 2024
+            Copyright © Viktor Fejes 2024
         </p>
         <p></p>
-        <a href="#">Back to top</a>
+        <a class="back-to-top" href="#"><svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" clip-rule="evenodd" viewBox="0 0 172 170">
+            <path d="M96.163 170H75.557V39.445L14.57 100.431.001 85.86 85.86 0l85.86 85.86-14.571 14.57-60.986-60.985V170Z"/>
+          </svg>          
+           <span>Back to top</span></a>
     </div>
 </footer>
 
@@ -25,7 +28,21 @@
     .footer-inner {
         width: 100%;
         max-width: var(--max-width-xl);
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+    }
+
+    .footer-inner svg {
+        display: block;
+        width: 1rem;
+        fill: white;
+        align-self: center;
+    }
+
+    .back-to-top {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, auto);
+        gap: 1rem;
     }
 </style>

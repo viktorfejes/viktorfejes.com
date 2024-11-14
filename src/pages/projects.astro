@@ -1,7 +1,84 @@
 ---
+import FeaturedWorkGrid from "../components/FeaturedWorkGrid.astro";
 import Layout from "../layouts/Layout.astro";
+import WorkGrid from "../components/WorkGrid.astro";
+import WorkItem from "../components/WorkItem.astro";
+import Img from "../components/Img.astro";
+import Video from "../components/Video.astro";
 ---
 
 <Layout title="Viktor Fejes - Projects">
-    
+    <section class="page-title">
+        <div class="page-title-inner">
+            <h2>Selected Projects</h2>
+            <p>Here's what keeps me busy – a mix of projects spanning different industries and challenges. Take a look at some of my favorite work.</p>
+        </div>
+    </section>
+    <section class="projects">
+        <div class="projects-inner">
+            <WorkGrid>
+                <WorkItem name="Acura MDX" client="Personal">
+                    <Img src="gildstudios-acuramdx-4.jpg" alt="Something" dir="" />
+                </WorkItem>
+                <WorkItem name="Bravo, Bravecto!" client="Bravecto">
+                    <Video
+                        src="/videos/gildstudios-bravecto-commercial-30s.mp4"
+                        formats={["mp4"]}
+                        autoplay={true}
+                        muted={true}
+                        controls={false}
+                        loop={true}
+                    />
+                </WorkItem>
+                <WorkItem name="Support the neighborhood" client="DoorDash">
+                    <Img src="gildstudios-doordash-2.jpg" alt="Something" dir="" />
+                </WorkItem>
+                <WorkItem name="Utility LUTs" client="Personal">
+                    <Video
+                        src="/videos/flora_luts.mp4"
+                        formats={["mp4"]}
+                        autoplay={true}
+                        muted={true}
+                        controls={false}
+                        loop={true}
+                    />
+                </WorkItem>
+            </WorkGrid>
+        </div>
+    </section>
 </Layout>
+
+<style>
+    .page-title {
+        margin-top: 8rem;
+        margin-bottom: 8rem;
+    }
+
+    .page-title h2{
+        font-size: var(--font-size-6xl);
+        font-weight: var(--font-weight-medium);
+        letter-spacing: var(--letter-spacing-tight);
+        line-height: 1.1;
+        margin-bottom: 0.5em;
+    }
+
+    .page-title p {
+        font-size: var(--font-size-xl);
+        font-weight: var(--font-weight-regular);
+        color: var(--color-neutral-600);
+        line-height: 1.4;
+        max-width: 45ch;
+    }
+    
+    .page-title,
+    .projects {
+        padding-left: var(--padding-page-left);
+        padding-right: var(--padding-page-right);
+    }
+
+    .page-title-inner,
+    .projects-inner {
+        max-width: var(--max-width-xl);
+        margin: 0 auto;
+    }
+</style>
