@@ -22,46 +22,81 @@ const postsByYear = blog.reduce((acc, post) => {
 ---
 
 <Layout title="Viktor Fejes - Blog">
-    <div class="header">
-        <h1 class="title">Posts, articles, and logs.</h1>
-        <p class="subtitle">A collection of various write-ups about my adventures with all sorts of techniques and technologies.</p>
-    </div>
-    <div class="search">
+    <section class="page-title">
+        <div class="page-title-inner">
+            <h2>Posts, articles, logs.</h2>
+            <p>A collection of various write-ups about my adventures with all sorts of techniques and technologies.</p>
+        </div>
+    </section>
+    <!-- Don't have enough articles for this to make sense yet... -->
+    <!-- <div class="search">
         <div class="search-group">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
             <input type="text" name="blog-search" id="search" placeholder="Search…">
         </div>
-    </div>
-    <div class="wip">
-        <Alert title="Work In Progress" type="wip">I'm building this website live, so there may be parts that are still under construction, like this one. Please, check back a bit later.</Alert>
-    </div>
-    <div class="search-results"></div>
+    </div> -->
+    <!-- <div class="search-results"></div> -->
     <div class="all-posts">
-        {Object.keys(postsByYear).sort((a, b) => b - a).map((year) => (
-            <h2 class="year">{year}</h2>
-            <section class="posts">
-            {postsByYear[year].map((post) => (
-                <article class="post">
-                    <a href=`/blog/${post.slug}` class="post-link">
-                        <time class="date" datetime={post.data.publishDate.toISOString()}>{post.data.publishDate.toLocaleDateString("en-US", {
-                            month: "short",
-                            day: "2-digit",
-                        })}</time>
-                        <h3 class="post-title">{post.data.title}</h3>
-                    </a>
-                </article>
-            ))}
-            </section>
+        {blog.map((post) => (
+            <article class="post">
+                <a href=`/blog/${post.slug}` class="post-link">
+                    <time class="date" datetime={post.data.publishDate.toISOString()}>{post.data.publishDate.toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "short",
+                        day: "2-digit",
+                    })}</time>
+                    <h3 class="post-title">{post.data.title}</h3>
+                </a>
+            </article>
         ))}
     </div>
 </Layout>
 
 <style>
+    .page-title {
+        margin-top: 16rem;
+        margin-bottom: 16rem;
+    }
+
+    .page-title h2{
+        font-size: var(--font-size-6xl);
+        font-weight: var(--font-weight-medium);
+        letter-spacing: var(--letter-spacing-tight);
+        line-height: 1.1;
+        margin-bottom: 1em;
+        color: var(--color-neutral-900);
+        max-width: 24ch;
+    }
+
+    .page-title p {
+        /* display: none; */
+        font-size: var(--font-size-xl);
+        font-weight: var(--font-weight-regular);
+        color: var(--color-neutral-900);
+        line-height: 1.38;
+        max-width: 40ch;
+    }
+
+    .page-title .tag {
+        color: var(--color-neutral-900);
+    }
+    
+    .page-title {
+        padding-left: var(--padding-page-left);
+        padding-right: var(--padding-page-right);
+    }
+
+    .page-title-inner {
+        max-width: var(--max-width-xl);
+        margin: 0 auto;
+    }
+
     .all-posts {
-        max-width: calc(var(--max-width-xs) + var(--padding-page-left) + var(--padding-page-right));
+        max-width: calc(var(--max-width-xl) + var(--padding-page-left) + var(--padding-page-right));
         padding-left: var(--padding-page-left);
         padding-right: var(--padding-page-right);
         margin: 0 auto;
+        margin-bottom: 16rem;
     }
 
     .post {
@@ -78,9 +113,14 @@ const postsByYear = blog.reduce((acc, post) => {
         display: flex;
         align-items: baseline;
         justify-content: flex-start;
-        border-radius: 0.5rem;
-        padding: 0.8rem 1rem;
+        /* border-radius: 0.5rem; */
+        border-top: 1px solid var(--color-neutral-300);
+        padding: 1.4rem 1rem;
         margin-bottom: 0.5rem;
+    }
+    
+    .post-link:last-child {
+        border-bottom: 1px solid var(--color-neutral-300);
     }
     
     .post-link:hover {
@@ -88,44 +128,19 @@ const postsByYear = blog.reduce((acc, post) => {
     }
 
     .post-title {
-        font-size: var(--font-size-md);
-        font-weight: var(--font-weight-medium);
+        font-size: var(--font-size-2xl);
+        font-weight: var(--font-weight-regular);
         color: var(--color-neutral-900);
     }
 
     .date {
-        font-size: var(--font-size-base);
+        font-size: var(--font-size-md);
         padding-right: 2.5rem;
         font-weight: var(--font-weight-medium);
         color: var(--color-neutral-600);
         white-space: nowrap;
         display: block;
         min-width: 3rem;
-    }
-
-    .wip {
-        max-width: var(--max-width-xs);
-        margin: 4rem auto;
-        padding-left: var(--padding-page-left);
-        padding-right: var(--padding-page-right);
-    }
-
-    .header {
-        padding-top: 8rem;
-        padding-left: var(--padding-page-left);
-        padding-right: var(--padding-page-right);
-        max-width: var(--max-width-xs);
-        margin: 0 auto;
-        margin-bottom: 1.5rem;
-        text-align: center;
-    }
-
-    .title {
-        font-size: var(--font-size-3xl);
-        font-weight: var(--font-weight-bold);
-        letter-spacing: var(--letter-spacing-tight);
-        line-height: 1.1;
-        margin-bottom: 1rem;
     }
 
     .subtitle {

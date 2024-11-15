@@ -84,10 +84,13 @@ import FeaturedWorkGrid from "../components/FeaturedWorkGrid.astro";
 	<section class="featured-work">
 		<div class="featured-work-inner">
 			<div class="split-header">
-				<div class="left">(FEATURED PROJECTS)</div>
-				<div class="right"><a href="#">View all projects</a></div>
+				<div class="left">(Featured projects)</div>
+				<div class="right"><a href="/projects">View all projects</a></div>
 			</div>
 			<FeaturedWorkGrid />
+			<div class="more-work">
+				<a href="/projects">Discover all projects</a>
+			</div>
 		</div>
 	</section>
 	<!-- <section class="luts">
@@ -112,7 +115,7 @@ import FeaturedWorkGrid from "../components/FeaturedWorkGrid.astro";
 	<section class="clients">
 		<div class="clients-inner">
 			<div class="split-header">
-				<div class="left">(CLIENT LIST)</div>
+				<div class="left">(Client list)</div>
 				<div class="right"></div>
 			</div>
 			<!-- <h2>Some of the people I have worked with.</h2> -->
@@ -174,13 +177,29 @@ import FeaturedWorkGrid from "../components/FeaturedWorkGrid.astro";
 </Layout>
 
 <style>
+	.more-work {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 1rem;
+		margin-top: 6rem;
+	}
+
+	.more-work a {
+		display: block;
+		grid-column-start: 2;
+		font-size: var(--font-size-4xl);
+		text-decoration: underline;
+		text-underline-offset: 0.45em;
+        word-wrap: nowrap;
+	}
+
 	.split-header {
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
 
 	.split-header {
-		font-size: var(--font-size-lg);
+		font-size: var(--font-size-xl);
 		margin-bottom: 2rem;
 	}
 
@@ -198,15 +217,15 @@ import FeaturedWorkGrid from "../components/FeaturedWorkGrid.astro";
 		display: grid;
 		grid-template-columns: repeat(4, minmax(0, 1fr));
 		grid-template-rows: repeat(2, 1fr);
-		gap: 1rem;
+		gap: 60% 16%;
 	}
 
 	.client-logo {
-		border: 1px solid var(--color-neutral-200);
+		/* border: 1px solid var(--color-neutral-200); */
 		color: var(--color-neutral-800);
-		border-radius: 1rem;
+		/* border-radius: 1rem; */
 		align-content: center;
-		padding: 6rem;
+		/* padding: 6rem; */
 	}
 
 	.featured-work {
