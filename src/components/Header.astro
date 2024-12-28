@@ -12,37 +12,35 @@ const { pathname } = Astro.url;
         </a>
         <ul class="site-links">
             <li><a href="/projects" class={pathname.startsWith("/projects") ? "active" : ""}>Projects</a></li>
-            <li><a href="/about" class={pathname.startsWith("/about") ? "active" : ""}>About</a></li>
+            <li><a href="/about" class={pathname.startsWith("/about") ? "active" : ""}>About me</a></li>
             <li><a href="/blog" class={pathname.startsWith("/blog") ? "active" : ""}>Blog</a></li>
+        </ul>
+        <ul class="site-links">
+            <li><a href="#">Contact</a></li>
         </ul>
     </nav>
 </header>
 
 <style>
     .site-header {
-        position: sticky;
+        position: fixed;
         top: 0;
         width: 100%;
         height: var(--header-height);
-        padding: 0 2rem;
         z-index: 99;
         display: flex;
         align-items: center;
         justify-content: center;
-        /* margin-bottom: 8rem; */
-        /* border-bottom: 1px solid rgba(255, 255, 255, 0.1); */
-        /* background: rgba(0, 0, 0, 0.33); */
-        /* backdrop-filter: blur(24px) saturate(140%); */
         mix-blend-mode: difference;
     }
 
     .site-nav{
         width: 100%;
-        /* max-width: 65rem; */
 		max-width: var(--max-width-xl);
         display: flex;
         align-items: center;
         justify-content: space-between;
+        padding: 0 var(--padding-page-left);
     }
 
     .site-logo {
@@ -58,22 +56,35 @@ const { pathname } = Astro.url;
         padding: 0;
         list-style: none;
         gap: 2rem;
-        font-size: var(--font-size-md);
+        font-size: var(--font-size-xl);
         font-weight: var(--font-weight-regular);
         color: var(--color-neutral-900);
     }
 
     .site-links li a {
-        opacity: 0.5;
+        position: relative;
         text-decoration: none;
         transition: all 0.2s;
     }
 
-    .site-links li a:hover {
-        opacity: 0.8;
+    .site-links li a::after {
+        position: absolute;
+        bottom: -0.2rem;
+        content: "";
+        display: block;
+        width: 100%;
+        height: 2px;
+        background: var(--color-neutral-900);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.3s ease;
+    }
+
+    .site-links li a:hover::after {
+        transform: scaleX(1);
     }
     
-    .site-links li a.active {
-        opacity: 1;
+    .site-links li a.active::after {
+        transform: scaleX(1);
     }
 </style>

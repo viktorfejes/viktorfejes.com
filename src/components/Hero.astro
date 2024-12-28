@@ -2,19 +2,41 @@
 import Button from "./Button.astro"
 ---
 
-<div class="hero">
-    <h1 class="intro-headline">Digital artist + engineer, creating visuals and tools.</h1>
+<>
+    <div class="hero-split">
+        <div class="num">01/</div>
+        <h1 class="headline">Retoucher and Technical Artist — helping brands solve complex <u>visual challenges</u> through art and custom tools.</h1>
+    </div>
     <!-- <p class="intro-text">Using my expertise in design, image processing, color science, and programming I have solved problems for my clients the past 15 years in the advertising, editorial, and gaming industries.</p> -->
 
-    <div class="hero-subtitle">
+    <!-- <div class="hero-subtitle">
         <div class="hero-sub-inner">
             <p>I’m an image processing expert who combines art with technical innovation.</p>
             <p>I solve complex visual challenges for clients who need more than standard solutions.</p>
         </div>
-    </div>
-</div>
+    </div> -->
+</>
 
 <style>
+    .headline {
+        font-size: var(--font-size-5xl);
+        font-weight: var(--font-weight-medium);
+        max-width: 24ch;
+        line-height: 1.33;
+    }
+    
+    .hero-split {
+        display: flex;
+        align-items: flex-start;
+    }
+
+    .num {
+        min-width: 6rem;
+        font-size: var(--font-size-2xl);
+        padding-top: 0.6rem;
+        padding-right: 2rem;
+    }
+
     .hero {
         display: flex;
         flex-direction: column;

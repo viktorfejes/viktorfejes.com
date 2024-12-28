@@ -10,8 +10,8 @@ const { name, client } = Astro.props;
             </div>
         </div>
         <div class="work-meta">
-            <h2>{ name }</h2>
-            <h3>({ client })</h3>
+            <h3 class="project-item-client">{ client }</h3>
+            <h2 class="project-item-name">{ name }</h2>
         </div>
     </a>
 </article>
@@ -28,7 +28,7 @@ const { name, client } = Astro.props;
     .work-thumbnail {
         position: relative;
         overflow: hidden;
-        border-radius: 0.5rem;
+        /* border-radius: 0.5rem; */
         padding-top: 100%;
         margin-bottom: 1rem;
     }
@@ -62,5 +62,9 @@ const { name, client } = Astro.props;
 
     .work-item:hover .work-media {
         transform: scale(1.1);
+    }
+
+    .project-item-client {
+        opacity: .5;
     }
 </style>

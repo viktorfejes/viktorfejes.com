@@ -1,6 +1,6 @@
 :root {
     /* Fonts */
-    --font-primary: "Switzer", sans-serif;
+    --font-primary: "Geist", sans-serif;
     --font-mono: "JetBrains Mono", monospace;
 
     --font-size-xs: 0.75rem;
@@ -35,7 +35,7 @@
     --color-neutral-600: hsl(240, 1%, 62%);
     --color-neutral-700: hsl(240, 1%, 75%);
     --color-neutral-800: hsl(240, 3%, 87%);
-    --color-neutral-900: hsl(240, 11%, 96%);
+    --color-neutral-900: hsl(240, 0%, 100%);
 
     --color-primary-500: hsl(200, 89%, 48%);
     --color-secondary-900: rgb(189, 209, 255);
@@ -53,7 +53,7 @@
     --max-width-regular: 56rem;
     --max-width-md: 68rem;
     --max-width-lg: 80rem;
-    --max-width-xl: 100rem;
+    --max-width-xl: 120rem;
 
     /* Paddings */
     --padding-page-left: 2rem;
