@@ -1,0 +1,80 @@
+---
+import Img from "./Img.astro";
+import Video from "./Video.astro";
+import ProjectsItem from "./ProjectsItem.astro";
+---
+
+<div class="projects">
+    <div class="column">
+        <ProjectsItem title="Support The Neighborhood" client="DoorDash" ar="ar-horizontal">
+            <Img src="gildstudios-doordash-2.jpg" alt="" dir="" />
+        </ProjectsItem>
+        <ProjectsItem title="Acura MDX" client="Gild" ar="ar-horizontal">
+            <Img src="gildstudios-acuramdx-1_Zwm7ek.jpg" alt="" dir="" />
+        </ProjectsItem>
+        <ProjectsItem title="Simple Brilliance" client="Lagos" ar="ar-horizontal">
+            <Img src="gildstudios-lagos-1.jpg" alt="" dir="" />
+        </ProjectsItem>
+        <ProjectsItem title="AT&T Thanks" client="AT&T" ar="ar-horizontal">
+            <Img src="gildstudios-att-thanks-2.jpg" alt="" dir="" />
+        </ProjectsItem>
+        <ProjectsItem title="Hidden Horrors" client="Safe In Harm's Way" ar="ar-sq">
+            <Img src="gildstudios-hiddenhorrors-3.jpg" alt="" dir="" />
+        </ProjectsItem>
+    </div>
+    <div class="column">
+        <ProjectsItem title="Tom Ford" client="Gild" ar="ar-vertical">
+            <Img src="tom-ford-soleil-neige-1.jpg" alt="" dir="case-studies/tom-ford" />
+        </ProjectsItem>
+        <ProjectsItem title="Chroma Scopes" client="Tool" ar="ar-sq">
+            <Video
+                src="/videos/scopes_small.mp4"
+                formats={["mp4"]}
+                autoplay={true}
+                muted={true}
+                controls={false}
+                loop={true}
+            />
+        </ProjectsItem>
+        <ProjectsItem title="Bravo, Bravecto!" client="Bravecto" ar="ar-horizontal">
+            <Img src="gildstudios-bravecto-commstill-1.jpg" alt="" dir="" />
+        </ProjectsItem>
+        <ProjectsItem title="Summer Escape" client="Escape Watches" ar="ar-vertical">
+            <Img src="gildstudios-escape-1.jpg" alt="" dir="" />
+        </ProjectsItem>
+    </div>
+    <div class="column">
+        <ProjectsItem title="Portraits" client="Collection" ar="ar-horizontal">
+            <Img src="gildstudios-edsheeran-1.jpg" alt="" dir="" />
+        </ProjectsItem>
+        <ProjectsItem title="My AT&T" client="AT&T" ar="ar-horizontal">
+            <Img src="gildstudios-myatt-10.jpg" alt="" dir="" />
+        </ProjectsItem>
+        <ProjectsItem title="The Incredible Egg" client="American Egg Board" ar="ar-vertical">
+            <Img src="gildstudios-incredibleegg-still-7.jpg" alt="" dir="case-studies/incredible-egg" />
+        </ProjectsItem>
+        <ProjectsItem title="LucidAir" client="Lucid Motors" ar="ar-horizontal">
+            <Img src="viktorfejes-lucid-01.jpg" alt="" dir="" />
+        </ProjectsItem>
+        <ProjectsItem title="Heart of the City" client="SIMS Foundation" ar="ar-horizontal">
+            <Img src="gildstudios-heartofthecity-1.jpg" alt="" dir="" />
+        </ProjectsItem>
+        <ProjectsItem title="Flamin' Hot Wings" client="BWW" ar="ar-horizontal">
+            <Img src="gildstudios-bww-aja-1.jpg" alt="" dir="" />
+        </ProjectsItem>
+    </div>
+</div>
+
+<style>
+    .projects {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+    }
+
+    .column {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+</style>

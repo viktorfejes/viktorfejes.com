@@ -27,7 +27,7 @@
     --letter-spacing-tight: -0.022em;
 
     /* Colors */
-    --color-neutral-100: hsl(0, 0%, 0%);
+    --color-neutral-100: hsl(0, 0%, 4%);
     --color-neutral-200: hsl(240, 3%, 12%);
     --color-neutral-300: hsl(240, 2%, 25%);
     --color-neutral-400: hsl(240, 1%, 37%);
@@ -35,7 +35,7 @@
     --color-neutral-600: hsl(240, 1%, 62%);
     --color-neutral-700: hsl(240, 1%, 75%);
     --color-neutral-800: hsl(240, 3%, 87%);
-    --color-neutral-900: hsl(240, 0%, 100%);
+    --color-neutral-900: hsl(240, 0%, 96%);
 
     --color-primary-500: hsl(200, 89%, 48%);
     --color-secondary-900: rgb(189, 209, 255);
@@ -59,7 +59,7 @@
     --padding-page-left: 2rem;
     --padding-page-right: 2rem;
 
-    --header-height: 4.5rem;
+    --header-height: 8rem;
 }
 
 [data-theme="light"] {

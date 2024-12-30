@@ -1,0 +1,88 @@
+---
+const { title, client, ar } = Astro.props;
+---
+
+<a href="#" class="projects-item">
+    <div class=`thumbnail ${ar}`>
+        <slot />
+    </div>
+    <div class="overlay"></div>
+    <div class="item-meta">
+        <h2 class="item-meta-title">
+            {title}
+            <br>
+            — {client}
+        </h2>
+    </div>
+</a>
+
+<style>
+    .projects-item {
+        position: relative;
+        width: 100%;
+        transition: all 0.3s ease-out;
+    }
+
+    .projects-item:hover {
+        transform: translate3d(0, -0.33rem, 0);
+    }
+
+    .overlay {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        opacity: 0;
+        background: rgba(0, 0, 0, 0.45);
+        transition: opacity .2s;
+    }
+    
+    .projects-item:hover .overlay {
+        opacity: 1;
+    }
+
+    .thumbnail {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        /* border-radius: 0.5rem; */
+    }
+
+    .thumbnail :global(img),
+    .thumbnail :global(video) {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    .item-meta {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        padding: 0.8rem 1.2rem;
+    }
+
+    .item-meta-title {
+        font-size: var(--font-size-2xl);
+        font-weight: var(--font-weight-regular);
+        line-height: 1.3;
+    }
+
+    .ar-sq {
+        padding-top: 100%;
+    }
+
+    .ar-horizontal {
+        padding-top: 66.66%;
+    }
+
+    .ar-vertical {
+        padding-top: 120%;
+    }
+</style>

@@ -11,7 +11,7 @@ const { pathname } = Astro.url;
             </svg>
         </a>
         <ul class="site-links">
-            <li><a href="/projects" class={pathname.startsWith("/projects") ? "active" : ""}>Projects</a></li>
+            <li><a href="/" class={pathname === "/" ? "active" : ""}>Overview</a></li>
             <li><a href="/about" class={pathname.startsWith("/about") ? "active" : ""}>About me</a></li>
             <li><a href="/blog" class={pathname.startsWith("/blog") ? "active" : ""}>Blog</a></li>
         </ul>

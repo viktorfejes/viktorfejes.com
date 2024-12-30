@@ -82,16 +82,18 @@ const postsByYear = blog.reduce((acc, post) => {
     }
     
     .page-title {
+        width: 100%;
+        max-width: var(--max-width-xl);
         padding-left: var(--padding-page-left);
         padding-right: var(--padding-page-right);
     }
 
     .page-title-inner {
-        max-width: var(--max-width-xl);
         margin: 0 auto;
     }
 
     .all-posts {
+        width: 100%;
         max-width: calc(var(--max-width-xl) + var(--padding-page-left) + var(--padding-page-right));
         padding-left: var(--padding-page-left);
         padding-right: var(--padding-page-right);

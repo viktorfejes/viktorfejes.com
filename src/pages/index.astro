@@ -24,12 +24,20 @@ import InfCarousel from "../components/InfCarousel.astro";
 import InfCarouselItem from "../components/InfCarouselItem.astro";
 import Video from "../components/Video.astro";
 import FeaturedWorkGrid from "../components/FeaturedWorkGrid.astro";
+import Projects from "../components/Projects.astro";
 ---
 
 <Layout title="Viktor Fejes">
 	<section class="hero">
 		<Hero />
 	</section>
+	<section class="projects">
+		<Projects />
+	</section>
+
+	<!-- <section class="hero">
+		<Hero />
+	</section> -->
 	<!-- <section class="new-slider">
 		<div class="work-cta">
 			<a href="#">View all projects</a>
@@ -56,14 +64,7 @@ import FeaturedWorkGrid from "../components/FeaturedWorkGrid.astro";
 			</InfCarouselItem>
 		</InfCarousel>
 	</section> -->
-	<section class="featured-projects">
-		<div class="split-header">
-			<div class="left">(SCROLL)</div>
-			<div class="right"><a href="/projects">See all my projects</a></div>
-		</div>
-		<FeaturedWorkGrid />
-	</section>
-	<section class="home-about">
+	<!-- <section class="home-about">
 		<div class="num">02/</div>
 		<div class="about">
 			<p>I’m a visual storyteller combining art with technical innovation.</p>
@@ -71,7 +72,7 @@ import FeaturedWorkGrid from "../components/FeaturedWorkGrid.astro";
 			<p>I love taking on projects that others might find challenging, bringing together my technical knowledge and creative instincts to find unique solutions. Whether I'm working solo or leading a team, my goal is always the same: create something remarkable.</p>
 			<a href="#">Learn more about me</a>
 		</div>
-	</section>
+	</section> -->
 	<!-- <section class="about-cont">
 		<div class="about-grid">
 			<p class="about-label">
@@ -95,7 +96,7 @@ import FeaturedWorkGrid from "../components/FeaturedWorkGrid.astro";
 			</div>
 		</div>
 	</section> -->
-	<section class="clients">
+	<!-- <section class="clients">
 		<div class="split-header">
 			<div class="left">(Client list)</div>
 			<div class="right"></div>
@@ -148,12 +149,13 @@ import FeaturedWorkGrid from "../components/FeaturedWorkGrid.astro";
 				</svg>
 			</div>
 		</div>
-	</section>
+	</section> -->
 	<section class="blog">
 	</section>
 </Layout>
 
 <style>
+	.projects,
 	.hero,
 	.featured-projects,
 	.home-about,
@@ -163,8 +165,12 @@ import FeaturedWorkGrid from "../components/FeaturedWorkGrid.astro";
 		padding: 0 var(--padding-page-left);
 	}
 
-	.hero {
+	.projects {
 		margin: 16rem 0 14rem 0;
+	}
+
+	.hero {
+		margin: 16rem 0 0 0;
 	}
 
 	.featured-projects {
