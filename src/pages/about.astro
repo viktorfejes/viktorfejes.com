@@ -1,0 +1,50 @@
+---
+import Layout from "../layouts/Layout.astro"
+---
+
+<Layout title="Viktor Fejes - About me">
+    <article class="about">
+        <div class="about-flex">
+            <h2>I solve complex visual challenges through a combination of art and technology. For the past 15 years, I've been fortunate to work with brands like Amazon, CBS, DoorDash, AT&T, and GSK, helping them bring their visions to life.</h2>
+
+            <p>My work spans retouching, CGI, and custom tool development – skills that often come together in unexpected ways to solve unique problems. I enjoy taking on projects that push boundaries and require thinking beyond standard solutions.</p>
+
+            <p>I started as a retoucher in advertising, where I learned that the most interesting challenges often live in the details. This led me to dive deeper into color science and image processing, eventually writing my own tools to achieve effects that weren't possible with existing software.</p>
+
+            <p>Today, I split my time between hands-on creative work and developing tools that help other artists work more efficiently. It's a unique combination that lets me approach each project from multiple angles.</p>
+
+            <p>I believe in simplicity – both in how I work and what I deliver. Whether I'm retouching a campaign image or building a custom tool, I focus on creating clear, effective solutions without unnecessary complexity.</p>
+        </div>
+    </article>
+</Layout>
+
+<style>
+    .about {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        margin: 14rem 0;
+        max-width: var(--max-width-xl);
+        padding: 0 var(--padding-page-left);
+    }
+
+    .about-flex {
+        width: 66.66%;
+    }
+
+    .about-flex h2 {
+        font-size: var(--font-size-3xl);
+        line-height: 1.4;
+        width: 100%;
+        max-width: 30ch;
+        margin-bottom: 1.4em;
+    }
+
+    .about-flex p {
+        font-size: var(--font-size-lg);
+        max-width: 52ch;
+        opacity: 0.6;
+        line-height: 1.45;
+        margin-bottom: 1.45em;
+    }
+</style>
