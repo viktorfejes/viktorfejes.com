@@ -10,14 +10,15 @@ const { pathname } = Astro.url;
                 </path>
             </svg>
         </a>
-        <ul class="site-links">
-            <li><a href="/" class={pathname === "/" ? "active" : ""}>Overview</a></li>
-            <li><a href="/about" class={pathname.startsWith("/about") ? "active" : ""}>About me</a></li>
-            <li><a href="/blog" class={pathname.startsWith("/blog") ? "active" : ""}>Blog</a></li>
-        </ul>
-        <ul class="site-links">
-            <li><a href="#">Contact</a></li>
-        </ul>
+        <div class="nav-links">
+            <ul class="site-links">
+                <li><a href="/" class={pathname === "/" ? "active" : ""}>Overview</a></li>
+                <li><a href="/about" class={pathname.startsWith("/about") ? "active" : ""}>About me</a></li>
+            </ul>
+            <ul class="site-links">
+                <li><a href="/blog" class={pathname.startsWith("/blog") ? "active" : ""}>Blog</a></li>
+            </ul>
+        </div>
     </nav>
 </header>
 
@@ -47,6 +48,13 @@ const { pathname } = Astro.url;
         display: block;
         width: 1.875rem;
         fill: var(--color-neutral-900);
+    }
+
+    .nav-links {
+        width: 100%;
+        max-width: 66.66%;
+        display: flex;
+        justify-content: space-between;
     }
 
     .site-links {

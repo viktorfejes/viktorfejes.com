@@ -1,8 +1,8 @@
 ---
-const { title, client, ar } = Astro.props;
+const { title, client, ar, href } = Astro.props;
 ---
 
-<a href="#" class="projects-item">
+<a href=`${href || "#"}` class="projects-item">
     <div class=`thumbnail ${ar}`>
         <slot />
     </div>

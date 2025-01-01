@@ -1,0 +1,50 @@
+---
+import ProjectLayout from "../../layouts/ProjectLayout.astro";
+import Img from "../../components/Img.astro";
+import Video from "../../components/Video.astro";
+---
+
+<ProjectLayout title="The Incredible Egg">
+    <p slot="description">This project is the culmination of three campaigns I worked on with the American Egg Board and Energy BBDO realising captivating characters that embody different egg dishes from around the world.</p>
+
+    <Fragment slot="body">
+        <div class="max-w-7xl ml-auto mr-auto gap-4 grid grid-cols-2">
+            <Img src="gildstudios-incredibleegg-still-3.jpg" alt="Something" dir="case-studies/incredible-egg" />
+            <Img src="gildstudios-incredibleegg-still-4.jpg" alt="Something" dir="case-studies/incredible-egg" />
+            <div class="col-span-2">
+                <Img src="gildstudios-incredibleegg-still-1.jpg" alt="Something" dir="case-studies/incredible-egg" />
+            </div>
+            <Img src="gildstudios-incredibleegg-still-8.jpg" alt="Something" dir="case-studies/incredible-egg" />
+            <Img src="gildstudios-incredibleegg-still-6.jpg" alt="Something" dir="case-studies/incredible-egg" />
+            <Img src="gildstudios-incredibleegg-still-5.jpg" alt="Something" dir="case-studies/incredible-egg" />
+            <Img src="gildstudios-incredibleegg-still-7.jpg" alt="Something" dir="case-studies/incredible-egg" />
+            <div class="col-span-2">
+                <Img src="gildstudios-incredibleegg-still-2.jpg" alt="Something" dir="case-studies/incredible-egg" />
+            </div>
+            <Img src="gildstudios-incredibleegg-still-9.jpg" alt="Something" dir="case-studies/incredible-egg" />
+            <Img src="gildstudios-incredibleegg-still-10.jpg" alt="Something" dir="case-studies/incredible-egg" />
+            <Img src="gildstudios-incredibleegg-still-11.jpg" alt="Something" dir="case-studies/incredible-egg" />
+            <Img src="gildstudios-incredibleegg-still-12.jpg" alt="Something" dir="case-studies/incredible-egg" />
+            <Img src="gildstudios-incredibleegg-still-13.jpg" alt="Something" dir="case-studies/incredible-egg" />
+            <Img src="gildstudios-incredibleegg-still-14.jpg" alt="Something" dir="case-studies/incredible-egg" />
+            <div class="col-span-2">
+                <Video src="/videos/incredible-egg_daredevil-breakdown.mp4" formats={["mp4"]} loop={true} autoplay={true} muted={true} controls={true} />
+            </div>
+            <div class="col-span-2">
+                <Img src="gildstudios-dinnereggs-1.jpg" alt="Something" dir="case-studies/incredible-egg" />
+            </div>
+            <Img src="gildstudios-dinnereggs-2.jpg" alt="Something" dir="case-studies/incredible-egg" />
+            <Img src="gildstudios-dinnereggs-3.jpg" alt="Something" dir="case-studies/incredible-egg" />
+            <Img src="gildstudios-dinnereggs-4.jpg" alt="Something" dir="case-studies/incredible-egg" />
+            <Img src="gildstudios-dinnereggs-7.jpg" alt="Something" dir="case-studies/incredible-egg" />
+            <div class="col-span-2">
+                <Img src="gildstudios-dinnereggs-6.jpg" alt="Something" dir="case-studies/incredible-egg" />
+            </div>
+            <Img src="gildstudios-dinnereggs-5.jpg" alt="Something" dir="case-studies/incredible-egg" />
+            <Img src="gildstudios-dinnereggs-8.jpg" alt="Something" dir="case-studies/incredible-egg" />
+            <div class="col-span-2">
+                <Video src="/videos/incredible-egg_mo-breakdown.mp4" formats={["mp4"]} loop={true} autoplay={true} muted={true} controls={true} />
+            </div>
+        </div>
+    </Fragment>
+</ProjectLayout>
