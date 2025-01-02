@@ -5,23 +5,22 @@ import Layout from "../layouts/Layout.astro"
 ---
 
 <Layout title="Viktor Fejes - About me">
-    <article class="about">
-        <div class="headline">
+    <article class="w-full max-w-8xl my-56 px-8">
+        <div class="text-5xl w-full max-w-[34ch] mb-24 leading-snug">
             <h2>I've spent 15 years turning <em>“that's impossible”</em> into <em>“wow, how did you do that?”</em> Each challenge has taught me that magic happens when you're not afraid to experiment.</h2>
         </div>
-        <div class="story">
-            <div class="sd">
-                <p>My work spans retouching, CGI, and custom tool development – skills that often come together in unexpected ways to solve unique problems. I enjoy taking on projects that push boundaries and require thinking beyond standard solutions.</p>
+        <div class="flex justify-end mb-40 text-2xl opacity-60 leading-snug">
+            <div class="w-full max-w-none lg:max-w-[66.66%]">
+                <p class="max-w-3xl mb-8">My work spans retouching, CGI, and custom tool development – skills that often come together in unexpected ways to solve unique problems. I enjoy taking on projects that push boundaries and require thinking beyond standard solutions.</p>
         
-                <p>I started as a retoucher in advertising, where I learned that the most interesting challenges often live in the details. This led me to dive deeper into color science and image processing, eventually writing my own tools to achieve effects that weren't possible with existing software.</p>
+                <p class="max-w-3xl mb-8">I started as a retoucher in advertising, where I learned that the most interesting challenges often live in the details. This led me to dive deeper into color science and image processing, eventually writing my own tools to achieve effects that weren't possible with existing software.</p>
         
-                <p>Today, I split my time between hands-on creative work and developing tools that help other artists work more efficiently. It's a unique combination that lets me approach each project from multiple angles.</p>
-
+                <p class="max-w-3xl mb-8">Today, I split my time between hands-on creative work and developing tools that help other artists work more efficiently. It's a unique combination that lets me approach each project from multiple angles.</p>
             </div>
         </div>
-        <div class="clients">
-            <h3>I've helped 100+ companies including</h3>
-            <div class="client-grid">
+        <div class="flex flex-col lg:flex-row justify-between py-12 gap-16 mb-48 border-t border-neutral-700">
+            <h3 class="text-2xl max-w-96">I've helped 100+ companies including</h3>
+            <div class="w-full max-w-none lg:max-w-[66.66%] flex flex-wrap justify-between gap-x-32 gap-y-12">
                 <div class="client-logo" style="--item-index:1;">
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 603 182" fill="currentColor">
                         <path d="M374.006 142.184c-35 25.797-85.729 39.561-129.406 39.561-61.242 0-116.376-22.651-158.087-60.325-3.278-2.962-.341-7 3.591-4.693 45.015 26.191 100.673 41.947 158.166 41.947 38.775 0 81.43-8.022 120.65-24.67 5.925-2.516 10.88 3.88 5.086 8.18"/>
@@ -70,13 +69,13 @@ import Layout from "../layouts/Layout.astro"
                 </div>
             </div>
         </div>
-        <div class="motto">
+        <div class="flex justify-between">
             <h3></h3>
-            <div class="sd">
-                <p>When I'm not working, you'll find me exploring computer graphics, experimenting with new film emulation techniques, baking, or practicing kendo.</p>
+            <div class="w-full lg:max-w-[66.66%]">
+                <p class="text-3xl w-full max-w-[48ch] mb-8 leading-snug">When I'm not working, you'll find me exploring computer graphics, experimenting with new film emulation techniques, baking, or practicing kendo.</p>
             </div>
         </div>
-        <div class="personal-images">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8 mt-16 mb-40">
             <div class="image-container">
                 <Img src="240523_kendo_vert_1.5.1.jpg" alt="" dir="" />
             </div>
@@ -97,133 +96,30 @@ import Layout from "../layouts/Layout.astro"
                 />
             </div>
         </div>
-        <div class="motto">
+        <div class="flex justify-between">
             <h3></h3>
-            <div class="sd">
-                <p>I believe in simplicity – both in how I work and what I deliver. Whether I'm retouching a campaign image or building a custom tool, I focus on creating clear, effective solutions without unnecessary complexity.</p>
-                <p>Got a visual challenge that seems impossible? Those are my favorite kind. Let's discuss how we can tackle it together.</p>
+            <div class="w-full lg:max-w-[66.66%]">
+                <p class="text-3xl w-full max-w-[48ch] mb-8 leading-snug">I believe in simplicity – both in how I work and what I deliver. Whether I'm retouching a campaign image or building a custom tool, I focus on creating clear, effective solutions without unnecessary complexity.</p>
 
-                <a href="#" class="contact">viktor@viktorfejes.com</a>
+                <p class="text-3xl w-full max-w-[48ch] mb-16 leading-snug">Got a visual challenge that seems impossible? Those are my favorite kind. Let's discuss how we can tackle it together.</p>
+
+                <a href="#" class="text-xl inline-block py-4 px-9 rounded-full border">viktor@viktorfejes.com</a>
             </div>
         </div>
     </article>
 </Layout>
 
 <style>
-    .about {
-        width: 100%;
-        margin: 14rem 0;
-        max-width: var(--max-width-xl);
-        padding: 0 var(--padding-page-left);
-    }
-
-    .about-flex {
-        width: 66.66%;
-    }
-
-    .headline {
-        font-size: var(--font-size-4xl);
-        line-height: 1.4;
-        width: 100%;
-        max-width: 34ch;
-        margin-bottom: 6rem;
-    }
-
-    .story {
-        display: flex;
-        justify-content: flex-end;
-        margin-bottom: 10rem;
-    }
-
-    .sd {
-        width: 100%;
-        max-width: 66.66%;
-    }
-
-    .story p {
-        font-size: var(--font-size-xl);
-        max-width: 48ch;
-        opacity: 0.6;
-        line-height: 1.45;
-        margin-bottom: 1.45em;
-    }
-
-    .clients {
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        /* border-bottom: 1px solid rgba(255, 255, 255, 0.1); */
-        display: flex;
-        justify-content: space-between;
-        padding: 3rem 0;
-        gap: 4rem;
-        margin-bottom: 12rem;
-    }
-
-    .clients h3 {
-        font-size: var(--font-size-xl);
-        max-width: 24ch;
-    }
-
-    .client-grid {
-        width: 100%;
-        max-width: 66.66%;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        gap: 3rem 8rem;
-    }
-
     .client-logo {
         display: flex;
         align-items: center;
         justify-content: center;
         padding: 1rem;
-        /* background: var(--color-neutral-200); */
-        /* min-width: 33.33%; */
     }
 
     .client-logo svg {
         width: 100%;
         max-width: 8rem;
-    }
-
-    .motto {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .motto-text {
-        width: 100%;
-        max-width: 66.66%;
-    }
-
-    .motto h3 {
-        font-size: var(--font-size-lg);
-        /* opacity: 0.5; */
-    }
-    
-    .motto p {
-        font-size: var(--font-size-2xl);
-        line-height: 1.4;
-        width: 100%;
-        max-width: 48ch;
-        margin-bottom: 1.4em;
-    }
-
-    a.contact {
-        font-size: var(--font-size-lg);
-        /* background: var(--color-neutral-900); */
-        /* color: var(--color-neutral-100); */
-        border: 1px solid var(--color-neutral-800);
-        display: inline-block;
-        padding: 1rem 2.2rem;
-        border-radius: 2rem;
-    }
-
-    .personal-images {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 2rem;
-        margin: 4rem 0 10rem 0;
     }
 
     .image-container {

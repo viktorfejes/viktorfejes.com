@@ -4,8 +4,8 @@ import Video from "./Video.astro";
 import ProjectsItem from "./ProjectsItem.astro";
 ---
 
-<div class="projects">
-    <div class="column">
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+    <div class="flex flex-col gap-8">
         <ProjectsItem title="Support The Neighborhood" client="DoorDash" ar="ar-horizontal" href="/projects/support-the-neighborhood">
             <Img src="gildstudios-doordash-2.jpg" alt="" dir="" />
         </ProjectsItem>
@@ -15,23 +15,23 @@ import ProjectsItem from "./ProjectsItem.astro";
         <ProjectsItem title="Simple Brilliance" client="Lagos" ar="ar-horizontal" href="/projects/lagos-jewelry">
             <Img src="gildstudios-lagos-1.jpg" alt="" dir="" />
         </ProjectsItem>
-        <ProjectsItem title="AT&T Thanks" client="AT&T" ar="ar-horizontal">
+        <ProjectsItem title="AT&T Thanks" client="AT&T" ar="ar-horizontal" href="/projects/att-thanks">
             <Img src="gildstudios-att-thanks-2.jpg" alt="" dir="" />
         </ProjectsItem>
-        <ProjectsItem title="Hidden Horrors" client="Safe In Harm's Way" ar="ar-sq">
+        <ProjectsItem title="Hidden Horrors" client="Safe In Harm's Way" ar="ar-sq" href="/projects/hidden-horrors">
             <Img src="gildstudios-hiddenhorrors-3.jpg" alt="" dir="" />
         </ProjectsItem>
-        <ProjectsItem title="Portraits" client="Collection" ar="ar-vertical">
+        <ProjectsItem title="Portraits" client="Collection" ar="ar-vertical" href="/projects/portraits">
             <Img src="gildstudios-sealife-1.jpg" alt="" dir="" />
         </ProjectsItem>
-        <ProjectsItem title="Makes Us Family" client="GSK" ar="ar-horizontal">
+        <ProjectsItem title="Makes Us Family" client="GSK" ar="ar-horizontal" href="/projects/makes-us-family">
             <Img src="gildstudios-gsk-1.jpg" alt="" dir="" />
         </ProjectsItem>
-        <ProjectsItem title="CG Portraits" client="Collection" ar="ar-sq">
+        <ProjectsItem title="CG Portraits" client="Collection" ar="ar-sq" href="/projects/cg-portraits">
             <Img src="charDemon-Final-edited_smallFile-jpeg6.jpg" alt="" dir="" />
         </ProjectsItem>
     </div>
-    <div class="column">
+    <div class="flex flex-col gap-8">
         <ProjectsItem title="Tom Ford" client="Gild" ar="ar-vertical" href="/projects/tom-ford">
             <Img src="tom-ford-soleil-neige-1.jpg" alt="" dir="case-studies/tom-ford" />
         </ProjectsItem>
@@ -45,57 +45,43 @@ import ProjectsItem from "./ProjectsItem.astro";
                 loop={true}
             />
         </ProjectsItem>
-        <ProjectsItem title="Bravo, Bravecto!" client="Bravecto" ar="ar-horizontal">
+        <ProjectsItem title="Bravo, Bravecto!" client="Bravecto" ar="ar-horizontal" href="/projects/bravo-bravecto">
             <Img src="gildstudios-bravecto-commstill-1.jpg" alt="" dir="" />
         </ProjectsItem>
-        <ProjectsItem title="Summer Escape" client="Escape Watches" ar="ar-vertical">
+        <ProjectsItem title="Summer Escape" client="Escape Watches" ar="ar-vertical" href="/projects/summer-escape">
             <Img src="gildstudios-escape-1.jpg" alt="" dir="" />
         </ProjectsItem>
-        <ProjectsItem title="See Art" client="SF MoMA" ar="ar-sq">
+        <ProjectsItem title="See Art" client="SF MoMA" ar="ar-sq" href="/projects/see-art">
             <Img src="gildstudios-seeart-1.jpg" alt="" dir="" />
         </ProjectsItem>
-        <ProjectsItem title="Rolex Daytona" client="Gild" ar="ar-vertical">
+        <ProjectsItem title="Rolex Daytona" client="Gild" ar="ar-vertical" href="/projects/rolex-daytona">
             <Img src="rolex_daytona_01_16bit.jpg" alt="" dir="" />
         </ProjectsItem>
     </div>
-    <div class="column">
-        <ProjectsItem title="My AT&T" client="AT&T" ar="ar-horizontal">
-            <Img src="gildstudios-myatt-10.jpg" alt="" dir="" />
+    <div class="flex md:hidden xl:flex  flex-col gap-8">
+        <ProjectsItem title="My AT&T" client="AT&T" ar="ar-horizontal" href="/projects/my-att">
+            <Img src="gildstudios-myatt-thumb-2.jpg" alt="" dir="case-studies/my-att" />
         </ProjectsItem>
-        <ProjectsItem title="Celebrities" client="Collection" ar="ar-vertical">
+        <ProjectsItem title="Celebrities" client="Collection" ar="ar-vertical" href="/projects/celebrities">
             <Img src="gildstudios-edsheeran-2.jpg" alt="" dir="" />
         </ProjectsItem>
         <ProjectsItem title="The Incredible Egg" client="American Egg Board" ar="ar-vertical" href="/projects/the-incredible-egg">
             <Img src="gildstudios-incredibleegg-still-7.jpg" alt="" dir="case-studies/incredible-egg" />
         </ProjectsItem>
-        <ProjectsItem title="LucidAir" client="Lucid Motors" ar="ar-horizontal">
+        <ProjectsItem title="LucidAir" client="Lucid Motors" ar="ar-horizontal" href="/projects/lucid-air">
             <Img src="viktorfejes-lucid-01.jpg" alt="" dir="" />
         </ProjectsItem>
-        <ProjectsItem title="Heart of the City" client="SIMS Foundation" ar="ar-horizontal">
+        <ProjectsItem title="Heart of the City" client="SIMS Foundation" ar="ar-horizontal" href="/projects/heart-of-the-city">
             <Img src="gildstudios-heartofthecity-1.jpg" alt="" dir="" />
         </ProjectsItem>
-        <ProjectsItem title="Flamin' Hot Wings" client="BWW" ar="ar-horizontal">
+        <ProjectsItem title="Flamin' Hot Wings" client="BWW" ar="ar-horizontal" href="/projects/flamin-hot-wings">
             <Img src="gildstudios-bww-aja-1.jpg" alt="" dir="" />
         </ProjectsItem>
-        <ProjectsItem title="Fruits" client="Specsavers" ar="ar-horizontal">
+        <ProjectsItem title="Fruits" client="Specsavers" ar="ar-horizontal" href="/projects/fruits">
             <Img src="gildstudios-fruitsavers-1.jpg" alt="" dir="" />
         </ProjectsItem>
-        <ProjectsItem title="Conman" client="John Keatley" ar="ar-sq">
+        <ProjectsItem title="Conman" client="John Keatley" ar="ar-sq" href="/projects/conman">
             <Img src="conman_thumb.jpg" alt="" dir="" />
         </ProjectsItem>
     </div>
 </div>
-
-<style>
-    .projects {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 2rem;
-    }
-
-    .column {
-        display: flex;
-        flex-direction: column;
-        gap: 2rem;
-    }
-</style>

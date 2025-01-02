@@ -2,7 +2,14 @@
 export default {
 	content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
 	theme: {
-		extend: {},
+		extend: {
+			maxWidth: {
+				'8xl': '120rem',
+			},
+			screens: {
+				'1024': '1024px'
+			}
+		},
 	},
 	plugins: [],
 }

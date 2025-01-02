@@ -2,13 +2,13 @@
 const { title, client, ar, href } = Astro.props;
 ---
 
-<a href=`${href || "#"}` class="projects-item">
-    <div class=`thumbnail ${ar}`>
+<a href=`${href || "#"}` class="group relative w-full transition duration-300 hover:-translate-y-1.5">
+    <div class=`thumbnail ${ar} relative w-full overflow-hidden`>
         <slot />
     </div>
-    <div class="overlay"></div>
-    <div class="item-meta">
-        <h2 class="item-meta-title">
+    <div class="group-hover:opacity-45 transition duration-200 absolute inset-0 opacity-0 bg-black"></div>
+    <div class="absolute inset-0 py-4 px-5">
+        <h2 class="text-3xl">
             {title}
             <br>
             — {client}
@@ -17,38 +17,6 @@ const { title, client, ar, href } = Astro.props;
 </a>
 
 <style>
-    .projects-item {
-        position: relative;
-        width: 100%;
-        transition: all 0.3s ease-out;
-    }
-
-    .projects-item:hover {
-        transform: translate3d(0, -0.33rem, 0);
-    }
-
-    .overlay {
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        opacity: 0;
-        background: rgba(0, 0, 0, 0.45);
-        transition: opacity .2s;
-    }
-    
-    .projects-item:hover .overlay {
-        opacity: 1;
-    }
-
-    .thumbnail {
-        position: relative;
-        width: 100%;
-        overflow: hidden;
-        /* border-radius: 0.5rem; */
-    }
-
     .thumbnail :global(img),
     .thumbnail :global(video) {
         position: absolute;
@@ -57,21 +25,6 @@ const { title, client, ar, href } = Astro.props;
         height: 100%;
         object-fit: cover;
         object-position: center;
-    }
-
-    .item-meta {
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        padding: 0.8rem 1.2rem;
-    }
-
-    .item-meta-title {
-        font-size: var(--font-size-2xl);
-        font-weight: var(--font-weight-regular);
-        line-height: 1.3;
     }
 
     .ar-sq {

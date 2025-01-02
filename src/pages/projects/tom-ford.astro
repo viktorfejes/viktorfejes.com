@@ -7,13 +7,13 @@ import Img from "../../components/Img.astro";
     <p slot="description">Using simulation, grooming, and precise lighting, I wanted to create almost identical images for these iconic Tom Ford perfume bottles. The shape is the same on all images but the environment and the lighting makes all the images feel different.</p>
 
     <Fragment slot="body">
-        <div class="max-w-7xl ml-auto mr-auto grid grid-cols-2 gap-4">
-            <Img src="tom-ford-fucking-fabulous-1.jpg" alt="Something" dir="case-studies/tom-ford" />
-            <Img src="tom-ford-soleil-neige-1.jpg" alt="Something" dir="case-studies/tom-ford" />
-        
-            <div class="col-span-2">
-                <Img src="tom-ford-neroli-portofino-1.jpg" alt="Something" dir="" />
+        <div class="flex flex-col gap-4">
+            <div class="grid grid-cols-2 gap-4">
+                <Img src="tom-ford-fucking-fabulous-1.jpg" alt="Something" dir="case-studies/tom-ford" />
+                <Img src="tom-ford-soleil-neige-1.jpg" alt="Something" dir="case-studies/tom-ford" />
             </div>
+        
+            <Img src="tom-ford-neroli-portofino-1.jpg" alt="Something" dir="" />
         </div>
     </Fragment>
 </ProjectLayout>
