@@ -14,36 +14,40 @@ const { post } = Astro.props;
 const { Content } = await post.render();
 ---
 
-<Layout title="Viktor Fejes - Blog">
-    <div class="container">
-        <div class="back-link">
+<Layout title=`${post.data.title} - Viktor Fejes`>
+    <article class="w-full max-w-8xl px-4 md:px-8 mt-56">
+        <!-- <div class="back-link">
             <a href="/blog"><svg xmlns="http://www.w3.org/2000/svg" viewBox="6 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron-left"><path d="m15 18-6-6 6-6"/></svg>All posts</a>
-        </div>
+        </div> -->
 
-        <div class="post-header">
-            <time class="post-date" datetime={post.data.publishDate.toISOString()}>{post.data.publishDate.toLocaleDateString("en-US", {
-                timeZone: "UTC",
-                month: "long",
-                day: "numeric",
-                year: "numeric"
-            })}</time>
-            <h1 class="post-title">{post.data.title}</h1>
+        <div class="w-full mb-32">
+            <h1 class="text-6xl md:text-8xl max-w-7xl">{post.data.title}</h1>
         </div>
-        <div class="prose">
-            <Content />
+        <div class="w-full grid md:grid-cols-3 relative gap-4">
+            <div class="w-full max-w-xl md:sticky top-40 left-0 col-span-1 h-fit text-2xl uppercase">
+                <div class="mb-10">
+                    <div class="block">By Viktor Fejes</div>
+                </div>
+                <div class="mb-10">
+                    <div>Posted on</div>
+                    <div>
+                        <time class="post-date" datetime={post.data.publishDate.toISOString()}>{post.data.publishDate.toLocaleDateString("en-US", {
+                            timeZone: "UTC",
+                            month: "long",
+                            day: "numeric",
+                            year: "numeric"
+                        })}</time>
+                    </div>
+                </div>
+            </div>
+            <div class="w-full col-span-2 prose">
+                <Content />
+            </div>
         </div>
-    </div>
+    </article>
 </Layout>
 
 <style>
-    .container {
-        padding-left: var(--padding-page-left);
-        padding-right: var(--padding-page-right);
-        max-width: calc(var(--max-width-md) + var(--padding-page-left) + var(--padding-page-right));
-        margin: 0 auto;
-        padding-top: 4rem;
-    }
-    
     .back-link {
         margin-bottom: 2rem;
     }
@@ -60,30 +64,6 @@ const { Content } = await post.render();
         height: 1.125rem;
     }
 
-    .post-header {
-        max-width: var(--max-width-xs);
-        margin-left: auto;
-        margin-right: auto;
-        margin-bottom: 2rem;
-    }
-
-    .post-date {
-        font-size: var(--font-size-md);
-        font-weight: var(--font-weight-medium);
-        color: var(--color-neutral-600);
-        margin-bottom: calc(1.33 * var(--font-size-base));
-        display: block;
-    }
-
-    .post-title {
-        font-size: var(--font-size-6xl);
-        font-weight: var(--font-weight-medium);
-        color: var(--color-neutral-900);
-        letter-spacing: var(--letter-spacing-tight);
-        line-height: 1.1;
-        margin-bottom: calc(1.1 * var(--font-size-6xl));
-    }
-
     .prose {
         margin-bottom: 16em;
     }
@@ -95,36 +75,28 @@ const { Content } = await post.render();
     }
 
     .prose > :global(p) {
-        font-size: var(--font-size-xl);
+        font-size: var(--font-size-2xl);
         font-weight: var(--font-weight-regular);
         line-height: 1.45;
         color: var(--color-neutral-700);
-        max-width: var(--max-width-xs);
-        margin-left: auto;
-        margin-right: auto;
+        max-width: var(--max-width-md);
         margin-bottom: 1.5em;
     }
 
     .prose :global(h2) {
-        font-size: var(--font-size-3xl);
-        font-weight: var(--font-weight-semibold);
+        font-size: var(--font-size-5xl);
+        font-weight: var(--font-weight-regular);
         line-height: 1.2;
         /* letter-spacing: var(--letter-spacing-tight); */
-        max-width: var(--max-width-xs);
-        margin-left: auto;
-        margin-right: auto;
         margin-top: 2.5em;
         margin-bottom: 1.25em;
     }
 
     .prose :global(img) {
-        border-radius: 0.5rem;
+        /* border-radius: 0.5rem; */
     }
     
     .prose :global(.before-after-slider) {
-        max-width: var(--max-width-xs);
-        margin-left: auto;
-        margin-right: auto;
         margin-bottom: 1.45em;
     }
     
@@ -136,9 +108,8 @@ const { Content } = await post.render();
     }
 
     .prose :global(iframe) {
-        max-width: var(--max-width-xs);
         width: 100%;
-        height: 100%;
+        height: auto;
         aspect-ratio: 16/9;
         margin-left: auto;
         margin-right: auto;
