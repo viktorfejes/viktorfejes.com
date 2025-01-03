@@ -10,7 +10,6 @@ const { pathname } = Astro.url;
                 </path>
             </svg>
         </a>
-
         <div class="w-full max-w-[66.66%] md:flex justify-between hidden">
             <ul class="flex justify-end gap-8 text-2xl">
                 <li class="relative group">
@@ -34,31 +33,29 @@ const { pathname } = Astro.url;
 
 <div class="md:hidden">
     <input class="hidden" type="checkbox" name="menu" id="menu">
-    <label for="menu" class="cursor-pointer w-12 h-12 bg-neutral-200 rounded-full flex flex-col justify-center items-center select-none fixed top-9 right-4 z-40">
-        <div class="line bg-neutral-950"></div>
-        <div class="line bg-neutral-950"></div>
-        <div class="line bg-neutral-950"></div>
-
+    <label for="menu" class="group cursor-pointer select-none fixed top-12 right-4 z-40 mix-blend-difference">
+        <div class="text-2xl relative">
+            <div class="close-label hidden">Close</div>
+            <div class="menu-label">Menu</div>
+            <div class="transition duration-300 ease absolute block -bottom-1 w-full h-0.5 bg-slate-50 origin-left group-hover:scale-100 scale-0"></div>
+        </div>
     </label>
     <div class="overlay-menu">
-        <ul class="text-4xl pt-48 flex flex-col gap-5">
-            <li class="text-2xl opacity-50 mb-4">Menu</li>
-            <li class="relative group">
+        <ul class="text-4xl pt-48 flex flex-col w-full">
+            <!-- <li class="text-2xl opacity-50 mb-4">Menu</li> -->
+            <li class="relative group border-y py-6 px-4 border-neutral-700">
                 <a href="/" class="relative">
                     Overview
-                    <div class="transition duration-300 ease absolute block -bottom-1 w-full h-0.5 bg-slate-50 origin-left group-hover:scale-100 scale-0"></div>
                 </a>
             </li>
-            <li class="relative group">
+            <li class="relative group border-b py-6 px-4 border-neutral-700">
                 <a href="/about" class="relative">
                     About me
-                    <div class="transition duration-300 ease absolute block -bottom-1 w-full h-0.5 bg-slate-50 origin-left group-hover:scale-100 scale-0"></div>
                 </a>
             </li>
-            <li class="relative group">
-                <a href="/about" class="relative">
+            <li class="relative group border-b py-6 px-4 border-neutral-700">
+                <a href="/blog" class="relative">
                     Blog
-                    <div class="transition duration-300 ease absolute block -bottom-1 w-full h-0.5 bg-slate-50 origin-left group-hover:scale-100 scale-0"></div>
                 </a>
             </li>
         </ul>
@@ -102,10 +99,17 @@ const { pathname } = Astro.url;
         width: 100%;
         height: 100vh;
         z-index: 20;
-        padding: 1rem;
     }
 
     #menu:checked ~ .overlay-menu {
         display: flex;
+    }
+
+    #menu:checked + label .close-label {
+        display: block;
+    }
+
+    #menu:checked + label .menu-label {
+        display: none;
     }
 </style>
