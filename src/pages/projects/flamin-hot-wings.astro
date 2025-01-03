@@ -1,15 +1,20 @@
 ---
-import ProjectLayout from "../../layouts/ProjectLayout.astro";
+import WorkLayout from "../../layouts/WorkLayout.astro";
 import Img from "../../components/Img.astro";
 import Video from "../../components/Video.astro";
 ---
 
-<ProjectLayout title="Flamin' Hot Wings">
+<WorkLayout title="Flamin' Hot Wings" tags={["Retouching", "Color Grading"]}>
     <p slot="description">I worked with Martin Agency back-to-back on two campaigns for Buffalo Wild Wings featuring basketball superstars A’ja Wilson and Klay Thompson. The images I retouched showcase BWW’s partnership with Flamin’ Hot Nacho Doritos and Mountain Dew Legendary</p>
 
     <Fragment slot="body">
-        <div class="flex flex-col gap-4">
-            
+        <div class="grid md:grid-cols-2 gap-4">
+            <Img src="gildstudios-bww-aja-2.jpg" alt="FLamin' Hot Wings" dir="case-studies/flamin-hot-wings" />
+            <Img src="gildstudios-bww-aja-3.jpg" alt="FLamin' Hot Wings" dir="case-studies/flamin-hot-wings" />
+            <Img src="gildstudios-bww-aja-4.jpg" alt="FLamin' Hot Wings" dir="case-studies/flamin-hot-wings" />
+            <Img src="gildstudios-bww-aja-1.jpg" alt="FLamin' Hot Wings" dir="case-studies/flamin-hot-wings" />
+            <Img src="gildstudios-bww-klay-1.jpg" alt="FLamin' Hot Wings" dir="case-studies/flamin-hot-wings" />
+            <Img src="gildstudios-bww-klay-2.jpg" alt="FLamin' Hot Wings" dir="case-studies/flamin-hot-wings" />
         </div>
     </Fragment>
-</ProjectLayout>
+</WorkLayout>

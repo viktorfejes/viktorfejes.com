@@ -1,17 +1,21 @@
 ---
-import ProjectLayout from "../../layouts/ProjectLayout.astro";
+import WorkLayout from "../../layouts/WorkLayout.astro";
 import Img from "../../components/Img.astro";
 ---
 
-<ProjectLayout title="Lucid Air">
+<WorkLayout title="Lucid Air" tags={["Retouching", "Technical Art"]}>
     <p slot="description">Working with Lucid, I took on a challenging retouching project for their ad campaign spread. The task involved seamlessly enhancing CGI car renders while finding an innovative solution to upscale a crucial but tiny image, ultimately helping the team deliver striking visuals that met the luxury brand's high standards.</p><p slot="description"></p>
 
     <Fragment slot="body">
         <div class="flex flex-col gap-4">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                <Img src="rolex_daytona_01_16bit.jpg" alt="Something" dir="/" />
-                <Img src="rolex_daytona_02.jpg" alt="Something" dir="case-studies/rolex-daytona" />
+            <div class="grid lg:grid-cols-2 gap-4">
+                <div class="lg:order-2">
+                    <Img src="viktorfejes-lucidair-01.jpg" alt="Lucid Air" dir="case-studies/lucid-air" />
+                </div>
+                <div class="lg:order-1">
+                    <Img src="viktorfejes-lucidair-02.jpg" alt="Lucid Air" dir="case-studies/lucid-air" />
+                </div>
             </div>
         </div>
     </Fragment>
-</ProjectLayout>
+</WorkLayout>

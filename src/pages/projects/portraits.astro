@@ -1,15 +1,20 @@
 ---
-import ProjectLayout from "../../layouts/ProjectLayout.astro";
+import WorkLayout from "../../layouts/WorkLayout.astro";
 import Img from "../../components/Img.astro";
 import Video from "../../components/Video.astro";
 ---
 
-<ProjectLayout title="Portraits">
-    <p slot="description"></p>
+<WorkLayout title="Portraits" tags={["Retouching", "Color Grading"]}>
+    <!-- <p slot="description"></p> -->
 
     <Fragment slot="body">
-        <div class="max-w-7xl mx-auto grid grid-cols-2 gap-4">
-            
+        <div class="flex flex-col gap-4">
+            <div class="grid grid-cols-2 gap-4">
+                <Img src="gildstudios-sealife-2.jpg" alt="Portrait from series Sea Life" dir="case-studies/portraits" />
+                <Img src="gildstudios-sealife-1.jpg" alt="Portrait from series Sea Life" dir="case-studies/portraits" />
+                <Img src="gildstudios-portraits-keith-2.jpg" alt="Portrait of gentleman with glasses sitting at a table" dir="case-studies/portraits" />
+                <Img src="gildstudios-printmag-6.jpg" alt="Black and White portrait of three people" dir="case-studies/portraits" />
+            </div>
         </div>
     </Fragment>
-</ProjectLayout>
+</WorkLayout>

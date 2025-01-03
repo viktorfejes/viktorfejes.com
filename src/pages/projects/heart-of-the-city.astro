@@ -1,0 +1,33 @@
+---
+import WorkLayout from "../../layouts/WorkLayout.astro";
+import Img from "../../components/Img.astro";
+import Video from "../../components/Video.astro";
+---
+
+<WorkLayout title="Heart of the City" tags={["Retouching", "Color Grading"]}>
+    <p slot="description">In close collaboration with photographer Carlos J. Matos, we teamed up to bring to life “Heart of the City.” I spearheaded the post-production, color grading, and look development for the captivating still images. Within this project, we paid homage to the driving forces behind Austin’s music scene, capturing their essence through careful retouching.</p>
+
+    <Fragment slot="body">
+        <div class="flex flex-col gap-4">
+            <Img src="gildstudios-heartofthecity-1.jpg" alt="Heart of the City" dir="case-studies/heart-of-the-city" />
+            <Img src="gildstudios-heartofthecity-2.jpg" alt="Heart of the City" dir="case-studies/heart-of-the-city" />
+            <Img src="gildstudios-heartofthecity-3.jpg" alt="Heart of the City" dir="case-studies/heart-of-the-city" />
+            <Img src="gildstudios-heartofthecity-4.jpg" alt="Heart of the City" dir="case-studies/heart-of-the-city" />
+            <Img src="gildstudios-heartofthecity-5.jpg" alt="Heart of the City" dir="case-studies/heart-of-the-city" />
+            <Img src="gildstudios-heartofthecity-6.jpg" alt="Heart of the City" dir="case-studies/heart-of-the-city" />
+            
+            <div class="grid lg:grid-cols-2 gap-4">
+                <Img src="gildstudios-heartofthecity-7.jpg" alt="Heart of the City" dir="case-studies/heart-of-the-city" />
+                <Img src="gildstudios-heartofthecity-8.jpg" alt="Heart of the City" dir="case-studies/heart-of-the-city" />
+            </div>
+
+            <Img src="gildstudios-heartofthecity-9.jpg" alt="Heart of the City" dir="case-studies/heart-of-the-city" />
+            <Img src="gildstudios-heartofthecity-10.jpg" alt="Heart of the City" dir="case-studies/heart-of-the-city" />
+
+            <div class="grid lg:grid-cols-2 gap-4">
+                <Img src="gildstudios-heartofthecity-11.jpg" alt="Heart of the City" dir="case-studies/heart-of-the-city" />
+                <Img src="gildstudios-heartofthecity-12.jpg" alt="Heart of the City" dir="case-studies/heart-of-the-city" />
+            </div>
+        </div>
+    </Fragment>
+</WorkLayout>

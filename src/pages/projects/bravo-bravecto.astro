@@ -1,10 +1,10 @@
 ---
-import ProjectLayout from "../../layouts/ProjectLayout.astro";
+import WorkLayout from "../../layouts/WorkLayout.astro";
 import Img from "../../components/Img.astro";
 import Video from "../../components/Video.astro";
 ---
 
-<ProjectLayout title="Bravo, Bravecto!">
+<WorkLayout title="Bravo, Bravecto!" tags={["3D Modelling", "Look Dev", "Compositing", "Retouching", "Color Grading"]}>
     <p slot="description">Working with Bravecto I was tasked with creating a realistic CGI backyard for their virtual production. I was also responsible for replicating the real-life foreground set in 3D for the still images, and to retouch the final images following the style of the commercial.</p>
 
     <Fragment slot="body">
@@ -12,29 +12,29 @@ import Video from "../../components/Video.astro";
             <Video src="/videos/gildstudios-bravecto-commercial-30s.mp4" formats={["mp4"]} loop={true} autoplay={true} muted={true} controls={true} />
 
             <div class="grid md:grid-cols-2 gap-4">
-                <Img src="gildstudios-bravecto-bg-w1.jpg" alt="Something" dir="case-studies/bravo-bravecto" />
-                <Img src="gildstudios-bravecto-bg-w2.jpg" alt="Something" dir="case-studies/bravo-bravecto" />
-                <Img src="gildstudios-bravecto-bg-w3.jpg" alt="Something" dir="case-studies/bravo-bravecto" />
-                <Img src="gildstudios-bravecto-bg-w4.jpg" alt="Something" dir="case-studies/bravo-bravecto" />
+                <Img src="gildstudios-bravecto-bg-w1.jpg" alt="Bravecto background CG image" dir="case-studies/bravo-bravecto" />
+                <Img src="gildstudios-bravecto-bg-w2.jpg" alt="Bravecto background CG image" dir="case-studies/bravo-bravecto" />
+                <Img src="gildstudios-bravecto-bg-w3.jpg" alt="Bravecto background CG image" dir="case-studies/bravo-bravecto" />
+                <Img src="gildstudios-bravecto-bg-w4.jpg" alt="Bravecto background CG image" dir="case-studies/bravo-bravecto" />
             </div>
             
-            <Img src="gildstudios-bravecto-bts-3.jpg" alt="Something" dir="case-studies/bravo-bravecto" />
-            <Img src="bravecto_week12_clay.jpg" alt="Something" dir="case-studies/bravo-bravecto" />
+            <Img src="gildstudios-bravecto-bts-3.jpg" alt="Bravecto BTW image" dir="case-studies/bravo-bravecto" />
+            <Img src="bravecto_week12_clay.jpg" alt="Bravecto clay render" dir="case-studies/bravo-bravecto" />
 
-            <Img src="gildstudios-bravecto-still-set-2.jpg" alt="Something" dir="case-studies/bravo-bravecto" />
-            <Img src="gildstudios-bravecto-still-set-3.jpg" alt="Something" dir="case-studies/bravo-bravecto" />
-            <Img src="gildstudios-bravecto-stillbg.jpg" alt="Something" dir="case-studies/bravo-bravecto" />
+            <Img src="gildstudios-bravecto-still-set-2.jpg" alt="Bravecto still image" dir="case-studies/bravo-bravecto" />
+            <Img src="gildstudios-bravecto-still-set-3.jpg" alt="Bravecto still image" dir="case-studies/bravo-bravecto" />
+            <Img src="gildstudios-bravecto-stillbg.jpg" alt="Bravecto still CG background" dir="case-studies/bravo-bravecto" />
 
             <div class="grid lg:grid-cols-2 gap-4">
-                <Img src="gildstudios-bravecto-still-seamless-3.jpg" alt="Something" dir="case-studies/bravo-bravecto" />
-                <Img src="gildstudios-bravecto-still-seamless-2.jpg" alt="Something" dir="case-studies/bravo-bravecto" />
-                <Img src="gildstudios-bravecto-still-seamless-6.jpg" alt="Something" dir="case-studies/bravo-bravecto" />
-                <Img src="gildstudios-bravecto-still-seamless-5.jpg" alt="Something" dir="case-studies/bravo-bravecto" />
+                <Img src="gildstudios-bravecto-still-seamless-3.jpg" alt="Bravecto still image on seamless" dir="case-studies/bravo-bravecto" />
+                <Img src="gildstudios-bravecto-still-seamless-2.jpg" alt="Bravecto still image on seamless" dir="case-studies/bravo-bravecto" />
+                <Img src="gildstudios-bravecto-still-seamless-6.jpg" alt="Bravecto still image on seamless" dir="case-studies/bravo-bravecto" />
+                <Img src="gildstudios-bravecto-still-seamless-5.jpg" alt="Bravecto still image on seamless" dir="case-studies/bravo-bravecto" />
             </div>
 
-            <Img src="bravecto_still_clay.jpg" alt="Something" dir="case-studies/bravo-bravecto" />
+            <Img src="bravecto_still_clay.jpg" alt="Bravecto clay render" dir="case-studies/bravo-bravecto" />
 
             <Video src="/videos/bravecto-breakdown.mp4" formats={["mp4"]} loop={true} autoplay={true} muted={true} controls={true} />
         </div>
     </Fragment>
-</ProjectLayout>
+</WorkLayout>

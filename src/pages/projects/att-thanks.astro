@@ -1,26 +1,26 @@
 ---
-import ProjectLayout from "../../layouts/ProjectLayout.astro";
+import WorkLayout from "../../layouts/WorkLayout.astro";
 import Img from "../../components/Img.astro";
 import Video from "../../components/Video.astro";
 ---
 
-<ProjectLayout title="AT&T Thanks">
+<WorkLayout title="AT&T Thanks" tags={["Retouching", "Compositing", "Art Direction", "Color Grading"]}>
     <p slot="description">I retouched and helped with the overall direction for the AT&T Thanks campaign. The project called for a range of creative skills, from designing an appealing and fitting color palette, to compositing and retouching the final images. The result was a series of images that were used in various marketing materials, including billboards, social media, and in-store displays.</p>
 
     <Fragment slot="body">
         <div class="flex flex-col gap-4">
-            <Img src="gildstudios-att-thanks-1.jpg" alt="Something" dir="case-studies/att-thanks" />
+            <Img src="gildstudios-att-thanks-1.jpg" alt="AT&T Thanks project still image" dir="case-studies/att-thanks" />
 
-            <Img src="gildstudios-att-thanks-5.jpg" alt="Something" dir="case-studies/att-thanks" />
-            <Img src="gildstudios-att-thanks-8.jpg" alt="Something" dir="case-studies/att-thanks" />
+            <Img src="gildstudios-att-thanks-5.jpg" alt="AT&T Thanks project still image" dir="case-studies/att-thanks" />
+            <Img src="gildstudios-att-thanks-8.jpg" alt="AT&T Thanks project still image" dir="case-studies/att-thanks" />
 
-            <Img src="gildstudios-att-thanks-2.jpg" alt="Something" dir="case-studies/att-thanks" />
-            <Img src="gildstudios-att-thanks-3.jpg" alt="Something" dir="case-studies/att-thanks" />
-            <Img src="gildstudios-att-thanks-6.jpg" alt="Something" dir="case-studies/att-thanks" />
-            <Img src="gildstudios-att-thanks-4.jpg" alt="Something" dir="case-studies/att-thanks" />
+            <Img src="gildstudios-att-thanks-2.jpg" alt="AT&T Thanks project still image" dir="case-studies/att-thanks" />
+            <Img src="gildstudios-att-thanks-3.jpg" alt="AT&T Thanks project still image" dir="case-studies/att-thanks" />
+            <Img src="gildstudios-att-thanks-6.jpg" alt="AT&T Thanks project still image" dir="case-studies/att-thanks" />
+            <Img src="gildstudios-att-thanks-4.jpg" alt="AT&T Thanks project still image" dir="case-studies/att-thanks" />
 
             <Video src="/videos/att-thanks_myhero-breakdown.mp4" formats={["mp4"]} loop={true} autoplay={true} muted={true} controls={true} />
         </div>
         
     </Fragment>
-</ProjectLayout>
+</WorkLayout>

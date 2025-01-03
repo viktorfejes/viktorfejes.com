@@ -1,18 +1,18 @@
 ---
-import ProjectLayout from "../../layouts/ProjectLayout.astro";
+import WorkLayout from "../../layouts/WorkLayout.astro";
 import Img from "../../components/Img.astro";
 ---
 
-<ProjectLayout title="Rolex Daytona">
+<WorkLayout title="Rolex Daytona" tags={["3D Modelling", "Texturing", "Art Direction"]}>
     <p slot="description">Personal project of a Rolex Daytona luxury watch to be used for high detail close-up renderings. The model and all textures were created from scratch utilizing 3Ds Max and Substance Painter.</p>
 
     <Fragment slot="body">
         <div class="flex flex-col gap-4">
-            <Img src="rolex_daytona_01_16bit.jpg" alt="Something" dir="/" />
-            <Img src="rolex_daytona_02.jpg" alt="Something" dir="case-studies/rolex-daytona" />
-            <Img src="rolex_daytona_03.jpg" alt="Something" dir="case-studies/rolex-daytona" />
+            <Img src="rolex_daytona_01.jpg" alt="Rolex Daytona CG image" dir="case-studies/rolex-daytona" />
+            <Img src="rolex_daytona_02.jpg" alt="Rolex Daytona CG image" dir="case-studies/rolex-daytona" />
+            <Img src="rolex_daytona_03.jpg" alt="Rolex Daytona CG image" dir="case-studies/rolex-daytona" />
 
-            <Img src="rolex_daytona_uvs.jpg" alt="Something" dir="case-studies/rolex-daytona" />
+            <Img src="rolex_daytona_uvs.jpg" alt="Rolex Daytona UVs" dir="case-studies/rolex-daytona" />
         </div>
     </Fragment>
-</ProjectLayout>
+</WorkLayout>

@@ -1,0 +1,36 @@
+---
+import WorkLayout from "../../layouts/WorkLayout.astro";
+import Img from "../../components/Img.astro";
+import Video from "../../components/Video.astro";
+---
+
+<WorkLayout title="Conman" tags={["Retouching", "Color Grading"]}>
+    <p slot="description">In collaboration with photographer John Keatley, I retouched the images for his Conman series. The idea was to present the same subject in different costumes, while making sure the images otherwise looked identical. This was a fun challenge, as it required a lot of attention to detail to make sure the images were consistent.</p>
+
+    <Fragment slot="body">
+        <div class="flex flex-col gap-4">
+            <div class="grid md:grid-cols-2 gap-4">
+                <Img src="viktorfejes-conman-01.jpg" alt="Conman" dir="case-studies/conman" />
+                <Img src="viktorfejes-conman-02.jpg" alt="Conman" dir="case-studies/conman" />
+                <Img src="viktorfejes-conman-03.jpg" alt="Conman" dir="case-studies/conman" />
+                <Img src="viktorfejes-conman-04.jpg" alt="Conman" dir="case-studies/conman" />
+            </div>
+
+            <Video
+                src="/videos/conman-breakdown.mp4"
+                formats={["mp4"]}
+                autoplay={true}
+                muted={true}
+                controls={true}
+                loop={true}
+            />
+
+            <div class="grid md:grid-cols-2 gap-4">
+                <Img src="viktorfejes-conman-05.jpg" alt="Conman" dir="case-studies/conman" />
+                <Img src="viktorfejes-conman-06.jpg" alt="Conman" dir="case-studies/conman" />
+                <Img src="viktorfejes-conman-07.jpg" alt="Conman" dir="case-studies/conman" />
+                <Img src="viktorfejes-conman-08.jpg" alt="Conman" dir="case-studies/conman" />
+            </div>
+        </div>
+    </Fragment>
+</WorkLayout>
