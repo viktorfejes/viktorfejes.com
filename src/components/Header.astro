@@ -1,8 +1,8 @@
 ---
 const { pathname } = Astro.url;
 ---
-
-<header class="fixed top-0 w-full h-32 z-50 flex place-content-center place-items-center mix-blend-difference">
+<Fragment>
+<header class="fixed top-0 w-full h-32 z-30 flex place-content-center place-items-center mix-blend-difference">
     <nav class="w-full flex items-center justify-between px-4 md:px-8 max-w-8xl">
         <a href="/" class="block w-[1.875rem] text-neutral-50">
             <svg class="fill-current" viewBox="0 0 678 678">
@@ -10,7 +10,8 @@ const { pathname } = Astro.url;
                 </path>
             </svg>
         </a>
-        <div class="w-full max-w-[66.66%] flex justify-between">
+
+        <div class="w-full max-w-[66.66%] md:flex justify-between hidden">
             <ul class="flex justify-end gap-8 text-2xl">
                 <li class="relative group">
                     <a href="/">Overview</a>
@@ -30,3 +31,81 @@ const { pathname } = Astro.url;
         </div>
     </nav>
 </header>
+
+<div class="md:hidden">
+    <input class="hidden" type="checkbox" name="menu" id="menu">
+    <label for="menu" class="cursor-pointer w-12 h-12 bg-neutral-200 rounded-full flex flex-col justify-center items-center select-none fixed top-9 right-4 z-40">
+        <div class="line bg-neutral-950"></div>
+        <div class="line bg-neutral-950"></div>
+        <div class="line bg-neutral-950"></div>
+
+    </label>
+    <div class="overlay-menu">
+        <ul class="text-4xl pt-48 flex flex-col gap-5">
+            <li class="text-2xl opacity-50 mb-4">Menu</li>
+            <li class="relative group">
+                <a href="/" class="relative">
+                    Overview
+                    <div class="transition duration-300 ease absolute block -bottom-1 w-full h-0.5 bg-slate-50 origin-left group-hover:scale-100 scale-0"></div>
+                </a>
+            </li>
+            <li class="relative group">
+                <a href="/about" class="relative">
+                    About me
+                    <div class="transition duration-300 ease absolute block -bottom-1 w-full h-0.5 bg-slate-50 origin-left group-hover:scale-100 scale-0"></div>
+                </a>
+            </li>
+            <li class="relative group">
+                <a href="/about" class="relative">
+                    Blog
+                    <div class="transition duration-300 ease absolute block -bottom-1 w-full h-0.5 bg-slate-50 origin-left group-hover:scale-100 scale-0"></div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+</Fragment>
+
+<style>
+    .line {
+        position: absolute;
+        width: 1.8rem;
+        height: 2px;
+        transition: all 0.2s;
+    }
+
+    .line:nth-child(1) {
+        transform: translateY(-0.45rem);
+    }
+
+    .line:nth-child(3) {
+        transform: translateY(0.45rem);
+    }
+
+    #menu:checked + label .line:nth-child(2) {
+        opacity: 0;
+    }
+
+    #menu:checked + label .line:nth-child(1) {
+        transform: translateY(0) rotate(-45deg);
+    }
+
+    #menu:checked + label .line:nth-child(3) {
+        transform: translateY(0) rotate(45deg);
+    }
+
+    .overlay-menu {
+        position: fixed;
+        inset: 0;
+        display: none;
+        background: var(--color-neutral-100);
+        width: 100%;
+        height: 100vh;
+        z-index: 20;
+        padding: 1rem;
+    }
+
+    #menu:checked ~ .overlay-menu {
+        display: flex;
+    }
+</style>
