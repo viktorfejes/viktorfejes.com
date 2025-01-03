@@ -6,15 +6,15 @@ const { title, tags } = Astro.props;
 
 <Layout title=`Viktor Fejes - ${title}`>
     <article class="w-full max-w-8xl px-4 md:px-8 mt-64">
-        <div class="mb-24 md:mb-40">
-            <h2 class="text-6xl md:text-8xl mb-10">{title}</h2>
+        <div class="mb-8 sm:mb-24 md:mb-40">
+            <h2 class="text-5xl sm:text-6xl md:text-8xl mb-10">{title}</h2>
             <ul class="flex gap-2 mb-24 flex-wrap whitespace-nowrap">
                 {tags && tags.map((tag) => (
-                    <li class="uppercase font-medium border rounded-full px-4 py-0.5">{tag}</li>
+                    <li class="text-sm uppercase border rounded-full px-4 py-1">{tag}</li>
                 ))}
             </ul>
             <div class="flex justify-end">
-                <div class="description text-2xl w-full lg:max-w-xl leading-snug">
+                <div class="description text-xl md:text-2xl w-full lg:max-w-xl leading-normal">
                     <slot name="description" />
                 </div>
             </div>
