@@ -1,4 +1,6 @@
 ---
+import OverlayMenu from "./OverlayMenu.astro";
+
 const { pathname } = Astro.url;
 ---
 <Fragment>
@@ -31,85 +33,5 @@ const { pathname } = Astro.url;
     </nav>
 </header>
 
-<div class="md:hidden">
-    <input class="hidden" type="checkbox" name="menu" id="menu">
-    <label for="menu" class="group cursor-pointer select-none fixed top-12 right-4 z-40 mix-blend-difference">
-        <div class="text-2xl relative">
-            <div class="close-label hidden">Close</div>
-            <div class="menu-label">Menu</div>
-            <div class="transition duration-300 ease absolute block -bottom-1 w-full h-0.5 bg-slate-50 origin-left group-hover:scale-100 scale-0"></div>
-        </div>
-    </label>
-    <div class="overlay-menu">
-        <ul class="text-4xl pt-48 flex flex-col w-full">
-            <!-- <li class="text-2xl opacity-50 mb-4">Menu</li> -->
-            <li class="relative group border-y py-6 px-4 border-neutral-700">
-                <a href="/" class="relative">
-                    Overview
-                </a>
-            </li>
-            <li class="relative group border-b py-6 px-4 border-neutral-700">
-                <a href="/about" class="relative">
-                    About me
-                </a>
-            </li>
-            <li class="relative group border-b py-6 px-4 border-neutral-700">
-                <a href="/blog" class="relative">
-                    Blog
-                </a>
-            </li>
-        </ul>
-    </div>
-</div>
+<OverlayMenu />
 </Fragment>
-
-<style>
-    .line {
-        position: absolute;
-        width: 1.8rem;
-        height: 2px;
-        transition: all 0.2s;
-    }
-
-    .line:nth-child(1) {
-        transform: translateY(-0.45rem);
-    }
-
-    .line:nth-child(3) {
-        transform: translateY(0.45rem);
-    }
-
-    #menu:checked + label .line:nth-child(2) {
-        opacity: 0;
-    }
-
-    #menu:checked + label .line:nth-child(1) {
-        transform: translateY(0) rotate(-45deg);
-    }
-
-    #menu:checked + label .line:nth-child(3) {
-        transform: translateY(0) rotate(45deg);
-    }
-
-    .overlay-menu {
-        position: fixed;
-        inset: 0;
-        display: none;
-        background: var(--color-neutral-100);
-        width: 100%;
-        height: 100vh;
-        z-index: 20;
-    }
-
-    #menu:checked ~ .overlay-menu {
-        display: flex;
-    }
-
-    #menu:checked + label .close-label {
-        display: block;
-    }
-
-    #menu:checked + label .menu-label {
-        display: none;
-    }
-</style>
