@@ -16,15 +16,15 @@ const { Content } = await post.render();
 
 <Layout title=`${post.data.title} - Viktor Fejes`>
     <article class="w-full max-w-8xl px-4 md:px-8 mt-56">
-        <div class="w-full mb-32">
-            <h1 class="text-5xl md:text-8xl max-w-7xl">{post.data.title}</h1>
+        <div class="w-full mb-16 md:mb-32">
+            <h1 class="text-5xl md:text-8xl max-w-7xl leading-tight">{post.data.title}</h1>
         </div>
         <div class="w-full grid md:grid-cols-3 relative gap-4">
-            <div class="w-full max-w-xl md:sticky top-40 left-0 col-span-1 h-fit text-2xl uppercase">
-                <div class="mb-10">
+            <div class="w-full max-w-xl md:sticky top-40 left-0 col-span-1 h-fit text-xl md:text-2xl uppercase mb-10">
+                <div class="mb-6 md:mb-10">
                     <div class="block">By Viktor Fejes</div>
                 </div>
-                <div class="mb-10">
+                <div class="">
                     <div>Posted on</div>
                     <div>
                         <time class="post-date" datetime={post.data.publishDate.toISOString()}>{post.data.publishDate.toLocaleDateString("en-US", {
