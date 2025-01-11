@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&family=Geist:wght@100..900&display=swap');
 @import url("./reset.css");
 @import url("./vars.css");
 @import url("./icons.css");
@@ -20,7 +20,12 @@ html {
     overflow-x: hidden;
 } */
 
-code { font-family: var(--font-secondary); }
+code { font-family: var(--font-mono); }
+
+.astro-code {
+    padding: 2rem;
+    /* white-space: pre-wrap; */
+}
 
 /* Animations */
 .element-animate.element-fade-in {

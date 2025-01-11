@@ -1,7 +1,8 @@
 :root {
     /* Fonts */
     --font-primary: "Geist", sans-serif;
-    --font-mono: "JetBrains Mono", monospace;
+    /* --font-mono: "JetBrains Mono", monospace; */
+    --font-mono: "Geist Mono", monospace;
 
     --font-size-xs: 0.75rem;
     --font-size-sm: 0.875rem;

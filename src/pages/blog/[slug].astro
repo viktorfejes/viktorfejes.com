@@ -19,7 +19,7 @@ const { Content } = await post.render();
         <div class="w-full mb-16 md:mb-32">
             <h1 class="text-5xl md:text-8xl max-w-7xl leading-tight">{post.data.title}</h1>
         </div>
-        <div class="w-full grid md:grid-cols-3 relative gap-4">
+        <div class="w-full grid grid-cols-1 md:grid-cols-3 relative gap-4">
             <div class="w-full max-w-xl md:sticky top-40 left-0 col-span-1 h-fit text-xl md:text-2xl uppercase mb-10">
                 <div class="mb-6 md:mb-10">
                     <div class="block">By Viktor Fejes</div>
@@ -45,7 +45,7 @@ const { Content } = await post.render();
 
 <style>
     .prose {
-        margin-bottom: 16em;
+        margin-bottom: 8em;
     }
 
     .prose :global(a) {
@@ -54,22 +54,46 @@ const { Content } = await post.render();
         text-decoration: underline;
     }
 
-    .prose > :global(p) {
-        font-size: var(--font-size-2xl);
+    .prose > :global(p),
+    .prose > :global(ul),
+    .prose > :global(ol) {
+        font-size: var(--font-size-xl);
         font-weight: var(--font-weight-regular);
         line-height: 1.45;
-        color: var(--color-neutral-700);
-        max-width: var(--max-width-md);
+        /* color: var(--color-neutral-700); */
+        max-width: var(--max-width-sm);
+        margin-bottom: 1.5em;
+    }
+
+    .prose > :global(ul) {
+        padding-left: 2em;
+        list-style-type: circle;
+    }
+
+    .prose > :global(ul li) {
+        margin-bottom: 1em;
+    }
+    
+    .prose > :global(ol) {
+        padding-left: 2em;
+        list-style-type: decimal;
+    }
+
+    .prose > :global(ol li) {
+        margin-bottom: 1em;
+    }
+
+    .prose > :global(.astro-code) {
         margin-bottom: 1.5em;
     }
 
     .prose :global(h2) {
-        font-size: var(--font-size-5xl);
+        font-size: var(--font-size-4xl);
         font-weight: var(--font-weight-regular);
         line-height: 1.2;
         /* letter-spacing: var(--letter-spacing-tight); */
-        margin-top: 2.5em;
-        margin-bottom: 1.25em;
+        margin-top: 1.25em;
+        margin-bottom: 1em;
     }
 
     .prose :global(img) {
@@ -98,7 +122,9 @@ const { Content } = await post.render();
 
     /* Tailwind md: */
     @media (max-width: 768px) {
-        .prose > :global(p) {
+        .prose > :global(p),
+        .prose > :global(ul),
+        .prose > :global(ol) {
             font-size: 1.25rem;
         }
 

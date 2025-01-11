@@ -7,5 +7,13 @@ import tailwind from '@astrojs/tailwind';
 // https://astro.build/config
 export default defineConfig({
   site: "https://viktorfejes.com",
-  integrations: [mdx(), tailwind()]
+  integrations: [mdx(), tailwind()],
+  markdown: {
+    shikiConfig: {
+      themes: {
+        light: "vitesse-dark",
+        dark: "dracula",
+      }
+    }
+  }
 });
