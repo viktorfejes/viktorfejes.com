@@ -1,0 +1,43 @@
+---
+const { title, client, href, vertical, parallax } = Astro.props;
+
+let orientClass = "max-w-[60rem]";
+if (vertical) {
+    orientClass = "max-w-[44.2rem]";
+}
+---
+
+<div class="flex even:justify-end group mb-[2.5%]" data-parallax=`${parallax}`>
+    <a href=`${href || "#"}` class=`relative w-full ${orientClass}`>
+        <div>
+            <div class=`thumbnail relative w-full overflow-hidden`>
+                <slot />
+            </div>
+            <div class="">
+                <h2 class="text-2xl md:text-8xl font-semibold -translate-y-10 -translate-x-10">
+                    {title}
+                </h2>
+            </div>
+        </div>
+        <div class="absolute top-0 left-full rotate-90 text-lg uppercase tracking-widest origin-top-left">
+            Retouching
+        </div>
+    </a>
+</div>
+
+
+<style>
+    .thumbnail {
+        /* visibility: hidden; */
+    }
+
+    .thumbnail :global(img),
+    .thumbnail :global(video) {
+        /* position: absolute; */
+        top: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+</style>

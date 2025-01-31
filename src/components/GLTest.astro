@@ -1,0 +1,367 @@
+<Fragment><Fragment/>
+
+<style>
+    :global(.three-canvas) {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: -1;
+    }
+</style>
+
+<script>
+    import * as THREE from "three"
+
+    const thumbnails = document.querySelectorAll(".thumbnail");
+    const MAX_TEXTURES = 16;
+    
+    const vertexShader = `
+        attribute vec2 aScale;
+        attribute vec2 aOffset;
+        attribute float aTextureIndex;
+        attribute float aVisible;
+        attribute vec2 aTextureOffset;
+        attribute vec2 aTextureScale;
+        
+        uniform float uVelo;
+
+        varying vec2 vUv;
+        varying float vTextureIndex;
+        varying float vVisible;
+
+        #define M_PI 3.1415926535897932384626433832795
+
+        void main() {
+            vUv = uv * aTextureScale + aTextureOffset;
+            vTextureIndex = aTextureIndex;
+            vVisible = aVisible;
+
+            // Apply velocity-based displacement
+            vec3 pos = position;
+            pos.y = pos.y + ((sin(uv.x * M_PI) * uVelo) * 0.125);
+
+            // Apply instance scaling and translation
+            vec3 scaled = pos * vec3(aScale, 1.0);
+            vec3 translated = scaled + vec3(aOffset, 0.0);
+
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(translated, 1.0);
+        }
+    `;
+
+    const fragmentShader = `
+        uniform sampler2D uTextures[${MAX_TEXTURES}];
+        uniform float uVelo;
+        varying vec2 vUv;
+        varying float vTextureIndex;
+        varying float vVisible;
+
+        vec4 textureLookupWithChromatic(sampler2D tex, vec2 uv, float velocity) {
+            vec4 texColor = texture2D(tex, uv);
+            
+            // Green channel offset
+            vec2 gUv = uv;
+            gUv.y += 0.15 * velocity;
+            texColor.g = texture2D(tex, gUv).g;
+            
+            // Blue channel offset
+            vec2 bUv = uv;
+            bUv.y += 0.25 * velocity;
+            texColor.b = texture2D(tex, bUv).b;
+            
+            return texColor;
+        }
+
+        void main() {
+            if (vVisible < 0.5) discard;
+
+            vec4 texColor;
+            int index = int(vTextureIndex);
+
+            // Using if-else chain for constant indices
+            if (index == 0) texColor = textureLookupWithChromatic(uTextures[0], vUv, uVelo);
+            else if (index == 1) texColor = textureLookupWithChromatic(uTextures[1], vUv, uVelo);
+            else if (index == 2) texColor = textureLookupWithChromatic(uTextures[2], vUv, uVelo);
+            else if (index == 3) texColor = textureLookupWithChromatic(uTextures[3], vUv, uVelo);
+            else if (index == 4) texColor = textureLookupWithChromatic(uTextures[4], vUv, uVelo);
+            else if (index == 5) texColor = textureLookupWithChromatic(uTextures[5], vUv, uVelo);
+            else if (index == 6) texColor = textureLookupWithChromatic(uTextures[6], vUv, uVelo);
+            else if (index == 7) texColor = textureLookupWithChromatic(uTextures[7], vUv, uVelo);
+            else if (index == 8) texColor = textureLookupWithChromatic(uTextures[8], vUv, uVelo);
+            else if (index == 9) texColor = textureLookupWithChromatic(uTextures[9], vUv, uVelo);
+            else if (index == 10) texColor = textureLookupWithChromatic(uTextures[10], vUv, uVelo);
+            else if (index == 11) texColor = textureLookupWithChromatic(uTextures[11], vUv, uVelo);
+            else if (index == 12) texColor = textureLookupWithChromatic(uTextures[12], vUv, uVelo);
+            else if (index == 13) texColor = textureLookupWithChromatic(uTextures[13], vUv, uVelo);
+            else if (index == 14) texColor = textureLookupWithChromatic(uTextures[14], vUv, uVelo);
+            else if (index == 15) texColor = textureLookupWithChromatic(uTextures[15], vUv, uVelo);
+
+            gl_FragColor = texColor;
+        }
+    `;
+
+    const viewport = {
+        width: window.innerWidth,
+        height: window.innerHeight
+    };
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.OrthographicCamera(
+        viewport.width / - 2,
+        viewport.width / 2,
+        viewport.height / 2,
+        viewport.height / - 2,
+        -1000,
+        1000
+    );
+    camera.position.z = 1
+
+    const renderer = new THREE.WebGLRenderer({ alpha: true });
+    renderer.setSize(viewport.width, viewport.height);
+    renderer.setAnimationLoop(loop);
+    renderer.setClearColor(0xffffff, 0);
+    const canvas = document.body.appendChild(renderer.domElement);
+    canvas.classList.add("three-canvas");
+
+    // Base geo
+    const geometry = new THREE.PlaneGeometry(1, 1, 30, 30);
+
+    // Instance attributes
+    const instance_count = thumbnails.length;
+    const scales = new Float32Array(instance_count * 2);
+    const offsets = new Float32Array(instance_count * 2);
+    const textureIndices = new Float32Array(instance_count);
+    const textureOffsets = new Float32Array(instance_count * 2);
+    const textureScales = new Float32Array(instance_count * 2);
+    const visibilityFlags = new Float32Array(instance_count);
+
+    // Set up instance attributes
+    geometry.setAttribute("aScale", new THREE.InstancedBufferAttribute(scales, 2));
+    geometry.setAttribute("aOffset", new THREE.InstancedBufferAttribute(offsets, 2));
+    geometry.setAttribute("aTextureIndex", new THREE.InstancedBufferAttribute(textureIndices, 1));
+    geometry.setAttribute("aTextureOffset", new THREE.InstancedBufferAttribute(textureOffsets, 2));
+    geometry.setAttribute("aTextureScale", new THREE.InstancedBufferAttribute(textureScales, 2));
+    geometry.setAttribute("aVisible", new THREE.InstancedBufferAttribute(visibilityFlags, 1));
+
+    // Create texture atlas?
+    const textureLoader = new THREE.TextureLoader();
+    const textures = new Array(MAX_TEXTURES).fill(null);
+    const textureMap = new Map();
+    const loadedTextures = new Map();
+
+    async function loadTexture(src) {
+        if (loadedTextures.has(src)) {
+            return loadedTextures.get(src);
+        }
+
+        return new Promise((resolve) => {
+            textureLoader.load(src, (texture) => {
+                texture.minFilter = THREE.LinearFilter;
+                texture.magFilter = THREE.LinearFilter;
+                loadedTextures.set(src, texture);
+                resolve(texture);
+            })
+        });
+    }
+
+    function is_element_in_viewport(el) {
+        const rect = el.getBoundingClientRect();
+        // Load images quarter screen height above and below
+        const margin = window.innerHeight * 0.25;
+        return (
+            rect.bottom >= -margin &&
+            rect.top <= window.innerHeight + margin
+        );
+    }
+
+    async function update_visible_textures() {
+        const visible_indices = [];
+
+        // Find visible thumbnails
+        thumbnails.forEach((el, i) => {
+            if (is_element_in_viewport(el)) {
+                visible_indices.push(i);
+            }
+        });
+
+        // Reset visibility flags
+        visibilityFlags.fill(0);
+
+        // Create a set of currently visible image sources
+        const visible_sources = new Set();
+        visible_indices.forEach(index => {
+            const img = thumbnails[index].querySelector("img");
+            if (img) visible_sources.add(img.src);
+        })
+
+        // Remove textures that are no longer visible
+        const textures_to_remove = new Set();
+        textureMap.forEach((texture_index, src) => {
+            if (!visible_sources.has(src)) {
+                textures_to_remove.add(src);
+            }
+        });
+
+        textures_to_remove.forEach(src => {
+            const index = textureMap.get(src);
+            textures[index] = null;
+            textureMap.delete(src);
+        });
+
+        // Update texture assignments
+        for (let i = 0; i < visible_indices.length && i < MAX_TEXTURES; ++i) {
+            const index = visible_indices[i];
+            const img = thumbnails[index].querySelector("img");
+            
+            if (!img) continue;
+
+            if (!textureMap.has(img.src)) {
+                // Find first available texture slot
+                const texture_index = textures.findIndex(tex => tex === null);
+                if (texture_index !== -1) {
+                    const texture = await loadTexture(img.src);
+
+                    // Calculate UV scale and offset to mimic object-fit: cover
+                    // Better here than per vertex I think...
+                    const rect = thumbnails[index].getBoundingClientRect();
+                    const target_ratio = rect.width / rect.height;
+                    const image_ratio = texture.image.width / texture.image.height;
+                    let scaleX = 1, scaleY = 1;
+                    let offsetX = 0, offsetY = 0;
+
+                    if (image_ratio > target_ratio) {
+                        // Image is wider than container
+                        scaleX = target_ratio / image_ratio;
+                        offsetX = (1 - scaleX) * 0.5;
+                    } else {
+                        // Taller than container
+                        scaleY = image_ratio / target_ratio;
+                        offsetY = (1 - scaleY) * 0.5;
+                    }
+
+                    // Store in uv attributes
+                    textureOffsets[index * 2] = offsetX;
+                    textureOffsets[index * 2 + 1] = offsetY;
+                    textureScales[index * 2] = scaleX;
+                    textureScales[index * 2 + 1] = scaleY;
+                    
+                    textures[texture_index] = texture;
+                    textureMap.set(img.src, texture_index);
+
+                }
+            }
+
+            const texture_index = textureMap.get(img.src);
+            if (texture_index !== undefined) {
+                textureIndices[index] = texture_index;
+                visibilityFlags[index] = 1;
+            }
+        }
+
+        // Update instance attributes
+        geometry.attributes.aTextureIndex.needsUpdate = true;
+        geometry.attributes.aVisible.needsUpdate = true;
+        geometry.attributes.aTextureOffset.needsUpdate = true;
+        geometry.attributes.aTextureScale.needsUpdate = true;
+    }
+
+    function getPosition(el) {
+        const rect = el.getBoundingClientRect();
+        return {
+            x: rect.left + rect.width / 2 - viewport.width / 2,
+            y: -rect.top - rect.height / 2 + viewport.height / 2
+        };
+    }
+
+    function update_instance_attributes() {
+        for (let i = 0; i < thumbnails.length; ++i) {
+            const rect = thumbnails[i].getBoundingClientRect();
+            const pos = getPosition(thumbnails[i]);
+
+            // Update scale
+            scales[i * 2] = rect.width;
+            scales[i * 2 + 1] = rect.height;
+            
+            // Update position
+            offsets[i * 2] = pos.x;
+            offsets[i * 2 + 1] = pos.y;
+        }
+
+        // Update instance attributes
+        geometry.attributes.aScale.needsUpdate = true;
+        geometry.attributes.aOffset.needsUpdate = true;
+
+        material.uniforms.uVelo.value = scroll_velocity;
+    }
+
+    // Handle window resize
+    window.addEventListener('resize', async () => {
+        viewport.width = window.innerWidth;
+        viewport.height = window.innerHeight;
+        
+        camera.left = viewport.width / -2;
+        camera.right = viewport.width / 2;
+        camera.top = viewport.height / 2;
+        camera.bottom = viewport.height / -2;
+        camera.updateProjectionMatrix();
+        
+        renderer.setSize(viewport.width, viewport.height);
+
+        await update_visible_textures();
+        update_instance_attributes();
+    });
+
+    // Handle scroll
+    let scroll_timeout;
+    let last_scroll_y = window.scrollY;
+    let scroll_velocity = 0;
+    const SCROLL_THRESHOLD = 1;
+    
+    window.addEventListener('scroll', () => {
+        if (Math.abs(window.scrollY - last_scroll_y) < SCROLL_THRESHOLD) return;
+
+        // calculate velocity based on scroll position change
+        scroll_velocity = (window.scrollY - last_scroll_y) * 0.01
+
+        last_scroll_y = window.scrollY;
+        cancelAnimationFrame(scroll_timeout);
+
+        scroll_timeout = requestAnimationFrame(async () => {
+            await update_visible_textures();
+            update_instance_attributes();
+        });
+    });
+
+    const uniforms = {
+        uTextures: { value: textures },
+        uVelo: { value: 0.0 }
+    };
+
+    const material = new THREE.ShaderMaterial({
+        vertexShader,
+        fragmentShader,
+        transparent: true,
+        uniforms
+    });
+
+    async function init() {
+
+        const instanced_mesh = new THREE.InstancedMesh(geometry, material, instance_count);
+        scene.add(instanced_mesh);
+
+        await update_visible_textures();
+        update_instance_attributes();
+    }
+
+    init();
+
+    function loop() {
+        // Decay velocity
+        scroll_velocity *= 0.95;
+        material.uniforms.uVelo.value = scroll_velocity;
+        
+        renderer.render(scene, camera);
+    }
+
+    // console.log(renderer.capabilities.isWebGL2)
+    
+</script>
