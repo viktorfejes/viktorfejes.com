@@ -1,0 +1,29 @@
+---
+import { type CollectionEntry, getCollection } from 'astro:content';
+import { render } from 'astro:content';
+import Layout from "../../layouts/Global.astro";
+
+import { components } from "../../components/ProjectComponents";
+
+import MetaList from "../../components/MetaList.astro";
+import MetaItem from "../../components/MetaItem.astro";
+import ImageAsset from "../../components/ImageAsset.astro";
+
+export async function getStaticPaths() {
+	const projects = await getCollection('projects');
+	return projects.map((project) => ({
+		params: { slug: project.slug},
+		props: project,
+	}));
+}
+
+const project = Astro.props;
+const { Content } = await render(project);
+---
+
+<Layout title={`${project.data.name} - Viktor Fejes`} header="short">
+    <div class="w-full max-w-xl">
+        <h1 class="text-2xl font-medium dark:text-neutral-300 mb-4">{project.data.name}</h1>
+    </div>
+    <Content components={components} />
+</Layout>

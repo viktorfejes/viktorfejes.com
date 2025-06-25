@@ -1,48 +1,30 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&family=Geist:wght@100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
-@import url("./reset.css");
-@import url("./vars.css");
-@import url("./icons.css");
 
-/* ::-moz-selection,
-::selection {
-} */
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+    --font-primary: "Geist", sans-serif;
+}
 
 html {
+    height: 100%;
     font-family: var(--font-primary);
-    color: var(--color-neutral-900);
-    background: var(--color-neutral-100);
+    background: var(--color-neutral-50);
+    color: var(--color-neutral-800);
     scroll-behavior: smooth;
     text-rendering: optimizeLegibility;
 }
 
-/* html, body {
-    overflow-x: hidden;
-} */
-
-code { font-family: var(--font-mono); }
-
-.astro-code {
-    padding: 2rem;
-    /* white-space: pre-wrap; */
+html.dark {
+    background: var(--color-neutral-950);
+    color: var(--color-neutral-400);
 }
 
-/* Animations */
-.element-animate.element-fade-in {
-    opacity: 0;
-    transition: opacity 1s;
-}
-
-.element-animate.element-fade-in.element-enter {
-    opacity: 1;
-}
-
-.element-animate.element-slide-up {
-    transform: translateY(100%);
-    transition: transform 0.5s cubic-bezier(0,.5,.41,1);
-}
-
-.element-animate.element-slide-up.element-enter {
-    transform: translateY(0);
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
 }

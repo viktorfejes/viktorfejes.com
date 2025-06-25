@@ -1,0 +1,27 @@
+---
+import Layout from "../../layouts/Global.astro";
+import ProjectGrid from "../../components/ProjectGrid.astro";
+import ProjectGridItem from "../../components/ProjectGridItem.astro";
+import Thumbnail from "../../components/Thumbnail.astro";
+
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+
+const projects = (await getCollection('projects'));
+---
+
+<Layout title="Projects - Viktor Fejes">
+    <ProjectGrid>
+    {
+        projects.map((project) => (
+        <ProjectGridItem
+            href={`/projects/${project.slug}/`}
+            name={project.data.name}
+            tags={project.data.tags.join(", ")}
+        >
+            <Thumbnail src={project.data.thumbnail} />
+        </ProjectGridItem>
+        ))
+    }
+    </ProjectGrid>
+</Layout>

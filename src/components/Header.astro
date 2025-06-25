@@ -1,37 +1,91 @@
 ---
-import OverlayMenu from "./OverlayMenu.astro";
+import { Image } from "astro:assets";
+import { Sun } from "@lucide/astro";
+import Navigation from "../components/Navigation.astro";
+import ThemeSwitcher from "../components/ThemeSwitcher.astro";
+import Email from "../components/Email.astro";
 
-const { pathname } = Astro.url;
+import ProfilePic from "../assets/viktorfejes_profile.jpg";
+
+const {type} = Astro.props;
 ---
-<Fragment>
-<header class="fixed top-0 w-full h-32 z-30 flex place-content-center place-items-center mix-blend-difference">
-    <nav class="w-full flex items-center justify-between px-4 md:px-8 max-w-8xl">
-        <a href="/" class="block w-[1.875rem] text-neutral-50">
-            <svg class="fill-current" viewBox="0 0 678 678">
-                <path d="M607.241 139.965H239.288l99.324 198.647 81.211-162.423h169.306L338.612 677.223 0 0h677.223l-69.982 139.965z">
-                </path>
-            </svg>
-        </a>
-        <div class="w-full max-w-[66.66%] md:flex justify-between hidden">
-            <ul class="flex justify-end gap-8 text-2xl">
-                <li class="relative group">
-                    <a href="/">Overview</a>
-                    <div class=`transition duration-300 ease absolute block -bottom-1 w-full h-0.5 bg-slate-50 origin-left group-hover:scale-100 ${pathname === "/" ? "scale-100" : "scale-0"}`></div>
-                </li>
-                <li class="relative group">
-                    <a href="/about">About me</a>
-                    <div class=`transition duration-300 ease absolute block -bottom-1 w-full h-0.5 bg-slate-50 origin-left group-hover:scale-100 ${pathname.startsWith("/about") ? "scale-100" : "scale-0"}`></div>
-                </li>
-            </ul>
-            <ul class="flex justify-end gap-8 text-2xl">
-                <li class="relative group">
-                    <a href="/blog">Blog</a>
-                    <div class=`transition duration-300 ease absolute block -bottom-1 w-full h-0.5 bg-slate-50 origin-left group-hover:scale-100 ${pathname.startsWith("/blog") ? "scale-100" : "scale-0"}`></div>
-                </li>
-            </ul>
+
+<header class="flex items-center flex-col px-6 mt-16 mb-16">
+    <div class="w-full max-w-xl">
+        <div class="mt-16 mb-8">
+            <div class="flex items-center justify-between mb-12">
+                <div class="flex gap-4 items-center">
+                    <div class="relative w-[4.5rem] h-[4.5rem] rounded-md overflow-hidden">
+                        <Image 
+                            class="absolute object-cover object-center w-full h-full"
+                            src={ProfilePic}
+                            alt="Portrait of Viktor Fejes"
+                        />
+                    </div>
+                    <div class="">
+                        <h1 class="text-lg/6 font-medium text-neutral-950 dark:text-neutral-300">Viktor Fejes</h1>
+                        <p class="text-neutral-400 dark:text-neutral-600 pr-4">Retoucher & <span class="whitespace-nowrap">Graphics Engineer</span></p>
+                    </div>
+                </div>
+                <ThemeSwitcher />
+            </div>
+
+            {type !== "short" &&
+                <p class="text-lg mb-8">With a passion for color science, simplicity, and figuring out how things work at a
+                lower level I retouch images, art direct projects, and develop tools and real-time graphical applications.</p>
+                <div class="flex items-center gap-3">
+                    <div class="pulsar">
+                        <div class="animating-circle"></div>
+                        <div class="static-circle"></div>
+                    </div>
+                    <div class="text-neutral-400 dark:text-neutral-500">
+                        Currently available for new projects. <Email class="underline dark:text-neutral-400">Get in touch</Email>
+                    </div>
+                </div>
+            }
         </div>
-    </nav>
+        <Navigation />
+    </div>
 </header>
 
-<OverlayMenu />
-</Fragment>
+<style>
+    .pulsar {
+        display: grid;
+        width: 1rem;
+        height: 1rem;
+    }    
+
+    .static-circle,
+    .animating-circle {
+        grid-row: 1;
+        grid-column: 1;
+        background: #6eda7f;
+        border-radius: 50%;
+        width: 100%;
+        height: 100%;
+    }
+
+    .static-circle {
+        transform: scale(0.5);
+    }
+
+    .animating-circle {
+        transform: scale(0.5);
+        opacity: 0.4;
+        animation-name: pulse;
+        animation-duration: 1000ms;
+        animation-iteration-count: infinite;
+        animation-timing-function: cubic-bezier(.2,.4,.45,1);
+    }
+
+    @keyframes pulse {
+        from {
+            transform: scale(0.5);
+            opacity: 0.4;
+        }
+        to {
+            transform: scale(1.0);
+            opacity: 0.2;
+        }
+    }
+</style>

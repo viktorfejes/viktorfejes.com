@@ -1,0 +1,14 @@
+---
+const { pathname } = Astro.url;
+---
+
+<div class="flex justify-center py-4">
+    <nav class="w-full max-w-2xl flex justify-center">
+        <ul class="flex font-medium">
+            <li><a href="/" class=`hover:bg-neutral-200 dark:hover:bg-neutral-800 dark:text-neutral-300 py-2 px-4 rounded-full ${pathname === "/" ? "bg-neutral-200 dark:bg-neutral-800" : ""}`>Home</a></li>
+            <li><a href="/projects" class=`hover:bg-neutral-200 dark:hover:bg-neutral-800 dark:text-neutral-300 py-2 px-4 rounded-full ${pathname.startsWith("/projects") ? "bg-neutral-200 dark:bg-neutral-800" : ""}`>Projects</a></li>
+            <li><a href="/blog" class=`hover:bg-neutral-200 dark:hover:bg-neutral-800 dark:text-neutral-300 py-2 px-4 rounded-full ${pathname.startsWith("/blog") ? "bg-neutral-200 dark:bg-neutral-800" : ""}`>Blog</a></li>
+            <li><a href="/about" class=`hover:bg-neutral-200 dark:hover:bg-neutral-800 dark:text-neutral-300 py-2 px-4 rounded-full ${pathname.startsWith("/about") ? "bg-neutral-200 dark:bg-neutral-800" : ""}`>About</a></li>
+        </ul>
+    </nav>
+</div>

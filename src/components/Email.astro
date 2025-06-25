@@ -1,0 +1,14 @@
+---
+const { class: className } = Astro.props;
+---
+<a href="#" class={className || ""} data-email-link="true"><slot /></a>
+
+<script is:inline>
+    document.addEventListener("click", (event) => {
+        if (event.target.hasAttribute("data-email-link")) {
+            const e = "dmlrdG9yQHZpa3RvcmZlamVzLmNvbQ==";
+            event.target.href = `mailto:${atob(e)}`;
+            return true;
+        }
+    });
+</script>

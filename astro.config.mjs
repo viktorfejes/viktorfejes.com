@@ -1,19 +1,16 @@
+// @ts-check
 import { defineConfig } from 'astro/config';
-
 import mdx from '@astrojs/mdx';
+import sitemap from '@astrojs/sitemap';
+import tailwindcss from '@tailwindcss/vite';
 
-import tailwind from '@astrojs/tailwind';
+import icon from 'astro-icon';
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://viktorfejes.com",
-  integrations: [mdx(), tailwind()],
-  markdown: {
-    shikiConfig: {
-      themes: {
-        light: "vitesse-dark",
-        dark: "dracula",
-      }
-    }
-  }
+    site: 'https://example.com',
+    integrations: [mdx(), sitemap(), icon()],
+    vite: {
+        plugins: [tailwindcss()],
+    },
 });

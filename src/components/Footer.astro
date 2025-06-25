@@ -1,17 +1,17 @@
-<footer class="flex items-center justify-center mt-16 w-full">
-    <div class="w-full max-w-8xl p-4 md:p-8">
-        <div class="w-full h-0.5 bg-neutral-50 mb-8"></div>
-        <div class="flex items-baseline justify-between">
-            <p class="text-xl">
-                Copyright © Viktor Fejes 2024
-            </p>
-            <p></p>
-            <a class="flex gap-4" href="#">
-                <svg class="block w-4 fill-neutral-50 self-center" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" clip-rule="evenodd" viewBox="0 0 172 170">
-                <path d="M96.163 170H75.557V39.445L14.57 100.431.001 85.86 85.86 0l85.86 85.86-14.571 14.57-60.986-60.985V170Z"/>
-                </svg>          
-                <span class="text-xl">Back to top</span>
-            </a>
+---
+import { Icon } from "astro-icon/components";
+
+const today = new Date();
+---
+
+<footer class="px-4 py-8 flex justify-center">
+    <div class="flex w-full max-w-xl justify-between items-center">
+        <div class="">
+            &copy; {today.getFullYear()} Viktor Fejes
+        </div>
+        <div class="text-xl flex justify-end">
+            <a href="https://github.com/viktorfejes/" target="_blank" rel="noopener noreferrer" class="rounded-full hover:bg-neutral-200 dark:hover:bg-neutral-800 p-2"><Icon name="mdi:github" /></a>
+            <a href="https://instagram.com/vfejes" target="_blank" rel="noopener noreferrer" class="rounded-full hover:bg-neutral-200 dark:hover:bg-neutral-800 p-2"><Icon name="mdi:instagram" /></a>
         </div>
     </div>
 </footer>

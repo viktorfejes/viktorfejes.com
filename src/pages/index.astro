@@ -1,16 +1,40 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import Hero from "../components/Hero.astro";
-import ProjectsNew from "../components/ProjectsNew.astro";
-import GLTest from "../components/GLTest.astro";
+import Layout from '../layouts/Global.astro';
+import SelectedGrid from '../components/SelectedGrid.astro';
+import ImageAsset from "../components/ImageAsset.astro";
+import { Icon } from "astro-icon/components";
+import Badge from "../components/Badge.astro";
+
 ---
 
 <Layout title="Viktor Fejes">
-	<!-- <GLTest /> -->
-	<section class="w-full max-w-8xl px-4 md:px-8 mt-48 md:mt-64">
-		<Hero />
-	</section>
-	<section class="w-full max-w-8xl px-4 md:px-8 mt-24 md:mt-64">
-		<ProjectsNew />
-	</section>
+    <SelectedGrid />
+    <div class="w-full max-w-xl">
+        <section class="mb-16">
+            <h2 class="text-lg font-semibold mb-4 dark:text-neutral-300">Writing</h2>
+            <p class="text-lg mb-8">I write to remember, explain, and simplify. It's all about color science, projects,
+            and low-level programming.</p>
+            <ul class="flex flex-col gap-4 text-lg mb-8">
+                <li class="sm:flex gap-6" class="dark:text-neutral-300">
+                    <p class="w-28 text-neutral-400 dark:text-neutral-500">Sep 2025</p>
+                    <a href="#" class="dark:text-neutral-300">
+                        <h3>Deciphering RGB Colors for Digital Art <Badge class="bg-neutral-200 dark:bg-neutral-800">Coming soon</Badge></h3>
+                    </a>
+                </li>
+                <li class="sm:flex gap-6">
+                    <p class="w-28 text-neutral-400 dark:text-neutral-500">Aug 2025</p>
+                    <a href="#" class="dark:text-neutral-300">
+                        <h3>Notes About Compute Shaders in D3D11 <Badge class="bg-neutral-200 dark:bg-neutral-800">Coming soon</Badge></h3>
+                    </a>
+                </li>
+                <li class="sm:flex gap-6">
+                    <p class="w-28 text-neutral-400 dark:text-neutral-500">Jul 2024</p>
+                    <a href="#" class="dark:text-neutral-300">
+                        <h3>Vector Operations <Badge class="bg-neutral-200 dark:bg-neutral-800">Coming soon</Badge></h3>
+                    </a>
+                </li>
+            </ul>
+            <a href="/blog" class="text-lg underline underline-offset-4 decoration-2 dark:text-neutral-300">See all →</a>
+        </section>
+    </div>
 </Layout>

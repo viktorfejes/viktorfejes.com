@@ -1,0 +1,78 @@
+---
+import Badge from "../components/Badge.astro";
+import ImageAsset from "../components/ImageAsset.astro";
+import { Icon } from "astro-icon/components";
+
+---
+<!-- [&>*:nth-child(3n+2)]:translate-y-8 -->
+<section class="overflow-hidden w-full max-w-4xl">
+    <div class="grid sm:grid-cols-2 grid-cols-1 gap-4">
+        <a href="/projects/acura-mdx" class="block mb-16">
+            <div class="relative rounded-lg overflow-hidden w-full pt-[66.66%]">
+                <div class="absolute inset-0 [&>img]:object-cover [&>img]:object-center [&>img]:w-full [&>img]:h-full">
+                    <ImageAsset src="gildstudios-acuramdx-1.jpg" alt="" path="projects/acura-mdx" />
+                </div>
+            </div>
+            <div class="mt-3">
+                <h3 class="text-lg font-medium dark:text-neutral-300">Acura MDX x Angeles Crest</h3>
+                <p class="text-neutral-400 dark:text-neutral-500">Retouching, Art Direction, CGI</p>
+            </div>
+        </a>
+        <a href="#" class="block mb-16">
+            <div class="relative rounded-lg overflow-hidden w-full pt-[66.66%]">
+                <div class="absolute inset-0 [&>img]:object-cover [&>img]:object-center [&>img]:w-full [&>img]:h-full">
+                    <img src="/scope.gif" alt="" />
+                </div>
+            </div>
+            <div class="mt-3">
+                <h3 class="text-lg font-medium dark:text-neutral-300"><Badge attr="bg-sky-200 dark:bg-sky-700">WIP</Badge> Chroma Scope</h3>
+                <p class="text-neutral-400 dark:text-neutral-500">Development, Graphics</p>
+            </div>
+        </a>
+        <a href="/projects/bravo-bravecto" class="block mb-16">
+            <div class="relative rounded-lg overflow-hidden w-full pt-[66.66%]">
+                <div class="absolute inset-0 [&>img]:object-cover [&>img]:object-center [&>img]:w-full [&>img]:h-full">
+                    <img src="/bravecto.gif" alt="" />
+                    <!-- <ImageAsset src="gildstudios-bravecto-commstill-1.jpg" alt="" path="" /> -->
+                </div>
+            </div>
+            <div class="mt-3">
+                <h3 class="text-lg font-medium dark:text-neutral-300">Bravo, Bravecto!</h3>
+                <p class="text-neutral-400 dark:text-neutral-500">Retouching, Art Direction, CGI</p>
+            </div>
+        </a>
+        <a href="/projects/doordash-campaign" class="block mb-16">
+            <div class="relative rounded-lg overflow-hidden w-full pt-[66.66%]">
+                <div class="absolute inset-0 [&>img]:object-cover [&>img]:object-center [&>img]:w-full [&>img]:h-full">
+                    <ImageAsset src="gildstudios-doordash-1.jpg" alt="" path="" />
+                </div>
+            </div>
+            <div class="mt-3">
+                <h3 class="text-lg font-medium dark:text-neutral-300">DoorDash Campaign</h3>
+                <p class="text-neutral-400 dark:text-neutral-500">Retouching</p>
+            </div>
+        </a>
+        <a href="#" class="block mb-16">
+            <div class="relative rounded-lg overflow-hidden w-full pt-[66.66%]">
+                <div class="absolute inset-0 [&>img]:object-cover [&>img]:object-center [&>img]:w-full [&>img]:h-full">
+                    <img src="https://raw.githubusercontent.com/viktorfejes/D3D11_PBR/refs/heads/main/assets/preview_01_20.gif" alt="" />
+                </div>
+            </div>
+            <div class="mt-3">
+                <h3 class="text-lg font-medium dark:text-neutral-300"><Badge attr="bg-sky-200 dark:bg-sky-700">WIP</Badge> Real-Time PBR Renderer</h3>
+                <p class="text-neutral-400 dark:text-neutral-500">Development, Graphics</p>
+            </div>
+        </a>
+        <a href="/projects/the-incredible-egg" class="block mb-16">
+            <div class="relative rounded-lg overflow-hidden w-full pt-[66.66%]">
+                <div class="absolute inset-0 [&>img]:object-cover [&>img]:object-center [&>img]:w-full [&>img]:h-full">
+                    <ImageAsset src="gildstudios-dinnereggs-1.jpg" alt="" path="" />
+                </div>
+            </div>
+            <div class="mt-3">
+                <h3 class="text-lg font-medium dark:text-neutral-300">The Incredible Egg</h3>
+                <p class="text-neutral-400 dark:text-neutral-500">Retouching</p>
+            </div>
+        </a>
+    </div>
+</section>

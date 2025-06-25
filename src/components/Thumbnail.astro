@@ -1,0 +1,46 @@
+---
+import ImageAsset from "./ImageAsset.astro";
+
+interface Props {
+    src: string;
+    alt?: string;
+}
+
+const { src, alt = "" } = Astro.props;
+
+const segments = src.split('/');
+const file = segments.pop();
+const path = segments.join('/');
+
+const ext = file.split(".").pop()?.toLowerCase() ?? "";
+const is_gif = ext === "gif";
+const is_video = ["mp4", "webm", "ogg"].includes(ext);
+const is_image = ["jpg", "jpeg", "png"].includes(ext);
+
+const th_class = "w-full h-auto object-center object-cover";
+---
+
+{is_image ? (
+    <ImageAsset classList={th_class} src={file} alt={alt} path={path} />
+) : is_gif ? (
+    <img
+        src={src}
+        alt={alt}
+        class={th_class}
+        loading="lazy"
+    />
+): is_video ? (
+    <video
+        src={src}
+        autoplay
+        muted
+        loop
+        playsinline
+        class={th_class}
+    />
+) : (
+    <div class="bg-red-100 text-red-700 p-4 rounded">
+        ⚠️ Unsupported file type: <code>{ext}</code>
+    </div>
+)}
+

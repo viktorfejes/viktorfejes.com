@@ -1,0 +1,7 @@
+---
+import ImageAsset from "../ImageAsset.astro";
+
+const { src, alt, project } = Astro.props;
+---
+
+<ImageAsset classList="rounded-lg" src={src} alt={alt} path={`projects/${project}`} />

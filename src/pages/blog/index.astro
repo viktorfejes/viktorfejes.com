@@ -1,60 +1,59 @@
 ---
-import Layout from "../../layouts/Layout.astro";
+import Layout from "../../layouts/Global.astro";
+import Badge from "../../components/Badge.astro";
 
-import { getCollection } from "astro:content";
-const blog = await getCollection("blog");
+import { getCollection } from 'astro:content';
+import FormattedDate from '../../components/FormattedDate.astro';
+import { Image } from 'astro:assets';
 
-// Sort posts
-blog.sort((a, b) => {
-    return new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime();
-});
-
-// Grouping by year
-const postsByYear = blog.reduce((acc, post) => {
-    const year = new Date(post.data.publishDate).getFullYear();
-    if (!acc[year]){
-        acc[year] = [];
-    }
-    acc[year].push(post);
-    return acc;
-}, {});
+const posts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
 ---
 
-<Layout title="Viktor Fejes - Blog">
-    <article class="w-full max-w-8xl px-4 md:px-8 mt-48 lg:mt-64">
-        <div class="w-full mb-32">
-            <div class="w-full mb-16">
-                <h2 class="text-5xl lg:text-8xl">Article List</h2>
-            </div>
-            <div class="w-full flex justify-end">
-                <div class="w-full lg:max-w-[66.66%]">
-                    <p class="text-xl lg:text-2xl leading-normal max-w-xl">A collection of various write-ups about my adventures with all sorts of techniques and technologies.</p>
-                </div>
-            </div>
-        </div>
-        <!-- Don't have enough articles for this to make sense yet... -->
-        <!-- <div class="search">
-            <div class="search-group">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                <input type="text" name="blog-search" id="search" placeholder="Search…">
-            </div>
-        </div> -->
-        <!-- <div class="search-results"></div> -->
-        <div class="mb-8">
-            {blog.map((post) => (
-                <article class="w-full relative group">
-                    <div class="absolute -left-4 -right-4 top-1 bottom-1 bg-neutral-200 z-0 scale-y-0 group-hover:scale-y-100 transition"></div>
-                    <a href=`/blog/${post.slug}` class="group-hover:text-neutral-950 group-hover:border-t-neutral-200 w-full flex justify-between items-center py-6 z-10 relative border-t last:border-b border-neutral-700 text-xl lg:text-2xl transition">
-                        <h3>{post.data.title}</h3>
-                        <time class="" datetime={post.data.publishDate.toISOString()}>{post.data.publishDate.toLocaleDateString("en-US", {
-                            year: "numeric",
-                            month: "short",
-                            day: "2-digit",
-                        })}</time>
-                        <span class="block opacity-0 group-hover:opacity-100">Read article</span>
-                    </a>
-                </article>
-            ))}
-        </div>
-    </article>
+<Layout title="Articles - Viktor Fejes">
+    <div class="w-full max-w-xl">
+        <ul class="flex flex-col gap-4">
+            <li>
+                <a href="#" class="sm:flex justify-between items-center gap-4">
+                    <h4 class="text-lg font-medium dark:text-neutral-300">Vector Operations <Badge class="bg-neutral-200 dark:bg-neutral-800">Coming soon</Badge></h4>
+                    <div class="bg-neutral-200 h-px flex-grow hidden sm:block"></div>
+                    <p class="">
+                        Jul 2025
+                    </p>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="sm:flex justify-between items-center gap-4">
+                    <h4 class="text-lg font-medium dark:text-neutral-300">Compute Shaders <Badge class="bg-neutral-200 dark:bg-neutral-800">Coming soon</Badge></h4>
+                    <div class="bg-neutral-200 h-px flex-grow hidden sm:block"></div>
+                    <p class="">
+                        Aug 2025
+                    </p>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="sm:flex justify-between items-center gap-4">
+                    <h4 class="text-lg font-medium dark:text-neutral-300">Understanding RGB Colors <Badge class="bg-neutral-200 dark:bg-neutral-800">Coming soon</Badge></h4>
+                    <div class="bg-neutral-200 h-px flex-grow hidden sm:block"></div>
+                    <p class="">
+                        Sep 2025
+                    </p>
+                </a>
+            </li>
+            <!-- { -->
+            <!--     posts.map((post) => ( -->
+            <!--         <li class="mb-2"> -->
+            <!--             <a href={`/blog/${post.id}/`} class="flex justify-between items-center gap-4"> -->
+            <!--                 <h4 class="text-lg font-medium dark:text-neutral-300">{post.data.title}</h4> -->
+            <!--                 <div class="bg-neutral-200 h-px flex-grow"></div> -->
+            <!--                 <p class=""> -->
+            <!--                     <FormattedDate date={post.data.pubDate} /> -->
+            <!--                 </p> -->
+            <!--             </a> -->
+            <!--         </li> -->
+            <!--     )) -->
+            <!-- } -->
+        </ul>
+    </div>
 </Layout>

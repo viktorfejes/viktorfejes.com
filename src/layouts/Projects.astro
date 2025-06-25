@@ -1,0 +1,27 @@
+---
+import BaseHead from "../components/BaseHead.astro"
+import Header from "../components/Header.astro"
+import Footer from "../components/Footer.astro"
+
+interface Props {
+	title: string;
+    header: string;    
+}
+
+const { title, header } = Astro.props;
+const description = "Personal site for Viktor Fejes -- Retoucher, Art Director, Graphics Programmer";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <BaseHead title={ title } description={ description } />
+    </head>
+    <body>
+        <Header type="short" />
+        <main class="flex items-center flex-col px-6 mb-auto">
+            <slot />
+        </main>
+        <Footer />
+    </body>
+</html>

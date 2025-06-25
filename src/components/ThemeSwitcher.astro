@@ -1,0 +1,125 @@
+---
+import { Sun, Moon, MonitorCog } from "@lucide/astro";
+---
+
+<div class="relative">
+    <button id="theme-dropdown-btn" class="rounded-full p-2 cursor-pointer hover:bg-neutral-200 dark:hover:bg-neutral-800">
+        <span id="theme-icon-sun" class="dark:text-neutral-300"><Sun /></span>
+        <span id="theme-icon-moon" class="dark:text-neutral-300 hidden"><Moon /></span>
+    </button>
+    <div id="theme-dropdown" data-open="false" class="absolute border border-neutral-200 dark:border-neutral-800 right-0 rounded-[0.5rem] w-32 bg-neutral-50 dark:bg-neutral-950 mt-2 hidden">
+        <ul class="flex flex-col gap-1 p-[0.25rem]">
+            <li class="w-full">
+                <button class="w-full cursor-pointer flex items-center gap-3 rounded-[0.25rem] py-1 px-2 hover:bg-neutral-200 dark:hover:bg-neutral-800" value="light">
+                    <div class="w-4 [&>svg]:w-full [&>svg]:h-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun-icon lucide-sun"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+                    </div>
+                    <span class="font-medium dark:text-neutral-300">Light</span>
+                </button>
+            </li>
+            <li>
+                <button class="w-full cursor-pointer flex items-center gap-3 rounded-[0.25rem] py-1 px-2 hover:bg-neutral-200 dark:hover:bg-neutral-800" value="dark">
+                    <div class="w-4 [&>svg]:w-full [&>svg]:h-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-moon-icon lucide-moon"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+                    </div>
+                    <span class="font-medium dark:text-neutral-300">Dark</span>
+                </button>
+            </li>
+            <li>
+                <button class="w-full cursor-pointer flex items-center gap-3 rounded-[0.25rem] py-1 px-2 hover:bg-neutral-200 dark:hover:bg-neutral-800" value="system">
+                    <div class="w-4 [&>svg]:w-full [&>svg]:h-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-monitor-cog-icon lucide-monitor-cog"><path d="M12 17v4"/><path d="m14.305 7.53.923-.382"/><path d="m15.228 4.852-.923-.383"/><path d="m16.852 3.228-.383-.924"/><path d="m16.852 8.772-.383.923"/><path d="m19.148 3.228.383-.924"/><path d="m19.53 9.696-.382-.924"/><path d="m20.772 4.852.924-.383"/><path d="m20.772 7.148.924.383"/><path d="M22 13v2a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7"/><path d="M8 21h8"/><circle cx="18" cy="6" r="3"/></svg>
+                    </div>
+                    <span class="font-medium dark:text-neutral-300">System</span>
+                </button>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<script is:inline>
+    const dropdownEl = document.getElementById("theme-dropdown");
+    const themeBtn = document.getElementById("theme-dropdown-btn");
+    const sunIcon = document.getElementById("theme-icon-sun");
+    const moonIcon = document.getElementById("theme-icon-moon");
+
+    function getTheme() {
+        const localStorageTheme = localStorage?.getItem("theme") ?? "";
+        if (["dark", "light"].includes(localStorageTheme)) {
+            return localStorageTheme;
+        }
+        if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+            return "dark";
+        }
+        return "light";
+    }
+
+    function setTheme(t) {
+        if (t === "light") {
+            document.documentElement.classList.remove("dark");
+            moonIcon.classList.add("hidden");
+            sunIcon.classList.remove("hidden");
+        } else {
+            document.documentElement.classList.add("dark");
+            sunIcon.classList.add("hidden");
+            moonIcon.classList.remove("hidden");
+        }
+    }
+
+    function closeDropdown() {
+        dropdownEl.dataset.open = "false";
+        themeBtn.classList.remove("bg-neutral-200");
+        themeBtn.classList.remove("dark:bg-neutral-800");
+        dropdownEl.classList.add("hidden");
+    }
+
+    const handleDropDown = () => {
+        if (dropdownEl.dataset.open === "false") {
+            dropdownEl.dataset.open = "true";
+            themeBtn.classList.add("bg-neutral-200");
+            themeBtn.classList.add("dark:bg-neutral-800");
+            dropdownEl.classList.remove("hidden");
+        } else {
+            closeDropdown();
+        }
+    }
+
+    const handleDropdownClick = (e) => {
+        const button = e.target.closest("button");
+        if (!button) return;
+
+        if (["dark", "light"].includes(button.value)) {
+            window.localStorage.setItem("theme", button.value);
+        } else {
+            window.localStorage.removeItem("theme");
+        }
+
+        // Grab all buttons from the dropdown
+        const buttons = dropdownEl.querySelectorAll("button");
+        buttons.forEach((btn) => {
+            if (btn == button) {
+                btn.classList.add("bg-neutral-200", "dark:bg-neutral-800");
+            } else {
+                btn.classList.remove("bg-neutral-200", "dark:bg-neutral-800");
+            }
+        });
+
+        setTheme(getTheme());
+        closeDropdown();
+    }
+
+    const handleGeneralClick = (e) => {
+        const isClickInside = dropdownEl.contains(e.target) || themeBtn.contains(e.target);
+        const isDropdownOpen = dropdownEl.dataset.open === "true";
+
+        if (!isClickInside && isDropdownOpen) {
+            closeDropdown();
+        }
+    }
+
+    setTheme(getTheme());
+
+    themeBtn.addEventListener("click", handleDropDown);
+    dropdownEl.addEventListener("click", handleDropdownClick);
+    document.addEventListener("click", handleGeneralClick);
+</script>
