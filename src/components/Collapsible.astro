@@ -5,7 +5,7 @@ const { id } = Astro.props;
 <label for={id} class="cursor-pointer [&>*]:pointer-events-none select-none">
     <slot name="header" />
 </label>
-<input type="checkbox" id={id} class="hidden [&+div]:max-h-0 checked:[&+div]:max-h-[1000px]" checked="false">
-<div class="overflow-hidden transition-all duration-300">
+<input type="checkbox" id={id} class="hidden checked:[&+div]:max-h-[1000px]" checked="false" data-collapse-toggle>
+<div class="overflow-hidden transition-all duration-300 max-h-0">
     <slot />
 </div>

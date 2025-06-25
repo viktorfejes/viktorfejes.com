@@ -19,9 +19,15 @@ const description = "Personal site for Viktor Fejes -- Retoucher, Art Director, 
     </head>
     <body>
         <Header type={header} />
-        <main class="flex items-center flex-col px-6 mb-auto">
+        <main class="flex items-center flex-col px-4 sm:px-6 mb-auto">
             <slot />
         </main>
         <Footer />
     </body>
 </html>
+
+<script>
+    window.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll("[data-collapse-toggle]").forEach(cb => cb.checked = false);
+    })
+</script>
