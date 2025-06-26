@@ -2,6 +2,7 @@
 import Layout from '../layouts/Global.astro';
 import Email from "../components/Email.astro";
 import Collapsible from "../components/Collapsible.astro";
+import { Icon } from "astro-icon/components";
 ---
 
 <Layout title="About - Viktor Fejes">
@@ -91,9 +92,15 @@ import Collapsible from "../components/Collapsible.astro";
             <h2 class="text-lg font-semibold mb-4 dark:text-neutral-300">Contact</h2>
             <p class="mb-6">Got a query or just want to say hello? <Email class="underline underline-offset-4 decoration-2 dark:text-neutral-300">Drop me a line!</Email></p>
             <ul class="flex gap-2">
-                <li><a href="https://github.com/viktorfejes" target="_blank" rel="noopener noreferrer" class="after:content-['↗'] bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 rounded-full px-2 py-1">Github</a></li>
-                <li><a href="https://instagram.com/vfejes" target="_blank" rel="noopener noreferrer" class="after:content-['↗'] bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 rounded-full px-2 py-1">Instagram</a></li>
-                <li><a href="https://www.linkedin.com/in/viktorfejes/" target="_blank" rel="noopener noreferrer" class="after:content-['↗'] bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 rounded-full px-2 py-1">LinkedIn</a></li>
+                <li>
+                    <a href="https://github.com/viktorfejes" target="_blank" rel="noopener noreferrer" class="bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 rounded-full px-2 py-1 flex items-center gap-1">Github <Icon name="mdi:arrow-top-right" /></a>
+                </li>
+                <li>
+                    <a href="https://instagram.com/vfejes" target="_blank" rel="noopener noreferrer" class="bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 rounded-full px-2 py-1 flex items-center gap-1">Instagram <Icon name="mdi:arrow-top-right" /></a>
+                </li>
+                <li>
+                    <a href="https://www.linkedin.com/in/viktorfejes/" target="_blank" rel="noopener noreferrer" class="bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 rounded-full px-2 py-1 flex items-center gap-1">LinkedIn <Icon name="mdi:arrow-top-right" /></a>
+                </li>
             </ul>
         </section>
     </div>
