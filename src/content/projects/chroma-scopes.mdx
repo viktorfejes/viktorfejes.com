@@ -1,0 +1,119 @@
+---
+name: Chroma Scopes
+thumbnail: scope.gif
+featured: true
+tags:
+    - Development, Graphics
+
+description: A desktop app for real-time visualization of image values across multiple scopes
+---
+
+<div class="w-full max-w-xl mb-8">
+    <p class="max-w-xl text-lg mb-8">Work in progress native desktop application for visualizing image values accurately
+    on different scopes. Currently, being developed using C and DirectX 11</p>
+</div>
+
+<div class="w-full max-w-4xl mb-8 flex flex-col gap-4 items-center">
+    <video class="w-full h-auto rounded-lg" controls muted autoplay loop>
+        <source src="/videos/chroma_scopes_jw.mp4" />
+    </video>
+    <p class="text-center px-8 py-4 text-neutral-500">Chroma Scopes' vectorscope sampling a scene from the movie John Wick</p>
+
+    <div class="w-full max-w-xl my-16">
+        <h2 class="text-xl font-medium mb-4 dark:text-neutral-300">The problem</h2>
+        <p class="text-lg mb-4">To accurately colour correct images it is extremely helpful to use different instrumentation that
+        allows the image data to be visualized in different ways. When working with video there are vectorscopes, waveforms,
+        RGB parades, histograms...etc. However, when working on still images -- where the current industry standard is Photoshop --
+        we only have the histogram.</p>
+        <p class="text-lg">Unfortunately, the histogram isn't enough to provide effective assistance in colour grading or correcting
+        our images. And, since there are no plugins I could use to change that, I set out to make something myself and started
+        working on Chroma Scopes.</p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+            <video class="w-full h-auto rounded-lg" controls muted autoplay loop>
+                <source src="/videos/chroma_scopes_230914.mp4" />
+            </video>
+            <p class="text-center px-8 py-4 text-neutral-500">Early prototype running in the browser through Websockets using WebGL</p>
+        </div>
+        <div>
+            <video class="w-full h-auto rounded-lg" controls muted autoplay loop>
+                <source src="/videos/chroma_scopes_230918.mp4" />
+            </video>
+            <p class="text-center px-8 py-4 text-neutral-500">From the browser the app was moved to Electron for a native feel</p>
+        </div>
+    </div>
+
+    <div class="w-full max-w-xl my-16">
+        <h2 class="text-xl font-medium my-4 dark:text-neutral-300">Early prototypes</h2>
+
+        <p class="text-lg mb-4">The current modern way to write Photoshop plugins is supposedly through their UXP API,
+        which is basically just a built-in Javascript parser that interfaces with their mostly C++ application. Javascript
+        is not known to be a fantastically performant language but since the new UXP API documentation seemed to be better
+        than the old C++ one I opted for the former. That said, the documentation for UXP is terrible, as well.</p>
+        
+        <p class="text-lg mb-4">Through some simple steps I was able to read pixel data from Photoshop's canvas and work with that
+        in my plugin while displaying the result in a "native" window inside Photoshop. This quickly fell apart as UXP only
+        has limited support for HTML, CSS, and Javascript and what they didn't support was WebGL so this led to a unbearable
+        performance when trying to display a quarter million particles.</p>
+
+        <p class="text-lg">To mitigate this, I switched to the browser as a common interface and figured I could try to communicate
+        between it and Photoshop through Websockets. This proved to be a surprisingly performant method and this way I had access
+        to WebGL2. After some quick experimentations I moved to Electron to make the application look more like an application.</p>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+        <div>
+            <video class="w-full h-auto rounded-lg" controls muted autoplay loop>
+                <source src="/videos/chroma_scopes_230921.mp4" />
+            </video>
+            <p class="text-center px-8 py-4 text-neutral-500">Early prototype running in the browser through Websockets using WebGL</p>
+        </div>
+        <div>
+            <video class="w-full h-auto rounded-lg" controls muted autoplay loop>
+                <source src="/videos/chroma_scopes_230928.mp4" />
+            </video>
+            <p class="text-center px-8 py-4 text-neutral-500">From the browser the app was moved to Electron for a native feel</p>
+        </div>
+    </div>
+
+    <div class="w-full max-w-xl my-16">
+        <h2 class="text-xl font-medium mb-4 dark:text-neutral-300">Error code 1000</h2>
+        <p class="text-lg mb-4">Since my Photoshop was communicating with my application through Websocket and not its native
+        API I had to make sure that I only send pixel data to my application if something changes. For this, I came up with
+        a small hashing algorithm to compare states and the only other thing needed was to listen for changes.</p>
+
+        <p class="text-lg mb-4">The latter was
+        more difficult than I thought as when I looked up event listeners in the UXP documentation I was met with a blank page.
+        Therefore, I had to poll the canvas at regular intervals to see if anything had changed, which I don't think Photoshop
+        was a big fan of as now and again I got an Error Code 1000. Which was a generic error without any further explanation
+        so that was really helpful.</p>
+
+        <p class="text-lg mb-4">To try to move away from this error I started eyeing native C++ plugins but later found out
+        that the functionality I wanted was not going to work with the way native plugins interact with Photoshop. This
+        made me quite disappointed and I almost gave up.</p>
+    </div>
+
+    <ImageAsset classList="rounded-lg" src="chroma_scopes_cpp_231228.png" alt="Clay rendering of the Acura MDX" path="projects/chroma-scopes" />
+    <p class="text-center px-8 py-4 text-neutral-500">Closed beta version of Chroma Scopes (C++, OpenGL)</p>
+
+    <div class="w-full max-w-xl my-16">
+        <h2 class="text-xl font-medium mb-4 dark:text-neutral-300">The pivot and current state</h2>
+        <p class="text-lg mb-4">This is where I realised that I was going to not give up and pivot to a different strategy:
+        screen capture. I could have an application that records a portion of the screen and transforms that to data
+        for the scopes. The upside is that this would detach it from Photoshop and would work with any visual software.
+        The downside is that it requires positioning and is not exactly a native experience in any application but a standalone.</p>
+
+        <p class="text-lg mb-4">Here is where this project currently is. Being built using C99 with DirectX 11 as the graphics
+        API exclusively for Windows (for now).</p>
+    </div>
+
+    <div class="w-full max-w-xl">
+        <video class="w-full h-auto rounded-lg" controls muted autoplay loop>
+            <source src="/videos/chroma_scopes_241223.mp4" />
+        </video>
+        <p class="text-center px-8 py-4 text-neutral-500">Current implementation of Chroma Scopes displaying the new Superman trailer
+        on its vectorscope</p>
+    </div>
+</div>

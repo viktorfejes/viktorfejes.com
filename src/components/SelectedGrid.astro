@@ -17,17 +17,21 @@ const project_pairs = projects.reduce((pairs, project, i) => {
 ---
 <section class="w-full max-w-4xl sm:mb-72">
     {project_pairs.map((pair) => (
-    <div class="flex sm:gap-16 flex-col sm:flex-row-reverse [&>a:last-child]:sm:translate-y-72 [&>a:first-child]:sm:text-right">
+    <div class="flex sm:gap-16 flex-col sm:flex-row-reverse [&>a:last-child]:sm:translate-y-72">
         {pair.map((project) => (
-        <a href={`/projects/${project.slug}/`} class="block sm:w-1/2 mb-32">
+        <a href={`/projects/${project.slug}/`} class="block sm:w-1/2 mb-32 group">
             <div class="relative rounded-lg overflow-hidden w-full pt-[100%]">
                 <div class="absolute inset-0 [&>img]:object-cover [&>img]:object-center [&>img]:w-full [&>img]:h-full">
                     <Thumbnail src={project.data.thumbnail} />
                 </div>
             </div>
-            <div class="mt-3">
+            <div class="mt-3 flex flex-col group-odd:sm:items-end group-odd:sm:text-right">
                 <h3 class="text-lg font-medium dark:text-neutral-300">{project.data.name}</h3>
+                {project.data.description ? (
+                <p class="text-neutral-400 dark:text-neutral-500 max-w-[32ch]">{project.data.description}</p>
+                ) : (
                 <p class="text-neutral-400 dark:text-neutral-500">{project.data.tags.join(", ")}</p>
+                )}
             </div>
         </a>
         ))}

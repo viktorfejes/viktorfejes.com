@@ -27,7 +27,7 @@ const resolved_image = await images[image_src]();
 ---
 
 <Image
-    class={`w-full h-full ${classList}`}
+    class={`w-full h-auto ${classList}`}
     src={resolved_image.default}
     alt={alt}
     loading="lazy"
