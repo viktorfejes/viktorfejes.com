@@ -53,6 +53,14 @@ import { Sun, Moon, MonitorCog } from "@lucide/astro";
         }
         return "light";
     }
+    
+    function getCurrentThemePreference() {
+        const localStorageTheme = localStorage?.getItem("theme") ?? "";
+        if (["dark", "light"].includes(localStorageTheme)) {
+            return localStorageTheme;
+        }
+        return "system";
+    }
 
     function setTheme(t) {
         if (t === "light") {
@@ -64,6 +72,20 @@ import { Sun, Moon, MonitorCog } from "@lucide/astro";
             sunIcon.classList.add("hidden");
             moonIcon.classList.remove("hidden");
         }
+    }
+
+    function updateSelectedButton() {
+        const currentPreference = getCurrentThemePreference();
+        // TODO: This is way too generic and could select other buttons on the site
+        const buttons = dropdownEl.querySelectorAll("button");
+        
+        buttons.forEach((btn) => {
+            if (btn.value === currentPreference) {
+                btn.classList.add("bg-neutral-200", "dark:bg-neutral-800");
+            } else {
+                btn.classList.remove("bg-neutral-200", "dark:bg-neutral-800");
+            }
+        });
     }
 
     function closeDropdown() {
@@ -79,6 +101,8 @@ import { Sun, Moon, MonitorCog } from "@lucide/astro";
             themeBtn.classList.add("bg-neutral-200");
             themeBtn.classList.add("dark:bg-neutral-800");
             dropdownEl.classList.remove("hidden");
+
+            updateSelectedButton();
         } else {
             closeDropdown();
         }
@@ -94,15 +118,7 @@ import { Sun, Moon, MonitorCog } from "@lucide/astro";
             window.localStorage.removeItem("theme");
         }
 
-        // Grab all buttons from the dropdown
-        const buttons = dropdownEl.querySelectorAll("button");
-        buttons.forEach((btn) => {
-            if (btn == button) {
-                btn.classList.add("bg-neutral-200", "dark:bg-neutral-800");
-            } else {
-                btn.classList.remove("bg-neutral-200", "dark:bg-neutral-800");
-            }
-        });
+        updateSelectedButton();
 
         setTheme(getTheme());
         closeDropdown();
@@ -118,6 +134,7 @@ import { Sun, Moon, MonitorCog } from "@lucide/astro";
     }
 
     setTheme(getTheme());
+    updateSelectedButton();
 
     themeBtn.addEventListener("click", handleDropDown);
     dropdownEl.addEventListener("click", handleDropdownClick);
