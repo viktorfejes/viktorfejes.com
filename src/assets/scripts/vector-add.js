@@ -4,9 +4,9 @@ class VectorAdd extends HTMLElement {
 
         this.bounds = {
             x: -10,
-            y: -10,
+            y: -8,
             width: 20,
-            height: 20
+            height: 16 
         };
 
         this.vectorA = {
@@ -35,8 +35,6 @@ class VectorAdd extends HTMLElement {
             labelDist: 1.25,
             pos: { x: 2, y: 5 },
         };
-
-        this.handles = [this.vectorA, this.vectorB];
     }
 
     connectedCallback() {
@@ -104,11 +102,13 @@ class VectorAdd extends HTMLElement {
                     fill: transparent;
                     stroke: none;
                     cursor: grab;
+                    touch-action: none;
                 }
+                .handle.no-grab { cursor: auto; }
                 .label {
                     font-family: "Geist", sans-serif;
                     font-weight: 500;
-                    font-size: 0.05rem;
+                    font-size: 0.04rem;
                     user-select: none;
                 }
                 .label-a { fill: ${colors.vectorA}; }
@@ -145,12 +145,6 @@ class VectorAdd extends HTMLElement {
                     <line x1="${this.bounds.x}" y1="0" x2="${-this.bounds.x}" y2="0" class="axis" marker-end="url(#arrowhead-axis)" />
                     <line x1="0" y1="${this.bounds.y}" x2="0" y2="${-this.bounds.y}" class="axis" marker-end="url(#arrowhead-axis)" />
 
-                    <!-- Vector C -->
-                    <line id="${this.vectorC.vectorId}" class="vector vector-c" x1="0" y1="0" x2="${this.vectorC.pos.x}" y2="${this.vectorC.pos.y}" marker-end="url(#arrowhead-c-${isDark ? 'dark' : 'light'})" />
-                    <circle id="${this.vectorC.handleId}" class="handle" cx="${this.vectorC.pos.x}" cy="${this.vectorC.pos.y}" r="0.8" />
-                    <text id="${this.vectorC.labelId}" class="label label-c" transform="scale(1, -1)" text-anchor="middle" dominant-baseline="middle"
-                        x="${vectorCLabelPos.x}" y="${vectorCLabelPos.y}">A + B</text>
-
                     <!-- Vector A -->
                     <line id="${this.vectorA.vectorId}" class="vector vector-a" x1="0" y1="0" x2="${this.vectorA.pos.x}" y2="${this.vectorA.pos.y}" marker-end="url(#arrowhead-a-${isDark ? 'dark' : 'light'})" />
                     <circle id="${this.vectorA.handleId}" class="handle" cx="${this.vectorA.pos.x}" cy="${this.vectorA.pos.y}" r="0.8" />
@@ -162,6 +156,12 @@ class VectorAdd extends HTMLElement {
                     <circle id="${this.vectorB.handleId}" class="handle" cx="${this.vectorB.pos.x}" cy="${this.vectorB.pos.y}" r="0.8" />
                     <text id="${this.vectorB.labelId}" class="label label-b" transform="scale(1, -1)" text-anchor="middle" dominant-baseline="middle"
                         x="${vectorBLabelPos.x}" y="${vectorBLabelPos.y}">B</text>
+
+                    <!-- Vector C -->
+                    <line id="${this.vectorC.vectorId}" class="vector vector-c" x1="0" y1="0" x2="${this.vectorC.pos.x}" y2="${this.vectorC.pos.y}" marker-end="url(#arrowhead-c-${isDark ? 'dark' : 'light'})" />
+                    <circle id="${this.vectorC.handleId}" class="handle no-grab" cx="${this.vectorC.pos.x}" cy="${this.vectorC.pos.y}" r="0.8" />
+                    <text id="${this.vectorC.labelId}" class="label label-c" transform="scale(1, -1)" text-anchor="middle" dominant-baseline="middle"
+                        x="${vectorCLabelPos.x}" y="${vectorCLabelPos.y}">A + B</text>
                 </g>
             </svg>
         `;
@@ -227,7 +227,7 @@ class VectorAdd extends HTMLElement {
             };
         }
 
-        this.handles.forEach(handleConfig => {
+        [this.vectorA, this.vectorB].forEach(handleConfig => {
             const handle = shadow.getElementById(handleConfig.handleId);
 
             if (!handle) return;
@@ -257,6 +257,8 @@ class VectorAdd extends HTMLElement {
 
         document.addEventListener("pointermove", (e) => {
             if (!currentDrag) return;
+
+            e.preventDefault();
 
             const rect = svg.getBoundingClientRect();
             const svgCoords = screenToSVG(e.clientX - rect.left, e.clientY - rect.top);
