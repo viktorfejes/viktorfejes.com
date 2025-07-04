@@ -1,0 +1,30 @@
+<vector-operations></vector-operations>
+
+<template id="heart">
+    <button aria-label="Heart">💜</button> × <span>0</span>
+</template>
+
+<script>
+    // Define the behaviour for our new type of HTML element.
+    class VectorOperations extends HTMLElement {
+        connectedCallback() {
+            const shadow = this.attachShadow({mode: "closed"});
+            const template = document.getElementById("heart").content.cloneNode(true);
+            shadow.append(template);
+
+            let count = 0;
+
+            const heartButton = shadow.querySelector('button');
+            const countSpan = shadow.querySelector('span');
+
+            // Each time the button is clicked, update the count.
+            heartButton.addEventListener('click', () => {
+                count++;
+                countSpan.textContent = count.toString();
+            });
+        }
+    }
+
+    // Tell the browser to use our AstroHeart class for <astro-heart> elements.
+    customElements.define('vector-operations', VectorOperations);
+</script>
