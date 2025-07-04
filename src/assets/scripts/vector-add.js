@@ -233,6 +233,9 @@ class VectorAdd extends HTMLElement {
             if (!handle) return;
 
             handle.addEventListener("pointerdown", (e) => {
+                e.preventDefault();
+                svg.setPointerCapture(e.pointerId);
+
                 const currentVector = handleConfig.pos;
 
                 // Get mouse position in SVG coordinates
@@ -251,7 +254,6 @@ class VectorAdd extends HTMLElement {
                 };
 
                 handle.style.cursor = "grabbing";
-                e.preventDefault();
             });
         });
 
@@ -279,6 +281,8 @@ class VectorAdd extends HTMLElement {
 
         document.addEventListener("pointerup", () => {
             if (currentDrag) {
+                svg.releasePointerCapture(e.pointerId);
+
                 const handle = shadow.getElementById(currentDrag.handleConfig.handleId);
                 if (handle) handle.style.cursor = "grab";
 
