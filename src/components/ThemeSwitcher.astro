@@ -72,6 +72,11 @@ import { Sun, Moon, MonitorCog } from "@lucide/astro";
             sunIcon.classList.add("hidden");
             moonIcon.classList.remove("hidden");
         }
+
+        // Dispatch custom event that components can listen to
+        document.dispatchEvent(new CustomEvent('theme-changed', {
+            detail: { isDark: (t !== "light") }
+        }));
     }
 
     function updateSelectedButton() {
