@@ -105,7 +105,7 @@ class Vector {
         const {x: sx, y: sy} = this.start;
         const {x: ex, y: ey} = this.end;
 
-        const {x: lineX, y: lineY} = calculateVectorLineLength(this.start, this.end, 6, 0.1, 0.2);
+        const {x: lineX, y: lineY} = calculateVectorLineLength(this.start, this.end, 6, 4.5, 0.2);
         this.line.setAttribute("x1", sx);
         this.line.setAttribute("y1", sy);
         this.line.setAttribute("x2", lineX);
@@ -272,7 +272,7 @@ class VectorAdd extends HTMLElement {
                 "markerWidth": 6,
                 "markerHeight": 4,
                 "orient": "auto",
-                "refX": 0.1,
+                "refX": 4.5,
                 "refY": 2
             });
 
@@ -387,7 +387,7 @@ class VectorAdd extends HTMLElement {
         g.dataset.end = `${end.x},${end.y}`;
 
         // Calculate the size of the line (vector - arrowhead)
-        const {x: lx, y: ly} = calculateVectorLineLength(start, end, 6, 0.1, 0.2);
+        const {x: lx, y: ly} = calculateVectorLineLength(start, end, 6, 4.5, 0.2);
 
         const line = createSVGElement("line", {
             "x1": start.x,
