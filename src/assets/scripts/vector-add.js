@@ -65,11 +65,11 @@ class Point {
 }
 
 class Vector {
-    constructor({start, end, label = "", svgRoot, key}) {
+    constructor({start, end, label = "", parent, key}) {
         this.start = start;
         this.end = end;
         this.label = label;
-        this.svgRoot = svgRoot;
+        this.parent = parent;
         this.key = key;
 
         // Group
@@ -77,22 +77,23 @@ class Vector {
 
         // Line
         this.line = createSVGElement("line");
-        this.line.classList.add("vector-line");
+        this.line.classList.add("vector-line", `vector-line--${this.key}`);
 
         // Label
         if (label) {
             this.labelEl = createSVGElement("text", {
                 "text-anchor": "middle",
-                "dominant-baseline": "middle"
+                "dominant-baseline": "middle",
+                transform: "scale(1,-1)"
             });
             this.labelEl.textContent = label;
-            this.labelEl.classList.add("vector-label");
+            this.labelEl.classList.add("vector-label", `vector-label--${this.key}`);
         }
 
         // Append everything appropriately.
         this.group.appendChild(this.line);
         if (label) this.group.appendChild(this.labelEl);
-        this.svgRoot.appendChild(this.group);
+        this.parent.appendChild(this.group);
 
         // Add listeners to points so they can call this update
         this.start.onChange(() => this.update());
@@ -105,7 +106,7 @@ class Vector {
         const {x: sx, y: sy} = this.start;
         const {x: ex, y: ey} = this.end;
 
-        const {x: lineX, y: lineY} = calculateVectorLineLength(this.start, this.end, 6, 4.5, 0.2);
+        const {x: lineX, y: lineY} = calculateVectorLineLength(this.start, this.end, 3, 2.1, 0.2);
         this.line.setAttribute("x1", sx);
         this.line.setAttribute("y1", sy);
         this.line.setAttribute("x2", lineX);
@@ -114,7 +115,7 @@ class Vector {
         if (this.labelEl) {
             const {x: labelX, y: labelY} = calculateLabelPosition(sx, sy, ex, ey, 0.5);
             this.labelEl.setAttribute("x", labelX);
-            this.labelEl.setAttribute("y", labelY);
+            this.labelEl.setAttribute("y", -labelY);
         }
     }
 
@@ -128,11 +129,11 @@ class Vector {
 }
 
 class Handle {
-    constructor({ point, radius = 0.3, interactive = false, svgRoot }) {
+    constructor({ point, radius = 0.3, interactive = false, parent }) {
         this.point = point;
         this.radius = radius;
         this.interactive = interactive;
-        this.svgRoot = svgRoot;
+        this.parent = parent;
 
         this.dragging = false;
 
@@ -143,7 +144,7 @@ class Handle {
             fill: "transparent"
         });
 
-        this.svgRoot.appendChild(this.el);
+        this.parent.appendChild(this.el);
 
         // Sync handle position when point moves independently
         this.point.onChange(() => {
@@ -156,7 +157,7 @@ class Handle {
                 this.dragging = true;
 
                 // Moving
-                document.addEventListener("pointermove", this.onPointerMove);
+                this.parent.addEventListener("pointermove", this.onPointerMove);
 
                 // End of moving
                 document.addEventListener("pointerup", () => {
@@ -175,10 +176,10 @@ class Handle {
     }
 
     screenToSVG(screenX, screenY) {
-       const svgPoint = this.svgRoot.createSVGPoint();
+       const svgPoint = this.parent.createSVGPoint();
        svgPoint.x = screenX;
        svgPoint.y = screenY;
-       const transformedPoint = svgPoint.matrixTransform(this.svgRoot.getScreenCTM().inverse());
+       const transformedPoint = svgPoint.matrixTransform(this.parent.getScreenCTM().inverse());
        return {
            x: transformedPoint.x,
            y: transformedPoint.y
@@ -191,8 +192,8 @@ class VectorAdd extends HTMLElement {
         super();
 
         this.bounds = {
-            x: -10,
-            y: -8,
+            x: -2,
+            y: -2,
             width: 20,
             height: 16
         };
@@ -207,43 +208,74 @@ class VectorAdd extends HTMLElement {
 
     render() {
         const shadow = this.shadowRoot;
+        const isDark = document.querySelector("html").classList.contains("dark");
+
+        const colors = {
+            background: isDark ? "#030712" : "#fff",
+            grid: isDark ? "#111827" : "#f5f5f5",
+            axis: isDark ? "#1f2937" : "#525252",
+            vectorA: isDark ? "#38bdf8" : "#38bdf8",
+            vectorB: isDark ? "#fb7185" : "#fb7185",
+            vectorSum: isDark ? "#fb7185" : "#a3e635",
+            vectorAux: isDark ? "#d4d4d4": "#e5e5e5",
+        };
 
         // Style
         const style = document.createElement("style");
         style.textContent = `
             :host {
                 display: block;
-                background: #ccc;
+                background: ${colors.background};
             }
             .grid-line {
-                stroke: #ddd;
+                stroke: ${colors.grid};
                 stroke-width: 0.1;
+                stroke-dasharray: 0.1 0.1;
             }
             .axis-line {
-                stroke: #333;
+                stroke: ${colors.axis};
                 stroke-width: 0.1;
             }
-            .vector-line {
-                stroke: #251a8f;
-                stroke-width: 0.2;
+            .vector-line { stroke-width: 0.2; }
+            .vector-line--vectorA { 
                 marker-end: url(#arrowhead-a);
+                stroke: ${colors.vectorA};
+            }
+            .vector-line--vectorB {
+                marker-end: url(#arrowhead-b);
+                stroke: ${colors.vectorB};
+            }
+            .vector-line--vectorSum {
+                marker-end: url(#arrowhead-sum);
+                stroke: ${colors.vectorSum};
+            }
+            .vector-line--vectorGhostAB,
+            .vector-line--vectorGhostBA {
+                marker-end: url(#arrowhead-aux);
+                stroke: ${colors.vectorAux};
+                stroke-dasharray: 0.3 0.1;
             }
             .vector-label {
                 user-select: none;
                 pointer-events: none;
-                font-family: "Geist", sans-serif;
-                font-size: 0.08rem;
+                font-family: "Geist Mono", sans-serif;
+                font-size: 0.05rem;
                 font-weight: 500;
             }
-            #arrowhead-a {
-                fill: #251a8f;
-            }
+            .vector-label--vectorA { fill: ${colors.vectorA}; }
+            .vector-label--vectorB { fill: ${colors.vectorB}; }
+            .vector-label--vectorSum { fill: ${colors.vectorSum}; }
+            #arrowhead-a { fill: ${colors.vectorA}; }
+            #arrowhead-b { fill: ${colors.vectorB}; }
+            #arrowhead-sum { fill: ${colors.vectorSum}; }
+            #arrowhead-aux { fill: ${colors.vectorAux}; }
         `;
         shadow.appendChild(style);
 
         // Create SVG canvas
         const svg = createSVGElement("svg", {
-            "viewBox": `${this.bounds.x} ${this.bounds.y} ${this.bounds.width} ${this.bounds.height}`
+            "viewBox": `${this.bounds.x} ${this.bounds.y} ${this.bounds.width} ${this.bounds.height}`,
+            transform: "scale(1,-1)"
         });
 
         // Create definitions for the SVG
@@ -269,18 +301,51 @@ class VectorAdd extends HTMLElement {
             // Create arrow(s)
             const marker = createSVGElement("marker", {
                 "id": "arrowhead-a",
-                "markerWidth": 6,
-                "markerHeight": 4,
+                "markerWidth": 3,
+                "markerHeight": 3,
                 "orient": "auto",
-                "refX": 4.5,
-                "refY": 2
+                "refX": 2.1,
+                "refY": 1.5
             });
 
             const markerPoly = createSVGElement("polygon", {
-                "points": "0 0, 6 2, 0 4"
+                "points": "0 0, 3 1.5, 0 3"
             });
             marker.appendChild(markerPoly);
             defs.appendChild(marker);
+
+            const arrowB = createSVGElement("marker", {
+                "id": "arrowhead-b",
+                "markerWidth": 3,
+                "markerHeight": 3,
+                "orient": "auto",
+                "refX": 2.1,
+                "refY": 1.5
+            });
+            arrowB.appendChild(markerPoly.cloneNode(true));
+            defs.appendChild(arrowB);
+
+            const arrowSum = createSVGElement("marker", {
+                "id": "arrowhead-sum",
+                "markerWidth": 3,
+                "markerHeight": 3,
+                "orient": "auto",
+                "refX": 2.1,
+                "refY": 1.5
+            });
+            arrowSum.appendChild(markerPoly.cloneNode(true));
+            defs.appendChild(arrowSum);
+
+            const arrowAux = createSVGElement("marker", {
+                "id": "arrowhead-aux",
+                "markerWidth": 3,
+                "markerHeight": 3,
+                "orient": "auto",
+                "refX": 2.1,
+                "refY": 1.5
+            });
+            arrowAux.appendChild(markerPoly.cloneNode(true));
+            defs.appendChild(arrowAux);
 
             svg.appendChild(defs);
         }
@@ -289,10 +354,10 @@ class VectorAdd extends HTMLElement {
         {
             // Background
             const rect = createSVGElement("rect", {
-                "x": -10,
-                "y": -8,
-                "width": 20,
-                "height": 16,
+                "x": this.bounds.x,
+                "y": this.bounds.y,
+                "width": this.bounds.width,
+                "height": this.bounds.height,
                 "fill": "url(#grid)"
             });
             svg.appendChild(rect);
@@ -300,15 +365,15 @@ class VectorAdd extends HTMLElement {
             // X-axis
             const axisX = createSVGElement("line", {
                 "x1": 0,
-                "y1": -8,
+                "y1": this.bounds.y,
                 "x2": 0,
-                "y2": 8
+                "y2": this.bounds.height
             });
             // Y-axis
             const axisY = createSVGElement("line", {
-                "x1": -10,
+                "x1": this.bounds.x,
                 "y1": 0,
-                "x2": 10,
+                "x2": this.bounds.width,
                 "y2": 0
             });
 
@@ -322,36 +387,35 @@ class VectorAdd extends HTMLElement {
         // Create points for vectors (unconventionally: tail and head)
         const vectorA = new Vector({
             start: new Point("va_s", 0, 0),
-            end: new Point("va_e", 3, 4),
+            end: new Point("va_e", 9, 3),
             label: "A",
-            svgRoot: svg,
+            parent: svg,
             key: "vectorA"});
 
         const vectorB = new Vector({
             start: new Point("vb_s", 0, 0),
-            end: new Point("vb_e", -2, 5),
+            end: new Point("vb_e", 3, 6),
             label: "B",
-            svgRoot: svg,
+            parent: svg,
             key: "vectorB"});
 
         const vectorSum = new Vector({
             start: new Point("vsum_s", 0, 0),
-            end: new Point("vsum_e", 1, 9),
-            label: "A + B",
-            svgRoot: svg,
+            end: new Point("vsum_e", 12, 9),
+            label: "A+B",
+            parent: svg,
             key: "vectorSum"});
 
         const vectorGhostAB = new Vector({
             start: vectorA.getEndPoint(),
             end: vectorSum.getEndPoint(),
-            svgRoot: svg,
+            parent: svg,
             key: "vectorGhostAB"});
         const vectorGhostBA = new Vector({
             start: vectorB.getEndPoint(),
             end: vectorSum.getEndPoint(),
-            svgRoot: svg,
+            parent: svg,
             key: "vectorGhostBA"});
-
 
         function addVectors(target, a, b) {
             return function update() {
@@ -366,54 +430,17 @@ class VectorAdd extends HTMLElement {
             point: vectorA.getEndPoint(),
             radius: 0.8,
             interactive: true,
-            svgRoot: svg
+            parent: svg
         });
         const handleB = new Handle({
             point: vectorB.getEndPoint(),
             radius: 0.8,
             interactive: true,
-            svgRoot: svg
+            parent: svg
         });
 
         // Append svg to shadow DOM
         shadow.appendChild(svg);
-    }
-
-    createVector({key, start, end, label = ""}) {
-        const g = createSVGElement("g");
-        g.classList.add("vector");
-        g.dataset.key = key;
-        g.dataset.start = `${start.x},${start.y}`;
-        g.dataset.end = `${end.x},${end.y}`;
-
-        // Calculate the size of the line (vector - arrowhead)
-        const {x: lx, y: ly} = calculateVectorLineLength(start, end, 6, 4.5, 0.2);
-
-        const line = createSVGElement("line", {
-            "x1": start.x,
-            "y1": start.y,
-            "x2": lx,
-            "y2": ly,
-        });
-        line.classList.add("vector-line");
-
-        if (label) {
-            // Calculate label position
-            const {x: labelX, y: labelY} = calculateLabelPosition(start.x, start.y, end.x, end.y, 0.5);
-
-            const text = createSVGElement("text", {
-                "x": labelX,
-                "y": labelY
-            });
-            text.textContent = label;
-            text.classList.add("vector-label");
-
-            g.appendChild(text);
-        }
-
-        g.appendChild(line);
-
-        return g;
     }
 }
 
