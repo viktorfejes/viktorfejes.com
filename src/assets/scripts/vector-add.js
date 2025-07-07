@@ -222,19 +222,19 @@ class Handle {
     onPointerMove = (e) => {
         if (!this.dragging) return;
         const svgCoords = this.screenToSVG(e.clientX, e.clientY);
-
         this.point.set(svgCoords.x, svgCoords.y);
     }
 
     screenToSVG(screenX, screenY) {
-       const svgPoint = this.parent.createSVGPoint();
-       svgPoint.x = screenX;
-       svgPoint.y = screenY;
-       const transformedPoint = svgPoint.matrixTransform(this.parent.getScreenCTM().inverse());
-       return {
+        const svg = this.parent.closest("svg");
+        const svgPoint = svg.createSVGPoint();
+        svgPoint.x = screenX;
+        svgPoint.y = screenY;
+        const transformedPoint = svgPoint.matrixTransform(this.parent.getScreenCTM().inverse());
+        return {
            x: transformedPoint.x,
            y: transformedPoint.y
-       };
+        };
     }
 }
 
@@ -352,7 +352,6 @@ class VectorAdd extends HTMLElement {
         // Create SVG canvas
         const svg = createSVGElement("svg", {
             "viewBox": `${this.bounds.x} ${this.bounds.y} ${this.bounds.width} ${this.bounds.height}`,
-            transform: "scale(1 -1)"
         });
 
         // Create definitions for the SVG
@@ -455,6 +454,11 @@ class VectorAdd extends HTMLElement {
         svg.appendChild(axisX);
         svg.appendChild(axisY);
 
+        const g_flip = createSVGElement("g", {
+            transform: "scale(1 -1)"
+        });
+        svg.appendChild(g_flip);
+
         // Create points for vectors (unconventionally: tail and head)
         const p00 = new Point("p00", 0, 0);
 
@@ -464,7 +468,7 @@ class VectorAdd extends HTMLElement {
             label: {
                 text: "A",
             },
-            parent: svg,
+            parent: g_flip,
             key: "vectorA",
             stroke: {
                 width: vectorStrokeWidth,
@@ -479,7 +483,7 @@ class VectorAdd extends HTMLElement {
             label: {
                 text: "B"
             },
-            parent: svg,
+            parent: g_flip,
             key: "vectorB",
             stroke: {
                 width: vectorStrokeWidth,
@@ -493,7 +497,7 @@ class VectorAdd extends HTMLElement {
         const vectorGhostAB = new Vector({
             start: vectorA.getEndPoint(),
             end: pSum,
-            parent: svg,
+            parent: g_flip,
             key: "vectorGhostAB",
             label: {
                 text: "B"
@@ -508,7 +512,7 @@ class VectorAdd extends HTMLElement {
         const vectorGhostBA = new Vector({
             start: vectorB.getEndPoint(),
             end: pSum,
-            parent: svg,
+            parent: g_flip,
             key: "vectorGhostBA",
             label: {
                 text: "A"
@@ -527,7 +531,7 @@ class VectorAdd extends HTMLElement {
                 text: "A+B",
                 offset: 0.8
             },
-            parent: svg,
+            parent: g_flip,
             key: "vectorSum",
             stroke: {
                 width: vectorStrokeWidth,
@@ -541,13 +545,13 @@ class VectorAdd extends HTMLElement {
             point: vectorA.getEndPoint(),
             radius: 1,
             interactive: true,
-            parent: svg
+            parent: g_flip
         });
         const handleB = new Handle({
             point: vectorB.getEndPoint(),
             radius: 1,
             interactive: true,
-            parent: svg
+            parent: g_flip
         });
 
         // Append svg to shadow DOM
