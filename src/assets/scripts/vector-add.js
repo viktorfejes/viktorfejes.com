@@ -18,7 +18,7 @@ function calculateLabelPosition(x1, y1, x2, y2, offsetDistance) {
     const offsetX = offsetDistance * Math.cos(angleRad - Math.PI / 2);
     const offsetY = offsetDistance * Math.sin(angleRad - Math.PI / 2);
 
-    return {x: midX + offsetX, y: midY + offsetY};
+    return { x: midX + offsetX, y: midY + offsetY };
 }
 
 function calculateVectorLineLength(vectorStart, vectorEnd, arrowWidth, arrowRefX, strokeWidth) {
@@ -34,6 +34,33 @@ function calculateVectorLineLength(vectorStart, vectorEnd, arrowWidth, arrowRefX
     return {
         x: vectorEnd.x - arrowLength * ux,
         y: vectorEnd.y - arrowLength * uy,
+    };
+}
+
+function project3DToIsometric(x, y, z) {
+    // Isometric projection matrix
+    // Standard isometric: 30° angles
+    const cos30 = Math.cos(Math.PI / 6); // 0.866
+    const sin30 = Math.sin(Math.PI / 6); // 0.5
+
+    // 2:1 aspect ratio tiles (pixel art style)
+    const isoAngle = Math.atan(0.5);
+    const cos = Math.cos(isoAngle);
+    const sin = Math.sin(isoAngle);
+
+    return {
+        x: (x - y) * cos,
+        y: (x + y) * sin - z
+    };
+}
+
+function calculateIsoBounds(bounds) {
+    const diagonal = Math.sqrt(bounds.width * bounds.width + bounds.height * bounds.height);
+    return {
+        x: Math.floor(bounds.x - diagonal),
+        y: Math.floor(bounds.y - diagonal),
+        width: Math.floor(bounds.width + 2 * diagonal),
+        height: Math.floor(bounds.height + 2 * diagonal)
     };
 }
 
@@ -79,6 +106,7 @@ class Vector {
         this.label = {
             text: "",
             offset: 0.5,
+            flipY: false,
             ...label
         };
         this.stroke = {
@@ -123,8 +151,13 @@ class Vector {
                 fill: this.stroke.color,
                 "text-anchor": "middle",
                 "dominant-baseline": "middle",
-                transform: "scale(1 -1)"
             });
+
+            // See if we need to flip the label on Y
+            if (!label.flipY) {
+                this.labelEl.setAttribute("transform", "scale(1 -1)");
+            }
+
             this.labelEl.textContent = label.text;
             this.labelEl.classList.add("vector-label", `vector-label--${this.key}`);
 
@@ -142,11 +175,11 @@ class Vector {
     }
 
     update() {
-        const {x: sx, y: sy} = this.start;
-        let {x: ex, y: ey} = this.end;
+        const { x: sx, y: sy } = this.start;
+        let { x: ex, y: ey } = this.end;
 
         if (this.marker) {
-            const {x: lineX, y: lineY} = calculateVectorLineLength(
+            const { x: lineX, y: lineY } = calculateVectorLineLength(
                 this.start, this.end,
                 parseFloat(this.marker.getAttribute("markerWidth")),
                 parseFloat(this.marker.getAttribute("refX")),
@@ -161,9 +194,123 @@ class Vector {
         this.line.setAttribute("y2", ey);
 
         if (this.labelEl) {
-            const {x: labelX, y: labelY} = calculateLabelPosition(sx, sy, ex, ey, this.label.offset);
+            let { x: labelX, y: labelY } = calculateLabelPosition(sx, sy, ex, ey, this.label.offset);
+            labelY *= this.label.flipY ? 1 : -1;
             this.labelEl.setAttribute("x", labelX);
-            this.labelEl.setAttribute("y", -labelY);
+            this.labelEl.setAttribute("y", labelY);
+        }
+    }
+
+    getStartPoint() {
+        return this.start;
+    }
+
+    getEndPoint() {
+        return this.end;
+    }
+
+    getStr() {
+        return `${this.end.x.toFixed(1)}, ${this.end.y.toFixed(1)}`;
+    }
+}
+
+class Polygon {
+    constructor({
+        points,
+        label = {},
+        fill = "none",
+        stroke = {},
+        parent,
+        key,
+    }) {
+
+        // Defaults for objects
+        this.stroke = {
+            width: 0.1,
+            color: "none",
+            ...stroke
+        };
+        this.label = {
+            text: "",
+            offset: 0.5,
+            flipY: false,
+            color: this.stroke.color,
+            ...label
+        };
+
+        this.points = points;
+        this.pointCount = points.length;
+        this.fill = fill;
+        this.parent = parent;
+        this.key = key;
+        
+        // Group
+        this.group = createSVGElement("g");
+
+        // Polygon
+        this.poly = createSVGElement("polygon", {
+            points: this.points.map(p => `${p.x},${p.y}`).join(" "),
+            fill: this.fill,
+            stroke: this.stroke.color,
+            "stroke-width": this.stroke.width
+        });
+
+        // Dash
+        if (this.stroke.dasharray) {
+            this.line.setAttribute("stroke-dasharray", this.stroke.dasharray);
+        }
+
+        // Append line to the group
+        this.group.appendChild(this.poly);
+
+        // Label
+        if (label) {
+            this.labelEl = createSVGElement("text", {
+                fill: this.label.color,
+                "text-anchor": "middle",
+                "dominant-baseline": "middle",
+            });
+
+            // See if we need to flip the label on Y
+            if (!label.flipY) {
+                this.labelEl.setAttribute("transform", "scale(1 -1)");
+            }
+
+            this.labelEl.textContent = label.text;
+            this.labelEl.classList.add("poly-label", `poly-label--${this.key}`);
+
+            this.group.appendChild(this.labelEl);
+        }
+
+        // Append to parent
+        this.parent.appendChild(this.group);
+
+        // Add listeners to points so they can call this update
+        for (let p of this.points) {
+            p.onChange(() => this.update());
+        }
+
+        this.update();
+    }
+
+    update() {
+        this.poly.setAttribute("points", this.points.map(p => `${p.x},${p.y}`).join(" "));
+
+        if (this.labelEl) {
+            // Average points positions to find label position
+            let x = 0;
+            let y = 0;
+            for (const p of this.points) {
+                x += p.x;
+                y += p.y;
+            }
+
+            x /= this.pointCount;
+            y /= this.pointCount;
+            y *= this.label.flipY ? 1 : -1;
+
+            this.labelEl.setAttribute("x", x);
+            this.labelEl.setAttribute("y", y);
         }
     }
 
@@ -237,8 +384,8 @@ class Handle {
         svgPoint.y = screenY;
         const transformedPoint = svgPoint.matrixTransform(this.parent.getScreenCTM().inverse());
         return {
-           x: transformedPoint.x,
-           y: transformedPoint.y
+            x: transformedPoint.x,
+            y: transformedPoint.y
         };
     }
 }
@@ -255,7 +402,7 @@ class VectorAdd extends HTMLElement {
         };
 
         // Create shadow DOM
-        this.attachShadow({mode: "open"});
+        this.attachShadow({ mode: "open" });
     }
 
     connectedCallback() {
@@ -277,7 +424,7 @@ class VectorAdd extends HTMLElement {
             vectorA: isDark ? "#f43f5e" : "#f43f5e",
             vectorB: isDark ? "#65a30d" : "#65a30d",
             vectorSum: isDark ? "#0284c7" : "#0284c7",
-            vectorAux: isDark ? "#262626": "#e5e5e5",
+            vectorAux: isDark ? "#262626" : "#e5e5e5",
         };
 
         const vectorStrokeWidth = 0.15;
@@ -425,7 +572,7 @@ class VectorAdd extends HTMLElement {
             line.classList.add("grid-line");
             svg.appendChild(line);
         }
-        
+
         // Vertical grid lines
         for (let i = this.bounds.x + 1; i < (this.bounds.x + this.bounds.width); ++i) {
             const line = createSVGElement("line", {
@@ -603,7 +750,7 @@ class VectorSub extends HTMLElement {
         };
 
         // Create shadow DOM
-        this.attachShadow({mode: "open"});
+        this.attachShadow({ mode: "open" });
     }
 
     connectedCallback() {
@@ -625,7 +772,7 @@ class VectorSub extends HTMLElement {
             vectorA: isDark ? "#f43f5e" : "#f43f5e",
             vectorB: isDark ? "#65a30d" : "#65a30d",
             vectorSum: isDark ? "#0284c7" : "#0284c7",
-            vectorAux: isDark ? "#262626": "#e5e5e5",
+            vectorAux: isDark ? "#262626" : "#e5e5e5",
         };
 
         const vectorStrokeWidth = 0.15;
@@ -773,7 +920,7 @@ class VectorSub extends HTMLElement {
             line.classList.add("grid-line");
             svg.appendChild(line);
         }
-        
+
         // Vertical grid lines
         for (let i = this.bounds.x + 1; i < (this.bounds.x + this.bounds.width); ++i) {
             const line = createSVGElement("line", {
@@ -936,7 +1083,7 @@ class VectorScale extends HTMLElement {
         };
 
         // Create shadow DOM
-        this.attachShadow({mode: "open"});
+        this.attachShadow({ mode: "open" });
     }
 
     connectedCallback() {
@@ -1085,7 +1232,7 @@ class VectorScale extends HTMLElement {
             line.classList.add("grid-line");
             svg.appendChild(line);
         }
-        
+
         // Vertical grid lines
         for (let i = this.bounds.x + 1; i < (this.bounds.x + this.bounds.width); ++i) {
             const line = createSVGElement("line", {
@@ -1199,7 +1346,7 @@ class VectorScale extends HTMLElement {
 
             vectorScaled.getEndPoint().set(scaled.x, scaled.y);
             sliderValue.textContent = `${scale.toFixed(1)}x`;
-            
+
             info.querySelector("#info-a").textContent = `(${va.x.toFixed(1)}, ${va.y.toFixed(1)})`;
             info.querySelector("#info-scaled").textContent = `(${scaled.x.toFixed(1)}, ${scaled.y.toFixed(1)})`;
         });
@@ -1228,7 +1375,7 @@ class VectorMag extends HTMLElement {
         };
 
         // Create shadow DOM
-        this.attachShadow({mode: "open"});
+        this.attachShadow({ mode: "open" });
     }
 
     connectedCallback() {
@@ -1377,7 +1524,7 @@ class VectorMag extends HTMLElement {
             line.classList.add("grid-line");
             svg.appendChild(line);
         }
-        
+
         // Vertical grid lines
         for (let i = this.bounds.x + 1; i < (this.bounds.x + this.bounds.width); ++i) {
             const line = createSVGElement("line", {
@@ -1513,7 +1660,7 @@ class VectorDot extends HTMLElement {
         };
 
         // Create shadow DOM
-        this.attachShadow({mode: "open"});
+        this.attachShadow({ mode: "open" });
     }
 
     connectedCallback() {
@@ -1667,7 +1814,7 @@ class VectorDot extends HTMLElement {
             line.classList.add("grid-line");
             svg.appendChild(line);
         }
-        
+
         // Vertical grid lines
         for (let i = this.bounds.x + 1; i < (this.bounds.x + this.bounds.width); ++i) {
             const line = createSVGElement("line", {
@@ -1821,10 +1968,397 @@ class VectorDot extends HTMLElement {
     }
 }
 
+class VectorCross extends HTMLElement {
+    constructor() {
+        super();
+
+        this.bounds = {
+            x: -10,
+            y: -10,
+            width: 20,
+            height: 20
+        };
+
+        this.v1 = { x: 6, y: 1 };
+        this.v2 = { x: 2, y: 6 };
+        this.pp = { x: 8, y: 7 };
+
+        // Create shadow DOM
+        this.attachShadow({ mode: "open" });
+    }
+
+    connectedCallback() {
+        this.render();
+
+        document.addEventListener("theme-changed", () => {
+            this.render();
+        })
+    }
+
+    render() {
+        const shadow = this.shadowRoot;
+        const isDark = document.querySelector("html").classList.contains("dark");
+
+        const colors = {
+            background: isDark ? "#171717" : "#fafafa",
+            grid: isDark ? "#262626" : "#f5f5f5",
+            axis: isDark ? "#525252" : "#0a0a0a",
+            vectorA: isDark ? "#f43f5e" : "#f43f5e",
+            vectorB: isDark ? "#65a30d" : "#65a30d",
+            vectorC: isDark ? "#0284c7" : "#0284c7",
+        };
+
+        const vectorStrokeWidth = 0.15;
+
+        // Empty the shadowDom
+        shadow.innerHTML = "";
+
+        // Style
+        const style = document.createElement("style");
+        style.textContent = `
+            :host {
+                display: block;
+            }
+            svg {
+                touch-action: none;
+            }
+            .wrapper {
+                background: ${colors.background};
+                padding: 2rem 2rem 0 2rem;
+            }
+            .grid-line {
+                stroke: ${colors.grid};
+                stroke-width: 0.05;
+            }
+            .axis-line {
+                stroke: ${colors.axis};
+                stroke-width: 0.05;
+            }
+            .vector-label,
+            .poly-label {
+                user-select: none;
+                pointer-events: none;
+                font-family: "Geist Mono", monospace;
+                font-size: 0.04rem;
+                font-weight: 500;
+            }
+            .control-panel {
+                width: 100%;
+                display: flex;
+                place-content: center;
+                padding: 1rem 0;
+                gap: 1rem;
+            }
+            .control-panel span {
+                width: 3rem;
+                text-align: right;
+            }
+            .info-panel {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 0.75rem;
+                padding: 1rem 0;
+            }
+            .vector-info {
+                background: ${colors.grid};
+                padding: 0.4rem 0;
+                border-radius: 0.3rem;
+                white-space: nowrap;
+                width: 10rem;
+                text-align: center;
+            }
+            .vector-info.a {
+                color: ${colors.vectorA};
+                background: #fecdd3;
+            }
+            .vector-info.b {
+                color: ${colors.vectorB};
+                background: #ecfccb;
+            }
+            .vector-info.dot {
+                color: ${colors.vectorC};
+                background: #fefce8;
+            }
+        `;
+        shadow.appendChild(style);
+
+        // Create wrapping div
+        const div = document.createElement("div");
+        div.classList.add("wrapper");
+        shadow.appendChild(div);
+
+        // Create SVG canvas
+        const svg = createSVGElement("svg", {
+            "viewBox": `${this.bounds.x} ${this.bounds.y} ${this.bounds.width} ${this.bounds.height}`,
+        });
+
+        // Create definitions for the SVG
+        const defs = createSVGElement("defs");
+
+        // Create arrow(s)
+        const arrowA = createSVGElement("marker", {
+            "id": "arrowhead-a",
+            "markerWidth": 4,
+            "markerHeight": 4,
+            "orient": "auto",
+            "refX": 3.1,
+            "refY": 2
+        });
+
+        const markerPoly = createSVGElement("polygon", {
+            "points": "0 0, 4 2, 0 4"
+        });
+        arrowA.appendChild(markerPoly);
+        defs.appendChild(arrowA);
+
+        const arrowB = createSVGElement("marker", {
+            "id": "arrowhead-b",
+            "markerWidth": 4,
+            "markerHeight": 4,
+            "orient": "auto",
+            "refX": 3.1,
+            "refY": 2
+        });
+        arrowB.appendChild(markerPoly.cloneNode(true));
+        defs.appendChild(arrowB);
+
+        const arrowC = createSVGElement("marker", {
+            "id": "arrowhead-c",
+            "markerWidth": 4,
+            "markerHeight": 4,
+            "orient": "auto",
+            "refX": 3.1,
+            "refY": 2
+        });
+        arrowC.appendChild(markerPoly.cloneNode(true));
+        defs.appendChild(arrowC);
+
+        svg.appendChild(defs);
+
+        // Background
+        const isoBounds = calculateIsoBounds(this.bounds);
+        // Horizontal grid lines
+        for (let i = isoBounds.y; i < (isoBounds.y + isoBounds.height); ++i) {
+            const start = project3DToIsometric(isoBounds.x, i, 0);
+            const end = project3DToIsometric(isoBounds.x + isoBounds.width, i, 0);
+
+            const line = createSVGElement("line", {
+                x1: start.x,
+                y1: start.y,
+                x2: end.x,
+                y2: end.y
+            });
+            line.classList.add("grid-line");
+            svg.appendChild(line);
+        }
+
+        // Vertical grid lines
+        for (let i = isoBounds.x; i < (isoBounds.x + isoBounds.width); ++i) {
+            const start = project3DToIsometric(i, isoBounds.y, 0);
+            const end = project3DToIsometric(i, isoBounds.y + isoBounds.height, 0);
+
+            const line = createSVGElement("line", {
+                x1: start.x,
+                y1: start.y,
+                x2: end.x,
+                y2: end.y
+            });
+            line.classList.add("grid-line");
+            svg.appendChild(line);
+        }
+
+        // X-axis
+        const axisXStart = project3DToIsometric(0, isoBounds.y, 0);
+        const axisXEnd = project3DToIsometric(0, isoBounds.y + isoBounds.height, 0);
+        const axisX = createSVGElement("line", {
+            "x1": axisXStart.x,
+            "y1": axisXStart.y,
+            "x2": axisXEnd.x,
+            "y2": axisXEnd.y
+        });
+        // Y-axis
+        const axisYStart = project3DToIsometric(isoBounds.x, 0, 0);
+        const axisYEnd = project3DToIsometric(isoBounds.x + isoBounds.width, 0, 0);
+        const axisY = createSVGElement("line", {
+            "x1": axisYStart.x,
+            "y1": axisYStart.y,
+            "x2": axisYEnd.x,
+            "y2": axisYEnd.y
+        });
+
+        // Z-axis (can be just svg coords)
+        const axisZ = createSVGElement("line", {
+            "x1": 0,
+            "y1": this.bounds.y,
+            "x2": 0,
+            "y2": this.bounds.y + this.bounds.height
+        });
+
+        axisX.classList.add("axis-line");
+        axisY.classList.add("axis-line");
+        axisZ.classList.add("axis-line");
+
+        svg.appendChild(axisX);
+        svg.appendChild(axisY);
+        svg.appendChild(axisZ);
+        //
+        // const g_flip = createSVGElement("g", {
+        //     transform: "scale(1 -1)"
+        // });
+        // svg.appendChild(g_flip);
+
+        // Create points for vectors (unconventionally: tail and head)
+        const p00 = new Point("p00", 0, 0);
+        const test = project3DToIsometric(this.v1.x, this.v1.y, 0);
+        const test2 = project3DToIsometric(this.v2.x, this.v2.y, 0);
+        const v1 = new Point("v1", test.x, test.y);
+        const v2 = new Point("v2", test2.x, test2.y);
+
+        // Cross product vector
+        const axb = 4 * 4 - 0 * 0;
+        const pcross = project3DToIsometric(0, 0, axb); 
+        const vcross = new Point("cross", pcross.x, pcross.y);
+
+        // Define the parallelogram's point that A and B encompass
+        const asumb = project3DToIsometric(this.pp.x, this.pp.y, 0);
+        const ptip = new Point("ptip", asumb.x, asumb.y);
+
+        // Draw the parallelogram
+        const parallelogram = new Polygon({
+            points: [p00, v2, ptip, v1],
+            parent: svg,
+            fill: "rgba(254, 249, 195, 0.25)",
+            key: "par",
+            label: {
+                text: "||AxB||",
+                flipY: true,
+                color: "#ca8a04"
+            },
+            stroke: {
+                width: 0.05,
+                color: "rgba(254, 249, 195, 0.5)"
+            }
+        });
+
+        const vectorA = new Vector({
+            start: p00,
+            end: v1,
+            label: {
+                text: "A",
+                offset: 0.6,
+                flipY: true
+            },
+            parent: svg,
+            key: "vectorA",
+            stroke: {
+                width: vectorStrokeWidth,
+                color: colors.vectorA,
+            },
+            marker: arrowA
+        });
+
+        const vectorB = new Vector({
+            start: p00,
+            end: v2,
+            label: {
+                text: "B",
+                offset: -0.6,
+                flipY: true
+            },
+            parent: svg,
+            key: "vectorB",
+            stroke: {
+                width: vectorStrokeWidth,
+                color: colors.vectorB,
+            },
+            marker: arrowB
+        });
+
+        const vectorC = new Vector({
+            start: p00,
+            end: vcross,
+            label: {
+                text: "AxB",
+                offset: 0.8,
+                flipY: true
+            },
+            parent: svg,
+            key: "vectorC",
+            stroke: {
+                width: vectorStrokeWidth,
+                color: colors.vectorC,
+            },
+            marker: arrowC
+        });
+
+        // Add handles
+        new Handle({
+            point: v1,
+            radius: 1.2,
+            interactive: true,
+            parent: svg
+        });
+        new Handle({
+            point: v2,
+            radius: 1.2,
+            interactive: true,
+            parent: svg
+        });
+
+        // Append svg to shadow DOM
+        div.appendChild(svg);
+
+        // function vLen(point) {
+        //     return Math.sqrt(point.x * point.x + point.y * point.y);
+        // }
+        //
+        // function dot(a, b) {
+        //     return a.x * b.x + a.y * b.y;
+        // }
+        //
+        // function round(x, decimals = 2) {
+        //     const factor = 10 ** decimals;
+        //     return Math.round(x * factor) / factor;
+        // }
+        //
+        // // Create displays at the bottom
+        // const info = document.createElement("div");
+        // info.classList.add("info-panel");
+        // info.innerHTML = `
+        //     <div class="vector-info a">A: <span id="info-a">(${vectorA.getStr()})</span></div>
+        //     <div class="vector-info b">B: <span id="info-b">(${vectorB.getStr()})</span></div>
+        //     <div class="vector-info dot">A⋅B: <span id="info-dot">${dot(v1, v2).toFixed(1)}</span></div>
+        // `;
+        // div.appendChild(info);
+        
+        v1.onChange(() => {
+            // Update the parallelogram's tip
+            const s = { x: v1.x + v2.x, y: v1.y + v2.y };
+            ptip.set(s.x, s.y);
+
+            // info.querySelector("#info-a").textContent = `(${v1.x.toFixed(1)}, ${v1.y.toFixed(1)})`;
+            // info.querySelector("#info-dot").textContent = newDot.toFixed(1);
+        });
+
+        v2.onChange(() => {
+            // Update the parallelogram's tip
+            const s = { x: v1.x + v2.x, y: v1.y + v2.y };
+            ptip.set(s.x, s.y);
+
+        //     info.querySelector("#info-b").textContent = `(${v2.x.toFixed(1)}, ${v2.y.toFixed(1)})`;
+        //     info.querySelector("#info-dot").textContent = newDot.toFixed(1);
+        });
+    }
+}
+
 customElements.define("vector-add", VectorAdd);
 customElements.define("vector-sub", VectorSub);
 customElements.define("vector-scale", VectorScale);
 customElements.define("vector-mag", VectorMag);
 customElements.define("vector-dot", VectorDot);
+customElements.define("vector-cross", VectorCross);
 
-export { VectorAdd, VectorSub, VectorScale, VectorMag, VectorDot };
+export { VectorAdd, VectorSub, VectorScale, VectorMag, VectorDot, VectorCross };
