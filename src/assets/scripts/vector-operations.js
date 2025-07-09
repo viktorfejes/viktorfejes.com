@@ -212,6 +212,7 @@ class Vector {
 
         // Group
         this.group = createSVGElement("g");
+        this.group.classList.add(this.key);
 
         // Line
         this.line = createSVGElement("line", {
@@ -227,7 +228,7 @@ class Vector {
 
         // Marker
         if (marker) {
-            this.marker.setAttribute("fill", this.stroke.color);
+            this.marker.classList.add(this.key);
             this.line.setAttribute("marker-end", `url(#${this.marker.id})`);
         }
 
@@ -307,7 +308,6 @@ class Polygon {
     constructor({
         points,
         label = {},
-        fill = "none",
         stroke = {},
         parent,
         key,
@@ -316,33 +316,30 @@ class Polygon {
         // Defaults for objects
         this.stroke = {
             width: 0.1,
-            color: "none",
             ...stroke
         };
         this.label = {
             text: "",
             offset: 0.5,
             flipY: false,
-            color: this.stroke.color,
             ...label
         };
 
         this.points = points;
         this.pointCount = points.length;
-        this.fill = fill;
         this.parent = parent;
         this.key = key;
 
         // Group
         this.group = createSVGElement("g");
+        this.group.classList.add(this.key);
 
         // Polygon
         this.poly = createSVGElement("polygon", {
             points: this.points.map(p => `${p.x},${p.y}`).join(" "),
-            fill: this.fill,
-            stroke: this.stroke.color,
             "stroke-width": this.stroke.width
         });
+        this.poly.classList.add("polygon", `polygon--${this.key}`);
 
         // Dash
         if (this.stroke.dasharray) {
@@ -355,7 +352,6 @@ class Polygon {
         // Label
         if (label) {
             this.labelEl = createSVGElement("text", {
-                fill: this.label.color,
                 "text-anchor": "middle",
                 "dominant-baseline": "middle",
             });
@@ -481,62 +477,94 @@ class Handle {
 
 const baseStyles = new CSSStyleSheet();
 baseStyles.replaceSync(`
-    :host {
-        /* Color variable defaults */
-        --vo-background: #fafafa;
-        --vo-grid: #f5f5f5;
-        --vo-axes: #0a0a0a;
-        --vo-line-red: #f43f5e;
-        --vo-line-green: #65a30d;
-        --vo-line-blue: #0284c7;
-        --vo-line-yellow: #facc15;
-        --vo-line-grey: #e5e5e5;
-        --vo-info-red-primary: #f43f5e;
-        --vo-info-red-secondary: #fecdd3;
-        --vo-info-green-primary: #65a30d;
-        --vo-info-green-secondary: #ecfccb;
-        --vo-info-blue-primary: #0284c7;
-        --vo-info-blue-secondary: #e0f2fe;
-        --vo-info-yellow-primary: #facc15;
-        --vo-info-yellow-secondary: #fefce8;
+:host {
+    /* Color variable defaults */
+    --background: #fafafa;
+    --grid: #f5f5f5;
+    --axes: #0a0a0a;
+    --line-red: #f43f5e;
+    --line-green: #65a30d;
+    --line-blue: #0284c7;
+    --line-yellow: #facc15;
+    --line-grey: #e5e5e5;
+    --info-red-primary: #f43f5e;
+    --info-red-secondary: #fecdd3;
+    --info-green-primary: #65a30d;
+    --info-green-secondary: #ecfccb;
+    --info-blue-primary: #0284c7;
+    --info-blue-secondary: #e0f2fe;
+    --info-yellow-primary: #facc15;
+    --info-yellow-secondary: #fefce8;
 
-        /* Font variable defaults */
-        --vo-font-primary: inherit;
-        --vo-font-label-size: 0.04rem;
-        --vo-font-label-weight: 500;
+    /* Font variable defaults */
+    --font-primary: inherit;
+    --font-label-size: 0.04rem;
+    --font-label-weight: 500;
 
-        display: block;
-    }
-    .wrapper {
-        background: var(--vo-background);
-        padding: 2rem 2rem 0 2rem;
-    }
-    svg { touch-action: none; }
-    .grid-line {
-        stroke: var(--vo-grid);
-        stroke-width: 0.05;
-    }
-    .axis-line {
-        stroke: var(--vo-axes);
-        stroke-width: 0.05;
-    }
-    .vector-label {
-        font-family: var(--vo-font-primary);
-        font-size: var(--vo-font-label-size);
-        font-weight: var(--vo-font-label-weight);
-        user-select: none;
-        pointer-events: none;
-    }
-    .stroke-red { stroke: var(--vo-line-red); }
-    .stroke-green { stroke: var(--vo-line-green); }
-    .stroke-blue { stroke: var(--vo-line-blue); }
-    .stroke-yellow { stroke: var(--vo-line-yellow); }
-    .stroke-grey { stroke: var(--vo-line-grey); }
-    .fill-red { fill: var(--vo-line-red); }
-    .fill-green { fill: var(--vo-line-green); }
-    .fill-blue { fill: var(--vo-line-blue); }
-    .fill-yellow { fill: var(--vo-line-yellow); }
-    .fill-grey { fill: var(--vo-line-grey); }
+    display: block;
+}
+.wrapper {
+    background: var(--background);
+    padding: 2rem 2rem 0 2rem;
+}
+svg { touch-action: none; }
+.grid-line {
+    stroke: var(--grid);
+    stroke-width: 0.05;
+}
+.axis-line {
+    stroke: var(--axes);
+    stroke-width: 0.05;
+}
+.vector-line { stroke: currentColor; }
+.polygon {
+    stroke: currentColor;
+    fill: currentColor;
+}
+.vector-label,
+.poly-label {
+    font-family: var(--font-primary);
+    font-size: var(--font-label-size);
+    font-weight: var(--font-label-weight);
+    user-select: none;
+    pointer-events: none;
+    fill: currentColor;
+}
+.control-panel,
+.info-panel {
+    width: 100%;
+    display: flex;
+    place-content: center;
+    gap: 1rem;
+    padding: 1rem 0;
+}
+.vector-info {
+    padding: 0.4rem 0;
+    border-radius: 0.3rem;
+    white-space: nowrap;
+    width: 10rem;
+    text-align: center;
+}
+`);
+
+const vectorAddStyles = new CSSStyleSheet();
+vectorAddStyles.replaceSync(`
+.vectorA { color: var(--line-red); }
+.vectorB { color: var(--line-green); }
+.vectorSum { color: var(--line-blue); }
+.vectorAux { color: var(--line-grey); }
+.vector-info.a {
+    color: var(--info-red-primary);
+    background: var(--info-red-secondary);
+}
+.vector-info.b {
+    color: var(--info-green-primary);
+    background: var(--info-green-secondary);
+}
+.vector-info.sum {
+    color: var(--info-blue-primary);
+    background: var(--info-blue-secondary);
+}
 `);
 
 class VectorAdd extends HTMLElement {
@@ -551,99 +579,12 @@ class VectorAdd extends HTMLElement {
         };
 
         // Create shadow DOM
-        this.attachShadow({ mode: "open" });
+        this.attachShadow({ mode: "open" }).adoptedStyleSheets = [baseStyles, vectorAddStyles];
     }
 
     connectedCallback() {
-        this.render();
-
-        document.addEventListener("theme-changed", () => {
-            this.render();
-        })
-    }
-
-    render() {
         const shadow = this.shadowRoot;
-        const isDark = document.querySelector("html").classList.contains("dark");
-
-        const colors = {
-            background: isDark ? "#171717" : "#fafafa",
-            grid: isDark ? "#262626" : "#f5f5f5",
-            axis: isDark ? "#525252" : "#0a0a0a",
-            vectorA: isDark ? "#f43f5e" : "#f43f5e",
-            vectorB: isDark ? "#65a30d" : "#65a30d",
-            vectorSum: isDark ? "#0284c7" : "#0284c7",
-            vectorAux: isDark ? "#262626" : "#e5e5e5",
-        };
-
         const vectorStrokeWidth = 0.15;
-
-        // Empty the shadowDom
-        shadow.innerHTML = "";
-
-        // Style
-        const style = document.createElement("style");
-        style.textContent = `
-            :host {
-                display: block;
-            }
-            svg {
-                touch-action: none;
-            }
-            .wrapper {
-                background: ${colors.background};
-                padding: 2rem 2rem 0 2rem;
-            }
-            .grid-line {
-                stroke: ${colors.grid};
-                stroke-width: 0.05;
-            }
-            .axis-line {
-                stroke: ${colors.axis};
-                stroke-width: 0.05;
-            }
-            .vector-line--vectorGhostAB,
-            .vector-line--vectorGhostBA {
-                stroke-dasharray: 0.3 0.1;
-            }
-            .vector-label {
-                user-select: none;
-                pointer-events: none;
-                font-family: "Geist Mono", monospace;
-                font-size: 0.04rem;
-                font-weight: 500;
-            }
-            .info-panel {
-                width: 100%;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                flex-wrap: wrap;
-                gap: 1rem;
-                padding: 1rem 0;
-            }
-            .vector-info {
-                background: ${colors.grid};
-                padding: 0.4rem 0;
-                border-radius: 0.3rem;
-                white-space: nowrap;
-                width: 8rem;
-                text-align: center;
-            }
-            .vector-info.a {
-                color: ${colors.vectorA};
-                background: #fecdd3;
-            }
-            .vector-info.b {
-                color: ${colors.vectorB};
-                background: #ecfccb;
-            }
-            .vector-info.sum {
-                color: ${colors.vectorSum};
-                background: #e0f2fe;
-            }
-        `;
-        shadow.appendChild(style);
 
         // Create wrapping div
         const div = document.createElement("div");
@@ -660,51 +601,52 @@ class VectorAdd extends HTMLElement {
 
         // Create arrow(s)
         const arrowA = createSVGElement("marker", {
-            "id": "arrowhead-a",
-            "markerWidth": 4,
-            "markerHeight": 4,
-            "orient": "auto",
-            "refX": 3.1,
-            "refY": 2
+            id: "arrowhead-a",
+            markerWidth: 4,
+            markerHeight: 4,
+            orient: "auto",
+            refX: 3.1,
+            refY: 2
         });
 
-        const markerPoly = createSVGElement("polygon", {
-            "points": "0 0, 4 2, 0 4"
+        const arrowPoly = createSVGElement("polygon", {
+            points: "0 0, 4 2, 0 4",
+            fill: "currentColor"
         });
-        arrowA.appendChild(markerPoly);
+        arrowA.appendChild(arrowPoly);
         defs.appendChild(arrowA);
 
         const arrowB = createSVGElement("marker", {
-            "id": "arrowhead-b",
-            "markerWidth": 4,
-            "markerHeight": 4,
-            "orient": "auto",
-            "refX": 3.1,
-            "refY": 2
+            id: "arrowhead-b",
+            markerWidth: 4,
+            markerHeight: 4,
+            orient: "auto",
+            refX: 3.1,
+            refY: 2
         });
-        arrowB.appendChild(markerPoly.cloneNode(true));
+        arrowB.appendChild(arrowPoly.cloneNode(true));
         defs.appendChild(arrowB);
 
         const arrowSum = createSVGElement("marker", {
-            "id": "arrowhead-sum",
-            "markerWidth": 4,
-            "markerHeight": 4,
-            "orient": "auto",
-            "refX": 3.1,
-            "refY": 2
+            id: "arrowhead-sum",
+            markerWidth: 4,
+            markerHeight: 4,
+            orient: "auto",
+            refX: 3.1,
+            refY: 2
         });
-        arrowSum.appendChild(markerPoly.cloneNode(true));
+        arrowSum.appendChild(arrowPoly.cloneNode(true));
         defs.appendChild(arrowSum);
 
         const arrowAux = createSVGElement("marker", {
-            "id": "arrowhead-aux",
-            "markerWidth": 4,
-            "markerHeight": 4,
-            "orient": "auto",
-            "refX": 3.1,
-            "refY": 2
+            id: "arrowhead-aux",
+            markerWidth: 4,
+            markerHeight: 4,
+            orient: "auto",
+            refX: 3.1,
+            refY: 2
         });
-        arrowAux.appendChild(markerPoly.cloneNode(true));
+        arrowAux.appendChild(arrowPoly.cloneNode(true));
         defs.appendChild(arrowAux);
 
         svg.appendChild(defs);
@@ -762,10 +704,13 @@ class VectorAdd extends HTMLElement {
 
         // Create points for vectors (unconventionally: tail and head)
         const p00 = new Point("p00", 0, 0);
+        const pA = new Point("pa", 9, 3);
+        const pB = new Point("pb", -4, 4);
+        const pSum = new Point("psum", 5, 7);
 
         const vectorA = new Vector({
-            start: new Point("va_s", 0, 0),
-            end: new Point("va_e", 9, 3),
+            start: p00,
+            end: pA,
             label: {
                 text: "A",
             },
@@ -773,54 +718,52 @@ class VectorAdd extends HTMLElement {
             key: "vectorA",
             stroke: {
                 width: vectorStrokeWidth,
-                color: colors.vectorA
             },
             marker: arrowA
         });
 
         const vectorB = new Vector({
-            start: new Point("vb_s", 0, 0),
-            end: new Point("vb_e", -4, 4),
+            start: p00,
+            end: pB,
             label: {
-                text: "B"
+                text: "B",
+                offset: -0.5
             },
             parent: g_flip,
             key: "vectorB",
             stroke: {
                 width: vectorStrokeWidth,
-                color: colors.vectorB
             },
             marker: arrowB
         });
 
-        const pSum = new Point("psum", 5, 7);
-
-        const vectorGhostAB = new Vector({
-            start: vectorA.getEndPoint(),
+        new Vector({
+            start: pA,
             end: pSum,
             parent: g_flip,
-            key: "vectorGhostAB",
+            key: "vectorAux",
             label: {
                 text: "B"
             },
             stroke: {
                 width: vectorStrokeWidth,
-                color: colors.vectorAux
+                dasharray: "0.3 0.1"
             },
             marker: arrowAux
         });
 
-        const vectorGhostBA = new Vector({
-            start: vectorB.getEndPoint(),
+        new Vector({
+            start: pB,
             end: pSum,
             parent: g_flip,
-            key: "vectorGhostBA",
+            key: "vectorAux",
             label: {
-                text: "A"
+                text: "A",
+                offset: -0.5
             },
             stroke: {
                 width: vectorStrokeWidth,
-                color: colors.vectorAux
+                dasharray: "0.3 0.1"
             },
             marker: arrowAux
         });
@@ -836,20 +779,19 @@ class VectorAdd extends HTMLElement {
             key: "vectorSum",
             stroke: {
                 width: vectorStrokeWidth,
-                color: colors.vectorSum
             },
             marker: arrowSum
         });
 
         // Add handles
-        const handleA = new Handle({
-            point: vectorA.getEndPoint(),
+        new Handle({
+            point: pA,
             radius: 1.2,
             interactive: true,
             parent: g_flip
         });
-        const handleB = new Handle({
-            point: vectorB.getEndPoint(),
+        new Handle({
+            point: pB,
             radius: 1.2,
             interactive: true,
             parent: g_flip
@@ -866,23 +808,21 @@ class VectorAdd extends HTMLElement {
             <div class="vector-info b">B: <span id="info-b">(${vectorB.getStr()})</span></div>
             <div class="vector-info sum">A+B: <span id="info-sum">(${vectorSum.getStr()})</span></div>
         `;
-
+        const infoA = info.querySelector("#info-a");
+        const infoB = info.querySelector("#info-b");
+        const infoSum = info.querySelector("#info-sum");
         div.appendChild(info);
 
         vectorA.getEndPoint().onChange(() => {
-            const va = vectorA.getEndPoint();
-            const vb = vectorB.getEndPoint();
-            pSum.set(va.x + vb.x, va.y + vb.y);
-            info.querySelector("#info-a").textContent = `(${va.x.toFixed(1)}, ${va.y.toFixed(1)})`;
-            info.querySelector("#info-sum").textContent = `(${pSum.x.toFixed(1)}, ${pSum.y.toFixed(1)})`;
+            pSum.set(pA.x + pB.x, pA.y + pB.y);
+            infoA.textContent = `(${pA.x.toFixed(1)}, ${pA.y.toFixed(1)})`;
+            infoSum.textContent = `(${pSum.x.toFixed(1)}, ${pSum.y.toFixed(1)})`;
         });
 
         vectorB.getEndPoint().onChange(() => {
-            const va = vectorA.getEndPoint();
-            const vb = vectorB.getEndPoint();
-            pSum.set(va.x + vb.x, va.y + vb.y);
-            info.querySelector("#info-b").textContent = `(${vb.x.toFixed(1)}, ${vb.y.toFixed(1)})`;
-            info.querySelector("#info-sum").textContent = `(${pSum.x.toFixed(1)}, ${pSum.y.toFixed(1)})`;
+            pSum.set(pA.x + pB.x, pA.y + pB.y);
+            infoB.textContent = `(${pB.x.toFixed(1)}, ${pB.y.toFixed(1)})`;
+            infoSum.textContent = `(${pSum.x.toFixed(1)}, ${pSum.y.toFixed(1)})`;
         });
     }
 }
@@ -899,99 +839,12 @@ class VectorSub extends HTMLElement {
         };
 
         // Create shadow DOM
-        this.attachShadow({ mode: "open" });
+        this.attachShadow({ mode: "open" }).adoptedStyleSheets = [baseStyles, vectorAddStyles];
     }
 
     connectedCallback() {
-        this.render();
-
-        document.addEventListener("theme-changed", () => {
-            this.render();
-        })
-    }
-
-    render() {
         const shadow = this.shadowRoot;
-        const isDark = document.querySelector("html").classList.contains("dark");
-
-        const colors = {
-            background: isDark ? "#171717" : "#fafafa",
-            grid: isDark ? "#262626" : "#f5f5f5",
-            axis: isDark ? "#525252" : "#0a0a0a",
-            vectorA: isDark ? "#f43f5e" : "#f43f5e",
-            vectorB: isDark ? "#65a30d" : "#65a30d",
-            vectorSum: isDark ? "#0284c7" : "#0284c7",
-            vectorAux: isDark ? "#262626" : "#e5e5e5",
-        };
-
         const vectorStrokeWidth = 0.15;
-
-        // Empty the shadowDom
-        shadow.innerHTML = "";
-
-        // Style
-        const style = document.createElement("style");
-        style.textContent = `
-            :host {
-                display: block;
-            }
-            svg {
-                touch-action: none;
-            }
-            .wrapper {
-                background: ${colors.background};
-                padding: 2rem 2rem 0 2rem;
-            }
-            .grid-line {
-                stroke: ${colors.grid};
-                stroke-width: 0.05;
-            }
-            .axis-line {
-                stroke: ${colors.axis};
-                stroke-width: 0.05;
-            }
-            .vector-line--vectorGhostAB,
-            .vector-line--vectorGhostBA {
-                stroke-dasharray: 0.3 0.1;
-            }
-            .vector-label {
-                user-select: none;
-                pointer-events: none;
-                font-family: "Geist Mono", monospace;
-                font-size: 0.04rem;
-                font-weight: 500;
-            }
-            .info-panel {
-                width: 100%;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                flex-wrap: wrap;
-                gap: 1rem;
-                padding: 1rem 0;
-            }
-            .vector-info {
-                background: ${colors.grid};
-                padding: 0.4rem 0;
-                border-radius: 0.3rem;
-                white-space: nowrap;
-                width: 8rem;
-                text-align: center;
-            }
-            .vector-info.a {
-                color: ${colors.vectorA};
-                background: #fecdd3;
-            }
-            .vector-info.b {
-                color: ${colors.vectorB};
-                background: #ecfccb;
-            }
-            .vector-info.sum {
-                color: ${colors.vectorSum};
-                background: #e0f2fe;
-            }
-        `;
-        shadow.appendChild(style);
 
         // Create wrapping div
         const div = document.createElement("div");
@@ -1008,51 +861,52 @@ class VectorSub extends HTMLElement {
 
         // Create arrow(s)
         const arrowA = createSVGElement("marker", {
-            "id": "arrowhead-a",
-            "markerWidth": 4,
-            "markerHeight": 4,
-            "orient": "auto",
-            "refX": 3.1,
-            "refY": 2
+            id: "arrowhead-a",
+            markerWidth: 4,
+            markerHeight: 4,
+            orient: "auto",
+            refX: 3.1,
+            refY: 2
         });
 
-        const markerPoly = createSVGElement("polygon", {
-            "points": "0 0, 4 2, 0 4"
+        const arrowPoly = createSVGElement("polygon", {
+            points: "0 0, 4 2, 0 4",
+            fill: "currentColor"
         });
-        arrowA.appendChild(markerPoly);
+        arrowA.appendChild(arrowPoly);
         defs.appendChild(arrowA);
 
         const arrowB = createSVGElement("marker", {
-            "id": "arrowhead-b",
-            "markerWidth": 4,
-            "markerHeight": 4,
-            "orient": "auto",
-            "refX": 3.1,
-            "refY": 2
+            id: "arrowhead-b",
+            markerWidth: 4,
+            markerHeight: 4,
+            orient: "auto",
+            refX: 3.1,
+            refY: 2
         });
-        arrowB.appendChild(markerPoly.cloneNode(true));
+        arrowB.appendChild(arrowPoly.cloneNode(true));
         defs.appendChild(arrowB);
 
         const arrowSum = createSVGElement("marker", {
-            "id": "arrowhead-sum",
-            "markerWidth": 4,
-            "markerHeight": 4,
-            "orient": "auto",
-            "refX": 3.1,
-            "refY": 2
+            id: "arrowhead-sum",
+            markerWidth: 4,
+            markerHeight: 4,
+            orient: "auto",
+            refX: 3.1,
+            refY: 2
         });
-        arrowSum.appendChild(markerPoly.cloneNode(true));
+        arrowSum.appendChild(arrowPoly.cloneNode(true));
         defs.appendChild(arrowSum);
 
         const arrowAux = createSVGElement("marker", {
-            "id": "arrowhead-aux",
-            "markerWidth": 4,
-            "markerHeight": 4,
-            "orient": "auto",
-            "refX": 3.1,
-            "refY": 2
+            id: "arrowhead-aux",
+            markerWidth: 4,
+            markerHeight: 4,
+            orient: "auto",
+            refX: 3.1,
+            refY: 2
         });
-        arrowAux.appendChild(markerPoly.cloneNode(true));
+        arrowAux.appendChild(arrowPoly.cloneNode(true));
         defs.appendChild(arrowAux);
 
         svg.appendChild(defs);
@@ -1110,10 +964,13 @@ class VectorSub extends HTMLElement {
 
         // Create points for vectors (unconventionally: tail and head)
         const p00 = new Point("p00", 0, 0);
+        const pA = new Point("pa", 5, 3);
+        const pB = new Point("pb", -4, 4);
+        const pRes = new Point("pres", -9, 1);
 
         const vectorA = new Vector({
-            start: new Point("va_s", 0, 0),
-            end: new Point("va_e", 5, 3),
+            start: p00,
+            end: pA,
             label: {
                 text: "A",
             },
@@ -1121,14 +978,28 @@ class VectorSub extends HTMLElement {
             key: "vectorA",
             stroke: {
                 width: vectorStrokeWidth,
-                color: colors.vectorA
             },
             marker: arrowA
         });
 
+        new Vector({
+            start: pA,
+            end: pB,
+            parent: g_flip,
+            key: "vectorAux",
+            label: {
+                text: "B-A"
+            },
+            stroke: {
+                width: vectorStrokeWidth,
+                dasharray: "0.3 0.1"
+            },
+            marker: arrowAux
+        });
+
         const vectorB = new Vector({
-            start: new Point("vb_s", 0, 0),
-            end: new Point("vb_e", -4, 4),
+            start: p00,
+            end: pB,
             label: {
                 text: "B"
             },
@@ -1136,31 +1007,13 @@ class VectorSub extends HTMLElement {
             key: "vectorB",
             stroke: {
                 width: vectorStrokeWidth,
-                color: colors.vectorB
             },
             marker: arrowB
         });
 
-        const pSum = new Point("psum", -9, 1);
-
-        const vectorGhostAB = new Vector({
-            start: vectorA.getEndPoint(),
-            end: vectorB.getEndPoint(),
-            parent: g_flip,
-            key: "vectorGhostAB",
-            label: {
-                text: "B-A"
-            },
-            stroke: {
-                width: vectorStrokeWidth,
-                color: colors.vectorAux
-            },
-            marker: arrowAux
-        });
-
         const vectorSum = new Vector({
             start: p00,
-            end: pSum,
+            end: pRes,
             label: {
                 text: "B-A",
                 offset: 0.8
@@ -1169,20 +1022,19 @@ class VectorSub extends HTMLElement {
             key: "vectorSum",
             stroke: {
                 width: vectorStrokeWidth,
-                color: colors.vectorSum
             },
             marker: arrowSum
         });
 
         // Add handles
-        const handleA = new Handle({
-            point: vectorA.getEndPoint(),
+        new Handle({
+            point: pA,
             radius: 1.2,
             interactive: true,
             parent: g_flip
         });
-        const handleB = new Handle({
-            point: vectorB.getEndPoint(),
+        new Handle({
+            point: pB,
             radius: 1.2,
             interactive: true,
             parent: g_flip
@@ -1199,27 +1051,38 @@ class VectorSub extends HTMLElement {
             <div class="vector-info b">B: <span id="info-b">(${vectorB.getStr()})</span></div>
             <div class="vector-info sum">B-A: <span id="info-sum">(${vectorSum.getStr()})</span></div>
         `;
-
+        const infoA = info.querySelector("#info-a");
+        const infoB = info.querySelector("#info-b");
+        const infoRes = info.querySelector("#info-sum");
         div.appendChild(info);
 
-        vectorA.getEndPoint().onChange(() => {
-            const va = vectorA.getEndPoint();
-            const vb = vectorB.getEndPoint();
-            pSum.set(vb.x - va.x, vb.y - va.y);
-            info.querySelector("#info-a").textContent = `(${va.x.toFixed(1)}, ${va.y.toFixed(1)})`;
-            info.querySelector("#info-sum").textContent = `(${pSum.x.toFixed(1)}, ${pSum.y.toFixed(1)})`;
+        pA.onChange(() => {
+            pRes.set(pB.x - pA.x, pB.y - pA.y);
+            infoA.textContent = `(${pA.x.toFixed(1)}, ${pA.y.toFixed(1)})`;
+            infoRes.textContent = `(${pRes.x.toFixed(1)}, ${pRes.y.toFixed(1)})`;
         });
 
-        vectorB.getEndPoint().onChange(() => {
-            const va = vectorA.getEndPoint();
-            const vb = vectorB.getEndPoint();
-            pSum.set(vb.x - va.x, vb.y - va.y);
-            info.querySelector("#info-b").textContent = `(${vb.x.toFixed(1)}, ${vb.y.toFixed(1)})`;
-            info.querySelector("#info-sum").textContent = `(${pSum.x.toFixed(1)}, ${pSum.y.toFixed(1)})`;
+        pB.onChange(() => {
+            pRes.set(pB.x - pA.x, pB.y - pA.y);
+            infoB.textContent = `(${pB.x.toFixed(1)}, ${pB.y.toFixed(1)})`;
+            infoRes.textContent = `(${pRes.x.toFixed(1)}, ${pRes.y.toFixed(1)})`;
         });
     }
 }
 
+const vectorScaleStyles = new CSSStyleSheet();
+vectorScaleStyles.replaceSync(`
+.vectorBase { color: var(--line-red); }
+.vectorScaled { color: var(--line-green); }
+.vector-info.base {
+    color: var(--info-red-primary);
+    background: var(--info-red-secondary);
+}
+.vector-info.scaled {
+    color: var(--info-green-primary);
+    background: var(--info-green-secondary);
+}
+`);
 class VectorScale extends HTMLElement {
     constructor() {
         super();
@@ -1232,100 +1095,12 @@ class VectorScale extends HTMLElement {
         };
 
         // Create shadow DOM
-        this.attachShadow({ mode: "open" });
+        this.attachShadow({ mode: "open" }).adoptedStyleSheets = [baseStyles, vectorScaleStyles];
     }
 
     connectedCallback() {
-        this.render();
-
-        document.addEventListener("theme-changed", () => {
-            this.render();
-        })
-    }
-
-    render() {
         const shadow = this.shadowRoot;
-        const isDark = document.querySelector("html").classList.contains("dark");
-
-        const colors = {
-            background: isDark ? "#171717" : "#fafafa",
-            grid: isDark ? "#262626" : "#f5f5f5",
-            axis: isDark ? "#525252" : "#0a0a0a",
-            vectorA: isDark ? "#f43f5e" : "#f43f5e",
-            vectorB: isDark ? "#65a30d" : "#65a30d",
-        };
-
         const vectorStrokeWidth = 0.15;
-
-        // Empty the shadowDom
-        shadow.innerHTML = "";
-
-        // Style
-        const style = document.createElement("style");
-        style.textContent = `
-            :host {
-                display: block;
-            }
-            svg {
-                touch-action: none;
-            }
-            .wrapper {
-                background: ${colors.background};
-                padding: 2rem 2rem 0 2rem;
-            }
-            .grid-line {
-                stroke: ${colors.grid};
-                stroke-width: 0.05;
-            }
-            .axis-line {
-                stroke: ${colors.axis};
-                stroke-width: 0.05;
-            }
-            .vector-label {
-                user-select: none;
-                pointer-events: none;
-                font-family: "Geist Mono", monospace;
-                font-size: 0.04rem;
-                font-weight: 500;
-            }
-            .control-panel {
-                width: 100%;
-                display: flex;
-                place-content: center;
-                padding: 1rem 0;
-                gap: 1rem;
-            }
-            .control-panel span {
-                width: 3rem;
-                text-align: right;
-            }
-            .info-panel {
-                width: 100%;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                flex-wrap: wrap;
-                gap: 0.75rem;
-                padding: 1rem 0;
-            }
-            .vector-info {
-                background: ${colors.grid};
-                padding: 0.4rem 0;
-                border-radius: 0.3rem;
-                white-space: nowrap;
-                width: 10rem;
-                text-align: center;
-            }
-            .vector-info.a {
-                color: ${colors.vectorA};
-                background: #fecdd3;
-            }
-            .vector-info.scaled {
-                color: ${colors.vectorB};
-                background: #ecfccb;
-            }
-        `;
-        shadow.appendChild(style);
 
         // Create wrapping div
         const div = document.createElement("div");
@@ -1342,29 +1117,30 @@ class VectorScale extends HTMLElement {
 
         // Create arrow(s)
         const arrowA = createSVGElement("marker", {
-            "id": "arrowhead-a",
-            "markerWidth": 4,
-            "markerHeight": 4,
-            "orient": "auto",
-            "refX": 3.1,
-            "refY": 2
+            id: "arrowhead-a",
+            markerWidth: 4,
+            markerHeight: 4,
+            orient: "auto",
+            refX: 3.1,
+            refY: 2
         });
 
-        const markerPoly = createSVGElement("polygon", {
-            "points": "0 0, 4 2, 0 4"
+        const arrowPoly = createSVGElement("polygon", {
+            points: "0 0, 4 2, 0 4",
+            fill: "currentColor"
         });
-        arrowA.appendChild(markerPoly);
+        arrowA.appendChild(arrowPoly);
         defs.appendChild(arrowA);
 
         const arrowB = createSVGElement("marker", {
-            "id": "arrowhead-b",
-            "markerWidth": 4,
-            "markerHeight": 4,
-            "orient": "auto",
-            "refX": 3.1,
-            "refY": 2
+            id: "arrowhead-b",
+            markerWidth: 4,
+            markerHeight: 4,
+            orient: "auto",
+            refX: 3.1,
+            refY: 2
         });
-        arrowB.appendChild(markerPoly.cloneNode(true));
+        arrowB.appendChild(arrowPoly.cloneNode(true));
         defs.appendChild(arrowB);
 
         svg.appendChild(defs);
@@ -1422,10 +1198,12 @@ class VectorScale extends HTMLElement {
 
         // Create points for vectors (unconventionally: tail and head)
         const p00 = new Point("p00", 0, 0);
+        const pBase = new Point("p-base", 3, 3);
+        const pScaled = new Point("p-scaled", 4.5, 4.5);
 
         const vectorScaled = new Vector({
             start: p00,
-            end: new Point("vb_e", 4.5, 4.5),
+            end: pScaled,
             label: {
                 text: "Scaled",
                 offset: -1.2
@@ -1434,30 +1212,28 @@ class VectorScale extends HTMLElement {
             key: "vectorScaled",
             stroke: {
                 width: vectorStrokeWidth,
-                color: colors.vectorB
             },
             marker: arrowB
         });
 
         const vectorA = new Vector({
             start: p00,
-            end: new Point("va_e", 3, 3),
+            end: pBase,
             label: {
                 text: "Base",
                 offset: 1
             },
             parent: g_flip,
-            key: "vectorA",
+            key: "vectorBase",
             stroke: {
                 width: vectorStrokeWidth,
-                color: colors.vectorA
             },
             marker: arrowA
         });
 
         // Add handles
-        const handleA = new Handle({
-            point: vectorA.getEndPoint(),
+        new Handle({
+            point: pBase,
             radius: 1.2,
             interactive: true,
             parent: g_flip
@@ -1474,44 +1250,56 @@ class VectorScale extends HTMLElement {
             <input type="range" id="scale-slider" min="-2.0" max="2.0" step="0.1" value="1.5">
             <span id="scale-value">1.5x</span>
         `;
+        const slider = control.querySelector("#scale-slider");
+        const sliderValue = control.querySelector("#scale-value");
         div.appendChild(control);
 
         // Create displays at the bottom
         const info = document.createElement("div");
         info.classList.add("info-panel");
         info.innerHTML = `
-            <div class="vector-info a">Base: <span id="info-a">(${vectorA.getStr()})</span></div>
+            <div class="vector-info base">Base: <span id="info-a">(${vectorA.getStr()})</span></div>
             <div class="vector-info scaled">Scaled: <span id="info-scaled">(${vectorScaled.getStr()})</span></div>
         `;
+        const infoA = info.querySelector("#info-a");
+        const infoScaled = info.querySelector("#info-scaled");
         div.appendChild(info);
 
-        const slider = control.querySelector("#scale-slider");
-        const sliderValue = control.querySelector("#scale-value");
-
         slider.addEventListener("input", (e) => {
-            const va = vectorA.getEndPoint();
             const scale = parseFloat(e.target.value);
-            const scaled = { x: va.x * scale, y: va.y * scale };
+            const scaled = { x: pBase.x * scale, y: pBase.y * scale };
 
-            vectorScaled.getEndPoint().set(scaled.x, scaled.y);
+            pScaled.set(scaled.x, scaled.y);
             sliderValue.textContent = `${scale.toFixed(1)}x`;
 
-            info.querySelector("#info-a").textContent = `(${va.x.toFixed(1)}, ${va.y.toFixed(1)})`;
-            info.querySelector("#info-scaled").textContent = `(${scaled.x.toFixed(1)}, ${scaled.y.toFixed(1)})`;
+            infoA.textContent = `(${pBase.x.toFixed(1)}, ${pBase.y.toFixed(1)})`;
+            infoScaled.textContent = `(${scaled.x.toFixed(1)}, ${scaled.y.toFixed(1)})`;
         });
 
-        vectorA.getEndPoint().onChange(() => {
-            const va = vectorA.getEndPoint();
+        pBase.onChange(() => {
             const vs = vectorScaled.getEndPoint();
-            const scaled = { x: va.x * slider.value, y: va.y * slider.value };
+            const scaled = { x: pBase.x * slider.value, y: pBase.y * slider.value };
 
             vs.set(scaled.x, scaled.y);
-            info.querySelector("#info-a").textContent = `(${va.x.toFixed(1)}, ${va.y.toFixed(1)})`;
-            info.querySelector("#info-scaled").textContent = `(${scaled.x.toFixed(1)}, ${scaled.y.toFixed(1)})`;
+            infoA.textContent = `(${pBase.x.toFixed(1)}, ${pBase.y.toFixed(1)})`;
+            infoScaled.textContent = `(${scaled.x.toFixed(1)}, ${scaled.y.toFixed(1)})`;
         });
     }
 }
 
+const vectorMagStyles = new CSSStyleSheet();
+vectorMagStyles.replaceSync(`
+.vector { color: var(--line-red); }
+.adjacent, .opposite { color: var(--line-green); }
+.vector-info.a {
+    color: var(--info-red-primary);
+    background: var(--info-red-secondary);
+}
+.vector-info.length {
+    color: var(--info-green-primary);
+    background: var(--info-green-secondary);
+}
+`);
 class VectorMag extends HTMLElement {
     constructor() {
         super();
@@ -1524,100 +1312,12 @@ class VectorMag extends HTMLElement {
         };
 
         // Create shadow DOM
-        this.attachShadow({ mode: "open" });
+        this.attachShadow({ mode: "open" }).adoptedStyleSheets = [baseStyles, vectorMagStyles];
     }
 
     connectedCallback() {
-        this.render();
-
-        document.addEventListener("theme-changed", () => {
-            this.render();
-        })
-    }
-
-    render() {
         const shadow = this.shadowRoot;
-        const isDark = document.querySelector("html").classList.contains("dark");
-
-        const colors = {
-            background: isDark ? "#171717" : "#fafafa",
-            grid: isDark ? "#262626" : "#f5f5f5",
-            axis: isDark ? "#525252" : "#0a0a0a",
-            vectorA: isDark ? "#f43f5e" : "#f43f5e",
-            vectorB: isDark ? "#65a30d" : "#65a30d",
-        };
-
         const vectorStrokeWidth = 0.15;
-
-        // Empty the shadowDom
-        shadow.innerHTML = "";
-
-        // Style
-        const style = document.createElement("style");
-        style.textContent = `
-            :host {
-                display: block;
-            }
-            svg {
-                touch-action: none;
-            }
-            .wrapper {
-                background: ${colors.background};
-                padding: 2rem 2rem 0 2rem;
-            }
-            .grid-line {
-                stroke: ${colors.grid};
-                stroke-width: 0.05;
-            }
-            .axis-line {
-                stroke: ${colors.axis};
-                stroke-width: 0.05;
-            }
-            .vector-label {
-                user-select: none;
-                pointer-events: none;
-                font-family: "Geist Mono", monospace;
-                font-size: 0.04rem;
-                font-weight: 500;
-            }
-            .control-panel {
-                width: 100%;
-                display: flex;
-                place-content: center;
-                padding: 1rem 0;
-                gap: 1rem;
-            }
-            .control-panel span {
-                width: 3rem;
-                text-align: right;
-            }
-            .info-panel {
-                width: 100%;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                flex-wrap: wrap;
-                gap: 0.75rem;
-                padding: 1rem 0;
-            }
-            .vector-info {
-                background: ${colors.grid};
-                padding: 0.4rem 0;
-                border-radius: 0.3rem;
-                white-space: nowrap;
-                width: 10rem;
-                text-align: center;
-            }
-            .vector-info.a {
-                color: ${colors.vectorA};
-                background: #fecdd3;
-            }
-            .vector-info.scaled {
-                color: ${colors.vectorB};
-                background: #ecfccb;
-            }
-        `;
-        shadow.appendChild(style);
 
         // Create wrapping div
         const div = document.createElement("div");
@@ -1634,29 +1334,30 @@ class VectorMag extends HTMLElement {
 
         // Create arrow(s)
         const arrowA = createSVGElement("marker", {
-            "id": "arrowhead-a",
-            "markerWidth": 4,
-            "markerHeight": 4,
-            "orient": "auto",
-            "refX": 3.1,
-            "refY": 2
+            id: "arrowhead-a",
+            markerWidth: 4,
+            markerHeight: 4,
+            orient: "auto",
+            refX: 3.1,
+            refY: 2
         });
 
-        const markerPoly = createSVGElement("polygon", {
-            "points": "0 0, 4 2, 0 4"
+        const arrowPoly = createSVGElement("polygon", {
+            points: "0 0, 4 2, 0 4",
+            fill: "currentColor"
         });
-        arrowA.appendChild(markerPoly);
+        arrowA.appendChild(arrowPoly);
         defs.appendChild(arrowA);
 
         const arrowB = createSVGElement("marker", {
-            "id": "arrowhead-b",
-            "markerWidth": 4,
-            "markerHeight": 4,
-            "orient": "auto",
-            "refX": 3.1,
-            "refY": 2
+            id: "arrowhead-b",
+            markerWidth: 4,
+            markerHeight: 4,
+            orient: "auto",
+            refX: 3.1,
+            refY: 2
         });
-        arrowB.appendChild(markerPoly.cloneNode(true));
+        arrowB.appendChild(arrowPoly.cloneNode(true));
         defs.appendChild(arrowB);
 
         svg.appendChild(defs);
@@ -1728,7 +1429,6 @@ class VectorMag extends HTMLElement {
             key: "opposite",
             stroke: {
                 width: 0.1,
-                color: colors.vectorB,
                 dasharray: "0.3 0.1"
             },
         });
@@ -1744,7 +1444,6 @@ class VectorMag extends HTMLElement {
             key: "adjacent",
             stroke: {
                 width: 0.1,
-                color: colors.vectorB,
                 dasharray: "0.3 0.1"
             },
         });
@@ -1760,14 +1459,13 @@ class VectorMag extends HTMLElement {
             key: "vector",
             stroke: {
                 width: vectorStrokeWidth,
-                color: colors.vectorA
             },
             marker: arrowA
         });
 
         // Add handles
         new Handle({
-            point: vector.getEndPoint(),
+            point: v1,
             radius: 1.2,
             interactive: true,
             parent: g_flip
@@ -1776,27 +1474,44 @@ class VectorMag extends HTMLElement {
         // Append svg to shadow DOM
         div.appendChild(svg);
 
-        function vLen(point) {
-            return Math.sqrt(point.x * point.x + point.y * point.y);
-        }
-
         // Create displays at the bottom
         const info = document.createElement("div");
         info.classList.add("info-panel");
         info.innerHTML = `
             <div class="vector-info a">A: <span id="info-a">(${vector.getStr()})</span></div>
-            <div class="vector-info length">Length: <span id="info-length">${vLen(v1).toFixed(1)}</span></div>
+            <div class="vector-info length">Length: <span id="info-length">${vectorMag(v1).toFixed(1)}</span></div>
         `;
+        const infoA = info.querySelector("#info-a");
+        const infoLength = info.querySelector("#info-length");
+
         div.appendChild(info);
 
         v1.onChange(() => {
             ra.set(v1.x, 0);
-            info.querySelector("#info-a").textContent = `(${v1.x.toFixed(1)}, ${v1.y.toFixed(1)})`;
-            info.querySelector("#info-length").textContent = vLen(v1).toFixed(1);
+            infoA.textContent = `(${v1.x.toFixed(1)}, ${v1.y.toFixed(1)})`;
+            infoLength.textContent = vectorMag(v1).toFixed(1);
         });
     }
 }
 
+const vectorDotStyles = new CSSStyleSheet();
+vectorDotStyles.replaceSync(`
+.vectorA { color: var(--line-red); }
+.vectorB{ color: var(--line-green); }
+.dot{ color: var(--line-yellow); }
+.vector-info.a {
+    color: var(--info-red-primary);
+    background: var(--info-red-secondary);
+}
+.vector-info.b {
+    color: var(--info-green-primary);
+    background: var(--info-green-secondary);
+}
+.vector-info.dot {
+    color: var(--info-yellow-primary);
+    background: var(--info-yellow-secondary);
+}
+`);
 class VectorDot extends HTMLElement {
     constructor() {
         super();
@@ -1809,105 +1524,12 @@ class VectorDot extends HTMLElement {
         };
 
         // Create shadow DOM
-        this.attachShadow({ mode: "open" });
+        this.attachShadow({ mode: "open" }).adoptedStyleSheets = [baseStyles, vectorDotStyles];
     }
 
     connectedCallback() {
-        this.render();
-
-        document.addEventListener("theme-changed", () => {
-            this.render();
-        })
-    }
-
-    render() {
         const shadow = this.shadowRoot;
-        const isDark = document.querySelector("html").classList.contains("dark");
-
-        const colors = {
-            background: isDark ? "#171717" : "#fafafa",
-            grid: isDark ? "#262626" : "#f5f5f5",
-            axis: isDark ? "#525252" : "#0a0a0a",
-            vectorA: isDark ? "#f43f5e" : "#f43f5e",
-            vectorB: isDark ? "#65a30d" : "#65a30d",
-            vectorProj: isDark ? "#facc15" : "#facc15",
-        };
-
         const vectorStrokeWidth = 0.15;
-
-        // Empty the shadowDom
-        shadow.innerHTML = "";
-
-        // Style
-        const style = document.createElement("style");
-        style.textContent = `
-            :host {
-                display: block;
-            }
-            svg {
-                touch-action: none;
-            }
-            .wrapper {
-                background: ${colors.background};
-                padding: 2rem 2rem 0 2rem;
-            }
-            .grid-line {
-                stroke: ${colors.grid};
-                stroke-width: 0.05;
-            }
-            .axis-line {
-                stroke: ${colors.axis};
-                stroke-width: 0.05;
-            }
-            .vector-label {
-                user-select: none;
-                pointer-events: none;
-                font-family: "Geist Mono", monospace;
-                font-size: 0.04rem;
-                font-weight: 500;
-            }
-            .control-panel {
-                width: 100%;
-                display: flex;
-                place-content: center;
-                padding: 1rem 0;
-                gap: 1rem;
-            }
-            .control-panel span {
-                width: 3rem;
-                text-align: right;
-            }
-            .info-panel {
-                width: 100%;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                flex-wrap: wrap;
-                gap: 0.75rem;
-                padding: 1rem 0;
-            }
-            .vector-info {
-                background: ${colors.grid};
-                padding: 0.4rem 0;
-                border-radius: 0.3rem;
-                white-space: nowrap;
-                width: 10rem;
-                text-align: center;
-            }
-            .vector-info.a {
-                color: ${colors.vectorA};
-                background: #fecdd3;
-            }
-            .vector-info.b {
-                color: ${colors.vectorB};
-                background: #ecfccb;
-            }
-            .vector-info.dot {
-                color: ${colors.vectorProj};
-                background: #fefce8;
-            }
-        `;
-        shadow.appendChild(style);
 
         // Create wrapping div
         const div = document.createElement("div");
@@ -1924,29 +1546,30 @@ class VectorDot extends HTMLElement {
 
         // Create arrow(s)
         const arrowA = createSVGElement("marker", {
-            "id": "arrowhead-a",
-            "markerWidth": 4,
-            "markerHeight": 4,
-            "orient": "auto",
-            "refX": 3.1,
-            "refY": 2
+            id: "arrowhead-a",
+            markerWidth: 4,
+            markerHeight: 4,
+            orient: "auto",
+            refX: 3.1,
+            refY: 2
         });
 
-        const markerPoly = createSVGElement("polygon", {
-            "points": "0 0, 4 2, 0 4"
+        const arrowPoly = createSVGElement("polygon", {
+            points: "0 0, 4 2, 0 4",
+            fill: "currentColor"
         });
-        arrowA.appendChild(markerPoly);
+        arrowA.appendChild(arrowPoly);
         defs.appendChild(arrowA);
 
         const arrowB = createSVGElement("marker", {
-            "id": "arrowhead-b",
-            "markerWidth": 4,
-            "markerHeight": 4,
-            "orient": "auto",
-            "refX": 3.1,
-            "refY": 2
+            id: "arrowhead-b",
+            markerWidth: 4,
+            markerHeight: 4,
+            orient: "auto",
+            refX: 3.1,
+            refY: 2
         });
-        arrowB.appendChild(markerPoly.cloneNode(true));
+        arrowB.appendChild(arrowPoly.cloneNode(true));
         defs.appendChild(arrowB);
 
         svg.appendChild(defs);
@@ -2012,14 +1635,13 @@ class VectorDot extends HTMLElement {
             start: p00,
             end: v1,
             label: {
-                text: "a",
-                offset: -0.6
+                text: "A",
+                offset: 0.6
             },
             parent: g_flip,
             key: "vectorA",
             stroke: {
                 width: vectorStrokeWidth,
-                color: colors.vectorA,
             },
             marker: arrowA
         });
@@ -2028,19 +1650,18 @@ class VectorDot extends HTMLElement {
             start: p00,
             end: v2,
             label: {
-                text: "b",
-                offset: 0.6
+                text: "B",
+                offset: -0.6
             },
             parent: g_flip,
             key: "vectorB",
             stroke: {
                 width: vectorStrokeWidth,
-                color: colors.vectorB,
             },
             marker: arrowB
         });
 
-        const projection = new Vector({
+        new Vector({
             start: p00,
             end: vp,
             label: {
@@ -2051,7 +1672,6 @@ class VectorDot extends HTMLElement {
             key: "dot",
             stroke: {
                 width: vectorStrokeWidth,
-                color: colors.vectorProj
             },
         });
 
@@ -2072,51 +1692,64 @@ class VectorDot extends HTMLElement {
         // Append svg to shadow DOM
         div.appendChild(svg);
 
-        function vLen(point) {
-            return Math.sqrt(point.x * point.x + point.y * point.y);
-        }
-
-        function dot(a, b) {
-            return a.x * b.x + a.y * b.y;
-        }
-
-        function round(x, decimals = 2) {
-            const factor = 10 ** decimals;
-            return Math.round(x * factor) / factor;
-        }
-
         // Create displays at the bottom
         const info = document.createElement("div");
         info.classList.add("info-panel");
         info.innerHTML = `
             <div class="vector-info a">A: <span id="info-a">(${vectorA.getStr()})</span></div>
             <div class="vector-info b">B: <span id="info-b">(${vectorB.getStr()})</span></div>
-            <div class="vector-info dot">A⋅B: <span id="info-dot">${dot(v1, v2).toFixed(1)}</span></div>
+            <div class="vector-info dot">A⋅B: <span id="info-dot">${vectorDot(v1, v2).toFixed(1)}</span></div>
         `;
+        const infoA = info.querySelector("#info-a");
+        const infoB = info.querySelector("#info-b");
+        const infoDot = info.querySelector("#info-dot");
         div.appendChild(info);
 
         v1.onChange(() => {
-            const newDot = dot(v1, v2);
-            const lenSq = dot(v1, v1);
+            const newDot = vectorDot(v1, v2);
+            const lenSq = vectorDot(v1, v1);
             const t = newDot / lenSq;
 
             vp.set(v1.x * t, v1.y * t);
-            info.querySelector("#info-a").textContent = `(${v1.x.toFixed(1)}, ${v1.y.toFixed(1)})`;
-            info.querySelector("#info-dot").textContent = newDot.toFixed(1);
+            infoA.textContent = `(${v1.x.toFixed(1)}, ${v1.y.toFixed(1)})`;
+            infoDot.textContent = newDot.toFixed(1);
         });
 
         v2.onChange(() => {
-            const newDot = dot(v1, v2);
-            const lenSq = dot(v1, v1);
+            const newDot = vectorDot(v1, v2);
+            const lenSq = vectorDot(v1, v1);
             const t = newDot / lenSq;
 
             vp.set(v1.x * t, v1.y * t);
-            info.querySelector("#info-b").textContent = `(${v2.x.toFixed(1)}, ${v2.y.toFixed(1)})`;
-            info.querySelector("#info-dot").textContent = newDot.toFixed(1);
+            infoB.textContent = `(${v2.x.toFixed(1)}, ${v2.y.toFixed(1)})`;
+            infoDot.textContent = newDot.toFixed(1);
         });
     }
 }
 
+const vectorCrossStyles = new CSSStyleSheet();
+vectorCrossStyles.replaceSync(`
+.vectorA { color: var(--line-red); }
+.vectorB { color: var(--line-green); }
+.vectorCross { color: var(--line-blue); }
+.par { color: var(--line-yellow); }
+.polygon {
+    fill-opacity: 0.1;
+    stroke-opacity: 0.4;
+}
+.vector-info.a {
+    color: var(--info-red-primary);
+    background: var(--info-red-secondary);
+}
+.vector-info.b {
+    color: var(--info-green-primary);
+    background: var(--info-green-secondary);
+}
+.vector-info.cross {
+    color: var(--info-blue-primary);
+    background: var(--info-blue-secondary);
+}
+`);
 class VectorCross extends HTMLElement {
     constructor() {
         super();
@@ -2133,106 +1766,12 @@ class VectorCross extends HTMLElement {
         this.pp = { x: 6, y: 6 };
 
         // Create shadow DOM
-        this.attachShadow({ mode: "open" });
+        this.attachShadow({ mode: "open" }).adoptedStyleSheets = [baseStyles, vectorCrossStyles];
     }
 
     connectedCallback() {
-        this.render();
-
-        document.addEventListener("theme-changed", () => {
-            this.render();
-        })
-    }
-
-    render() {
         const shadow = this.shadowRoot;
-        const isDark = document.querySelector("html").classList.contains("dark");
-
-        const colors = {
-            background: isDark ? "#171717" : "#fafafa",
-            grid: isDark ? "#262626" : "#f5f5f5",
-            axis: isDark ? "#525252" : "#0a0a0a",
-            vectorA: isDark ? "#f43f5e" : "#f43f5e",
-            vectorB: isDark ? "#65a30d" : "#65a30d",
-            vectorC: isDark ? "#0284c7" : "#0284c7",
-        };
-
         const vectorStrokeWidth = 0.15;
-
-        // Empty the shadowDom
-        shadow.innerHTML = "";
-
-        // Style
-        const style = document.createElement("style");
-        style.textContent = `
-            :host {
-                display: block;
-            }
-            svg {
-                touch-action: none;
-            }
-            .wrapper {
-                background: ${colors.background};
-                padding: 2rem 2rem 0 2rem;
-            }
-            .grid-line {
-                stroke: ${colors.grid};
-                stroke-width: 0.05;
-            }
-            .axis-line {
-                stroke: ${colors.axis};
-                stroke-width: 0.05;
-            }
-            .vector-label,
-            .poly-label {
-                user-select: none;
-                pointer-events: none;
-                font-family: "Geist Mono", monospace;
-                font-size: 0.04rem;
-                font-weight: 500;
-            }
-            .control-panel {
-                width: 100%;
-                display: flex;
-                place-content: center;
-                padding: 1rem 0;
-                gap: 1rem;
-            }
-            .control-panel span {
-                width: 3rem;
-                text-align: right;
-            }
-            .info-panel {
-                width: 100%;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                flex-wrap: wrap;
-                gap: 0.75rem;
-                padding: 1rem 0;
-            }
-            .vector-info {
-                background: ${colors.grid};
-                padding: 0.4rem 0;
-                border-radius: 0.3rem;
-                white-space: nowrap;
-                width: 10rem;
-                text-align: center;
-            }
-            .vector-info.a {
-                color: ${colors.vectorA};
-                background: #fecdd3;
-            }
-            .vector-info.b {
-                color: ${colors.vectorB};
-                background: #ecfccb;
-            }
-            .vector-info.dot {
-                color: ${colors.vectorC};
-                background: #fefce8;
-            }
-        `;
-        shadow.appendChild(style);
 
         // Create wrapping div
         const div = document.createElement("div");
@@ -2249,40 +1788,41 @@ class VectorCross extends HTMLElement {
 
         // Create arrow(s)
         const arrowA = createSVGElement("marker", {
-            "id": "arrowhead-a",
-            "markerWidth": 4,
-            "markerHeight": 4,
-            "orient": "auto",
-            "refX": 3.1,
-            "refY": 2
+            id: "arrowhead-a",
+            markerWidth: 4,
+            markerHeight: 4,
+            orient: "auto",
+            refX: 3.1,
+            refY: 2
         });
 
-        const markerPoly = createSVGElement("polygon", {
-            "points": "0 0, 4 2, 0 4"
+        const arrowPoly = createSVGElement("polygon", {
+            points: "0 0, 4 2, 0 4",
+            fill: "currentColor"
         });
-        arrowA.appendChild(markerPoly);
+        arrowA.appendChild(arrowPoly);
         defs.appendChild(arrowA);
 
         const arrowB = createSVGElement("marker", {
-            "id": "arrowhead-b",
-            "markerWidth": 4,
-            "markerHeight": 4,
-            "orient": "auto",
-            "refX": 3.1,
-            "refY": 2
+            id: "arrowhead-b",
+            markerWidth: 4,
+            markerHeight: 4,
+            orient: "auto",
+            refX: 3.1,
+            refY: 2
         });
-        arrowB.appendChild(markerPoly.cloneNode(true));
+        arrowB.appendChild(arrowPoly.cloneNode(true));
         defs.appendChild(arrowB);
 
         const arrowC = createSVGElement("marker", {
-            "id": "arrowhead-c",
-            "markerWidth": 4,
-            "markerHeight": 4,
-            "orient": "auto",
-            "refX": 3.1,
-            "refY": 2
+            id: "arrowhead-c",
+            markerWidth: 4,
+            markerHeight: 4,
+            orient: "auto",
+            refX: 3.1,
+            refY: 2
         });
-        arrowC.appendChild(markerPoly.cloneNode(true));
+        arrowC.appendChild(arrowPoly.cloneNode(true));
         defs.appendChild(arrowC);
 
         svg.appendChild(defs);
@@ -2353,106 +1893,96 @@ class VectorCross extends HTMLElement {
         svg.appendChild(axisX);
         svg.appendChild(axisY);
         svg.appendChild(axisZ);
-        //
-        // const g_flip = createSVGElement("g", {
-        //     transform: "scale(1 -1)"
-        // });
-        // svg.appendChild(g_flip);
 
         // Create points for vectors (unconventionally: tail and head)
+        const projA = project3DToIsometric(this.v1.x, this.v1.y, 0);
+        const projB = project3DToIsometric(this.v2.x, this.v2.y, 0);
+
         const p00 = new Point("p00", 0, 0);
-        const test = project3DToIsometric(this.v1.x, this.v1.y, 0);
-        const test2 = project3DToIsometric(this.v2.x, this.v2.y, 0);
-        const v1 = new Point("v1", test.x, test.y);
-        const v2 = new Point("v2", test2.x, test2.y);
+        const pA = new Point("pA", projA.x, projA.y);
+        const pB = new Point("pB", projB.x, projB.y);
 
         // Cross product vector
         const axb = this.v1.x * this.v2.y - this.v1.y * this.v2.x;
-        // NOTE: Need to flip the Y because of the nature of SVG canvas
-        const pcross = project3DToIsometric(0, 0, -axb * 0.2);
-        const vcross = new Point("cross", pcross.x, pcross.y);
+        // NOTE: Need to flip the Y because of the nature of SVG canvas (also scaling for visuals)
+        const projCross = project3DToIsometric(0, 0, -axb * 0.2);
+        const pCross = new Point("cross", projCross.x, projCross.y);
 
         // Define the parallelogram's point that A and B encompass
         const asumb = project3DToIsometric(this.pp.x, this.pp.y, 0);
-        const ptip = new Point("ptip", asumb.x, asumb.y);
+        const pTip = new Point("ptip", asumb.x, asumb.y);
 
         // Draw the parallelogram
-        const parallelogram = new Polygon({
-            points: [p00, v2, ptip, v1],
+        new Polygon({
+            points: [p00, pB, pTip, pA],
             parent: svg,
-            fill: "rgba(254, 249, 195, 0.25)",
             key: "par",
             label: {
                 text: "|AxB|",
                 flipY: true,
-                color: "#ca8a04"
             },
             stroke: {
                 width: 0.05,
-                color: "rgba(254, 249, 195, 0.5)"
             }
         });
 
         const vectorA = new Vector({
             start: p00,
-            end: v1,
+            end: pA,
             label: {
                 text: "A",
-                offset: 0.6,
+                offset: -0.6,
                 flipY: true
             },
             parent: svg,
             key: "vectorA",
             stroke: {
                 width: vectorStrokeWidth,
-                color: colors.vectorA,
             },
             marker: arrowA
         });
 
         const vectorB = new Vector({
             start: p00,
-            end: v2,
+            end: pB,
             label: {
                 text: "B",
-                offset: -0.6,
+                offset: 0.6,
                 flipY: true
             },
             parent: svg,
             key: "vectorB",
             stroke: {
                 width: vectorStrokeWidth,
-                color: colors.vectorB,
             },
             marker: arrowB
         });
 
-        const vectorC = new Vector({
+        new Vector({
             start: p00,
-            end: vcross,
+            end: pCross,
             label: {
                 text: "AxB",
                 offset: 0.8,
                 flipY: true
             },
             parent: svg,
-            key: "vectorC",
+            key: "vectorCross",
             stroke: {
                 width: vectorStrokeWidth,
-                color: colors.vectorC,
             },
             marker: arrowC
         });
 
         // Add handles
         new Handle({
-            point: v1,
+            point: pA,
             radius: 1.2,
             interactive: true,
             parent: svg
         });
         new Handle({
-            point: v2,
+            point: pB,
             radius: 1.2,
             interactive: true,
             parent: svg
@@ -2467,46 +1997,63 @@ class VectorCross extends HTMLElement {
         info.innerHTML = `
             <div class="vector-info a">A: <span id="info-a">(${vectorA.getStr()})</span></div>
             <div class="vector-info b">B: <span id="info-b">(${vectorB.getStr()})</span></div>
-            <div class="vector-info cross">A x B: <span id="info-cross">${-vectorCross(v1, v2).toFixed(1)}</span></div>
+            <div class="vector-info cross">A x B: <span id="info-cross">${-vectorCross(pA, pB).toFixed(1)}</span></div>
         `;
+        const infoA = info.querySelector("#info-a");
+        const infoB = info.querySelector("#info-b");
+        const infoCross = info.querySelector("#info-cross");
         div.appendChild(info);
 
-        v1.onChange(() => {
+        pA.onChange(() => {
             // Update the parallelogram's tip
-            const s = { x: v1.x + v2.x, y: v1.y + v2.y };
-            ptip.set(s.x, s.y);
+            const s = { x: pA.x + pB.x, y: pA.y + pB.y };
+            pTip.set(s.x, s.y);
 
-            const stoi = screenToIsometric(v1.x, v1.y);
-            const stoi2 = screenToIsometric(v2.x, v2.y);
+            const stoi1 = screenToIsometric(pA.x, pA.y);
+            const stoi2 = screenToIsometric(pB.x, pB.y);
 
             // Recalculate cross product and update vector
-            const c = vectorCross(stoi, stoi2);
+            const c = vectorCross(stoi1, stoi2);
             const pc = project3DToIsometric(0, 0, -c * 0.2);
-            vcross.set(pc.x, pc.y);
+            pCross.set(pc.x, pc.y);
 
-            info.querySelector("#info-a").textContent = `(${v1.x.toFixed(1)}, ${v1.y.toFixed(1)})`;
-            info.querySelector("#info-cross").textContent = -c.toFixed(1);
+            infoA.textContent = `(${pA.x.toFixed(1)}, ${pA.y.toFixed(1)})`;
+            infoCross.textContent = -c.toFixed(1);
         });
 
-        v2.onChange(() => {
+        pB.onChange(() => {
             // Update the parallelogram's tip
-            const s = { x: v1.x + v2.x, y: v1.y + v2.y };
-            ptip.set(s.x, s.y);
+            const s = { x: pA.x + pB.x, y: pA.y + pB.y };
+            pTip.set(s.x, s.y);
 
-            const stoi = screenToIsometric(v1.x, v1.y);
-            const stoi2 = screenToIsometric(v2.x, v2.y);
+            const stoi1 = screenToIsometric(pA.x, pA.y);
+            const stoi2 = screenToIsometric(pB.x, pB.y);
 
             // Recalculate cross product and update vector
-            const c = vectorCross(stoi, stoi2);
+            const c = vectorCross(stoi1, stoi2);
             const pc = project3DToIsometric(0, 0, -c * 0.2);
-            vcross.set(pc.x, pc.y);
+            pCross.set(pc.x, pc.y);
 
-            info.querySelector("#info-b").textContent = `(${v2.x.toFixed(1)}, ${v2.y.toFixed(1)})`;
-            info.querySelector("#info-cross").textContent = -c.toFixed(1);
+            infoB.textContent = `(${pB.x.toFixed(1)}, ${pB.y.toFixed(1)})`;
+            infoCross.textContent = -c.toFixed(1);
         });
     }
 }
 
+const vectorRStyles = new CSSStyleSheet();
+vectorRStyles.replaceSync(`
+.V { color: var(--line-red); }
+.R { color: var(--line-green); }
+.surface, .normal { color: var(--line-yellow); }
+.vector-info.v {
+    color: var(--info-red-primary);
+    background: var(--info-red-secondary);
+}
+.vector-info.r {
+    color: var(--info-green-primary);
+    background: var(--info-green-secondary);
+}
+`);
 class VectorReflect extends HTMLElement {
     constructor() {
         super();
@@ -2525,101 +2072,12 @@ class VectorReflect extends HTMLElement {
         ];
 
         // Create shadow DOM
-        this.attachShadow({ mode: "open" });
+        this.attachShadow({ mode: "open" }).adoptedStyleSheets = [baseStyles, vectorRStyles];
     }
 
     connectedCallback() {
-        this.render();
-
-        document.addEventListener("theme-changed", () => {
-            this.render();
-        })
-    }
-
-    render() {
         const shadow = this.shadowRoot;
-        const isDark = document.querySelector("html").classList.contains("dark");
-
-        const colors = {
-            background: isDark ? "#171717" : "#fafafa",
-            grid: isDark ? "#262626" : "#f5f5f5",
-            axis: isDark ? "#525252" : "#0a0a0a",
-            vectorA: isDark ? "#f43f5e" : "#f43f5e",
-            vectorB: isDark ? "#65a30d" : "#65a30d",
-            vectorProj: isDark ? "#facc15" : "#facc15",
-        };
-
         const vectorStrokeWidth = 0.15;
-
-        // Empty the shadowDom
-        shadow.innerHTML = "";
-
-        // Style
-        const style = document.createElement("style");
-        style.textContent = `
-            :host {
-                display: block;
-            }
-            svg {
-                touch-action: none;
-            }
-            .wrapper {
-                background: ${colors.background};
-                padding: 2rem 2rem 0 2rem;
-            }
-            .grid-line {
-                stroke: ${colors.grid};
-                stroke-width: 0.05;
-            }
-            .axis-line {
-                stroke: ${colors.axis};
-                stroke-width: 0.05;
-            }
-            .vector-label {
-                user-select: none;
-                pointer-events: none;
-                font-family: "Geist Mono", monospace;
-                font-size: 0.04rem;
-                font-weight: 500;
-            }
-            .control-panel {
-                width: 100%;
-                display: flex;
-                place-content: center;
-                padding: 1rem 0;
-                gap: 1rem;
-            }
-            .control-panel span {
-                width: 3rem;
-                text-align: right;
-            }
-            .info-panel {
-                width: 100%;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                flex-wrap: wrap;
-                gap: 0.75rem;
-                padding: 1rem 0;
-            }
-            .vector-info {
-                background: ${colors.grid};
-                padding: 0.4rem 0;
-                border-radius: 0.3rem;
-                white-space: nowrap;
-                width: 10rem;
-                text-align: center;
-            }
-            .vector-info.v {
-                color: #fecdd3;
-                background: #4c0519;
-            }
-            .vector-info.r {
-                color: #ecfccb;
-                background: #1a2e05;
-            }
-        `;
-        shadow.appendChild(style);
 
         // Create wrapping div
         const div = document.createElement("div");
@@ -2636,40 +2094,41 @@ class VectorReflect extends HTMLElement {
 
         // Create arrow(s)
         const arrowA = createSVGElement("marker", {
-            "id": "arrowhead-a",
-            "markerWidth": 4,
-            "markerHeight": 4,
-            "orient": "auto",
-            "refX": 3.1,
-            "refY": 2
+            id: "arrowhead-a",
+            markerWidth: 4,
+            markerHeight: 4,
+            orient: "auto",
+            refX: 3.1,
+            refY: 2
         });
 
-        const markerPoly = createSVGElement("polygon", {
-            "points": "0 0, 4 2, 0 4"
+        const arrowPoly = createSVGElement("polygon", {
+            points: "0 0, 4 2, 0 4",
+            fill: "currentColor"
         });
-        arrowA.appendChild(markerPoly);
+        arrowA.appendChild(arrowPoly);
         defs.appendChild(arrowA);
 
         const arrowB = createSVGElement("marker", {
-            "id": "arrowhead-b",
-            "markerWidth": 4,
-            "markerHeight": 4,
-            "orient": "auto",
-            "refX": 3.1,
-            "refY": 2
+            id: "arrowhead-b",
+            markerWidth: 4,
+            markerHeight: 4,
+            orient: "auto",
+            refX: 3.1,
+            refY: 2
         });
-        arrowB.appendChild(markerPoly.cloneNode(true));
+        arrowB.appendChild(arrowPoly.cloneNode(true));
         defs.appendChild(arrowB);
 
         const arrowN = createSVGElement("marker", {
-            "id": "arrowhead-n",
-            "markerWidth": 4,
-            "markerHeight": 4,
-            "orient": "auto",
-            "refX": 3.1,
-            "refY": 2
+            id: "arrowhead-n",
+            markerWidth: 4,
+            markerHeight: 4,
+            orient: "auto",
+            refX: 3.1,
+            refY: 2
         });
-        arrowN.appendChild(markerPoly.cloneNode(true));
+        arrowN.appendChild(arrowPoly.cloneNode(true));
         defs.appendChild(arrowN);
 
         svg.appendChild(defs);
@@ -2733,7 +2192,7 @@ class VectorReflect extends HTMLElement {
         const Vtail = new Point("v", -4, 4);
         const Rhead = new Point("r", 4, 4);
 
-        const mirror = new Vector({
+        new Vector({
             start: m0,
             end: m1,
             label: {
@@ -2744,11 +2203,10 @@ class VectorReflect extends HTMLElement {
             key: "surface",
             stroke: {
                 width: vectorStrokeWidth,
-                color: colors.vectorProj,
             }
         });
 
-        const normal = new Vector({
+        new Vector({
             start: p00,
             end: n,
             label: {
@@ -2759,7 +2217,6 @@ class VectorReflect extends HTMLElement {
             key: "normal",
             stroke: {
                 width: vectorStrokeWidth,
-                color: colors.vectorProj,
             },
             marker: arrowN
         });
@@ -2775,7 +2232,6 @@ class VectorReflect extends HTMLElement {
             key: "V",
             stroke: {
                 width: vectorStrokeWidth,
-                color: colors.vectorA,
             },
             marker: arrowA
         });
@@ -2791,7 +2247,6 @@ class VectorReflect extends HTMLElement {
             key: "R",
             stroke: {
                 width: vectorStrokeWidth,
-                color: colors.vectorB,
             },
             marker: arrowB
         });
@@ -2826,6 +2281,8 @@ class VectorReflect extends HTMLElement {
             <div class="vector-info v">V: <span id="info-v">(${V.getStr()})</span></div>
             <div class="vector-info r">R: <span id="info-r">(${R.getStr()})</span></div>
         `;
+        const infoV = info.querySelector("#info-v");
+        const infoR = info.querySelector("#info-r");
         div.appendChild(info);
 
         Vtail.onChange(() => {
@@ -2833,8 +2290,8 @@ class VectorReflect extends HTMLElement {
             const reflect = vectorReflect(v, n);
 
             Rhead.set(reflect.x, reflect.y);
-            info.querySelector("#info-v").textContent = `(${Vtail.x.toFixed(1)}, ${Vtail.y.toFixed(1)})`;
-            info.querySelector("#info-r").textContent = `(${reflect.x.toFixed(1)}, ${reflect.y.toFixed(1)})`;
+            infoV.textContent = `(${Vtail.x.toFixed(1)}, ${Vtail.y.toFixed(1)})`;
+            infoR.textContent = `(${reflect.x.toFixed(1)}, ${reflect.y.toFixed(1)})`;
         });
 
         scaleSlider.addEventListener("input", (e) => {
@@ -2853,7 +2310,7 @@ class VectorReflect extends HTMLElement {
             const reflect = vectorReflect(v, n);
 
             Rhead.set(reflect.x, reflect.y);
-            info.querySelector("#info-r").textContent = `(${reflect.x.toFixed(1)}, ${reflect.y.toFixed(1)})`;
+            infoR.textContent = `(${reflect.x.toFixed(1)}, ${reflect.y.toFixed(1)})`;
         });
     }
 }

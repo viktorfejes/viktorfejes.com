@@ -1,11 +1,47 @@
 ---
 ---
+<script>
+    import { VectorCross } from "../../assets/scripts/vector-operations.js";
+</script>
 
 <div class="rounded-xl overflow-hidden border border-neutral-200 dark:border-neutral-800">
     <vector-cross></vector-cross>
 </div>
 
-<script>
-    import { VectorCross } from "../../assets/scripts/vector-add.js";
-</script>
+<style>
+    vector-cross {
+        --background: var(--color-neutral-50);
+        --grid: var(--color-neutral-100);
+        --axes: var(--color-neutral-950);
+        --line-red: var(--color-rose-500);
+        --line-green: var(--color-lime-600);
+        --line-yellow: var(--color-yellow-400);
 
+        --info-red-primary: var(--color-rose-500);
+        --info-red-secondary: var(--color-rose-100);
+
+        --info-green-primary: var(--color-lime-700);
+        --info-green-secondary: var(--color-lime-100);
+
+        --info-blue-primary: var(--color-sky-600);
+        --info-blue-secondary: var(--color-sky-100);
+    }
+
+    :global(html.dark) vector-cross {
+        --background: var(--color-neutral-900);
+        --grid: var(--color-neutral-800);
+        --axes: var(--color-neutral-600);
+        --line-red: var(--color-rose-500);
+        --line-green: var(--color-lime-600);
+        --line-yellow: var(--color-yellow-400);
+
+        --info-red-primary: var(--color-rose-300);
+        --info-red-secondary: var(--color-rose-950);
+
+        --info-green-primary: var(--color-lime-400);
+        --info-green-secondary: var(--color-lime-900);
+
+        --info-blue-primary: var(--color-sky-300);
+        --info-blue-secondary: var(--color-sky-900);
+    }
+</style>
