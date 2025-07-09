@@ -54,6 +54,17 @@ function project3DToIsometric(x, y, z) {
     };
 }
 
+function screenToIsometric(sx, sy) {
+    const isoAngle = Math.atan(0.5);
+    const cos = Math.cos(isoAngle);
+    const sin = Math.sin(isoAngle);
+
+    const x = (sx / cos + sy / sin) / 2;
+    const y = (sy / sin - sx / cos) / 2;
+
+    return {x, y, z: 0};
+}
+
 function calculateIsoBounds(bounds) {
     const diagonal = Math.sqrt(bounds.width * bounds.width + bounds.height * bounds.height);
     return {
@@ -62,6 +73,20 @@ function calculateIsoBounds(bounds) {
         width: Math.floor(bounds.width + 2 * diagonal),
         height: Math.floor(bounds.height + 2 * diagonal)
     };
+}
+
+function vectorMag(p) {
+    return Math.sqrt(p.x * p.x + p.y * p.y);
+}
+
+function vectorCross(a, b) {
+    return a.x * b.y - a.y * b.x;
+}
+
+function vectorCrossNorm(a, b) {
+    const cross = vectorCross(a, b);
+    const len = vectorMag(a) * vectorMag(b);
+    return cross / len;
 }
 
 class Point {
@@ -1979,9 +2004,9 @@ class VectorCross extends HTMLElement {
             height: 20
         };
 
-        this.v1 = { x: 6, y: 1 };
-        this.v2 = { x: 2, y: 6 };
-        this.pp = { x: 8, y: 7 };
+        this.v1 = { x: 0, y: 6 };
+        this.v2 = { x: 6, y: 0 };
+        this.pp = { x: 6, y: 6 };
 
         // Create shadow DOM
         this.attachShadow({ mode: "open" });
@@ -2218,8 +2243,9 @@ class VectorCross extends HTMLElement {
         const v2 = new Point("v2", test2.x, test2.y);
 
         // Cross product vector
-        const axb = 4 * 4 - 0 * 0;
-        const pcross = project3DToIsometric(0, 0, axb); 
+        const axb = this.v1.x * this.v2.y - this.v1.y * this.v2.x;
+        // NOTE: Need to flip the Y because of the nature of SVG canvas
+        const pcross = project3DToIsometric(0, 0, -axb * 0.2); 
         const vcross = new Point("cross", pcross.x, pcross.y);
 
         // Define the parallelogram's point that A and B encompass
@@ -2233,7 +2259,7 @@ class VectorCross extends HTMLElement {
             fill: "rgba(254, 249, 195, 0.25)",
             key: "par",
             label: {
-                text: "||AxB||",
+                text: "|AxB|",
                 flipY: true,
                 color: "#ca8a04"
             },
@@ -2311,36 +2337,31 @@ class VectorCross extends HTMLElement {
         // Append svg to shadow DOM
         div.appendChild(svg);
 
-        // function vLen(point) {
-        //     return Math.sqrt(point.x * point.x + point.y * point.y);
-        // }
-        //
-        // function dot(a, b) {
-        //     return a.x * b.x + a.y * b.y;
-        // }
-        //
-        // function round(x, decimals = 2) {
-        //     const factor = 10 ** decimals;
-        //     return Math.round(x * factor) / factor;
-        // }
-        //
-        // // Create displays at the bottom
-        // const info = document.createElement("div");
-        // info.classList.add("info-panel");
-        // info.innerHTML = `
-        //     <div class="vector-info a">A: <span id="info-a">(${vectorA.getStr()})</span></div>
-        //     <div class="vector-info b">B: <span id="info-b">(${vectorB.getStr()})</span></div>
-        //     <div class="vector-info dot">A⋅B: <span id="info-dot">${dot(v1, v2).toFixed(1)}</span></div>
-        // `;
-        // div.appendChild(info);
+        // Create displays at the bottom
+        const info = document.createElement("div");
+        info.classList.add("info-panel");
+        info.innerHTML = `
+            <div class="vector-info a">A: <span id="info-a">(${vectorA.getStr()})</span></div>
+            <div class="vector-info b">B: <span id="info-b">(${vectorB.getStr()})</span></div>
+            <div class="vector-info cross">A x B: <span id="info-cross">${-vectorCross(v1, v2).toFixed(1)}</span></div>
+        `;
+        div.appendChild(info);
         
         v1.onChange(() => {
             // Update the parallelogram's tip
             const s = { x: v1.x + v2.x, y: v1.y + v2.y };
             ptip.set(s.x, s.y);
 
-            // info.querySelector("#info-a").textContent = `(${v1.x.toFixed(1)}, ${v1.y.toFixed(1)})`;
-            // info.querySelector("#info-dot").textContent = newDot.toFixed(1);
+            const stoi = screenToIsometric(v1.x, v1.y);
+            const stoi2 = screenToIsometric(v2.x, v2.y);
+
+            // Recalculate cross product and update vector
+            const c = vectorCross(stoi, stoi2);
+            const pc = project3DToIsometric(0, 0, -c * 0.2);
+            vcross.set(pc.x, pc.y);
+
+            info.querySelector("#info-a").textContent = `(${v1.x.toFixed(1)}, ${v1.y.toFixed(1)})`;
+            info.querySelector("#info-cross").textContent = -c.toFixed(1);
         });
 
         v2.onChange(() => {
@@ -2348,8 +2369,367 @@ class VectorCross extends HTMLElement {
             const s = { x: v1.x + v2.x, y: v1.y + v2.y };
             ptip.set(s.x, s.y);
 
-        //     info.querySelector("#info-b").textContent = `(${v2.x.toFixed(1)}, ${v2.y.toFixed(1)})`;
-        //     info.querySelector("#info-dot").textContent = newDot.toFixed(1);
+            const stoi = screenToIsometric(v1.x, v1.y);
+            const stoi2 = screenToIsometric(v2.x, v2.y);
+
+            // Recalculate cross product and update vector
+            const c = vectorCross(stoi, stoi2);
+            const pc = project3DToIsometric(0, 0, -c * 0.2);
+            vcross.set(pc.x, pc.y);
+
+            info.querySelector("#info-b").textContent = `(${v2.x.toFixed(1)}, ${v2.y.toFixed(1)})`;
+            info.querySelector("#info-cross").textContent = -c.toFixed(1);
+        });
+    }
+}
+
+class VectorReflect extends HTMLElement {
+    constructor() {
+        super();
+
+        this.bounds = {
+            x: -10,
+            y: -8,
+            width: 20,
+            height: 16
+        };
+
+        // Create shadow DOM
+        this.attachShadow({ mode: "open" });
+    }
+
+    connectedCallback() {
+        this.render();
+
+        document.addEventListener("theme-changed", () => {
+            this.render();
+        })
+    }
+
+    render() {
+        const shadow = this.shadowRoot;
+        const isDark = document.querySelector("html").classList.contains("dark");
+
+        const colors = {
+            background: isDark ? "#171717" : "#fafafa",
+            grid: isDark ? "#262626" : "#f5f5f5",
+            axis: isDark ? "#525252" : "#0a0a0a",
+            vectorA: isDark ? "#f43f5e" : "#f43f5e",
+            vectorB: isDark ? "#65a30d" : "#65a30d",
+            vectorProj: isDark ? "#facc15" : "#facc15",
+        };
+
+        const vectorStrokeWidth = 0.15;
+
+        // Empty the shadowDom
+        shadow.innerHTML = "";
+
+        // Style
+        const style = document.createElement("style");
+        style.textContent = `
+            :host {
+                display: block;
+            }
+            svg {
+                touch-action: none;
+            }
+            .wrapper {
+                background: ${colors.background};
+                padding: 2rem 2rem 0 2rem;
+            }
+            .grid-line {
+                stroke: ${colors.grid};
+                stroke-width: 0.05;
+            }
+            .axis-line {
+                stroke: ${colors.axis};
+                stroke-width: 0.05;
+            }
+            .vector-label {
+                user-select: none;
+                pointer-events: none;
+                font-family: "Geist Mono", monospace;
+                font-size: 0.04rem;
+                font-weight: 500;
+            }
+            .control-panel {
+                width: 100%;
+                display: flex;
+                place-content: center;
+                padding: 1rem 0;
+                gap: 1rem;
+            }
+            .control-panel span {
+                width: 3rem;
+                text-align: right;
+            }
+            .info-panel {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 0.75rem;
+                padding: 1rem 0;
+            }
+            .vector-info {
+                background: ${colors.grid};
+                padding: 0.4rem 0;
+                border-radius: 0.3rem;
+                white-space: nowrap;
+                width: 10rem;
+                text-align: center;
+            }
+            .vector-info.a {
+                color: ${colors.vectorA};
+                background: #fecdd3;
+            }
+            .vector-info.b {
+                color: ${colors.vectorB};
+                background: #ecfccb;
+            }
+            .vector-info.dot {
+                color: ${colors.vectorProj};
+                background: #fefce8;
+            }
+        `;
+        shadow.appendChild(style);
+
+        // Create wrapping div
+        const div = document.createElement("div");
+        div.classList.add("wrapper");
+        shadow.appendChild(div);
+
+        // Create SVG canvas
+        const svg = createSVGElement("svg", {
+            "viewBox": `${this.bounds.x} ${this.bounds.y} ${this.bounds.width} ${this.bounds.height}`,
+        });
+
+        // Create definitions for the SVG
+        const defs = createSVGElement("defs");
+
+        // Create arrow(s)
+        const arrowA = createSVGElement("marker", {
+            "id": "arrowhead-a",
+            "markerWidth": 4,
+            "markerHeight": 4,
+            "orient": "auto",
+            "refX": 3.1,
+            "refY": 2
+        });
+
+        const markerPoly = createSVGElement("polygon", {
+            "points": "0 0, 4 2, 0 4"
+        });
+        arrowA.appendChild(markerPoly);
+        defs.appendChild(arrowA);
+
+        const arrowB = createSVGElement("marker", {
+            "id": "arrowhead-b",
+            "markerWidth": 4,
+            "markerHeight": 4,
+            "orient": "auto",
+            "refX": 3.1,
+            "refY": 2
+        });
+        arrowB.appendChild(markerPoly.cloneNode(true));
+        defs.appendChild(arrowB);
+
+        const arrowN = createSVGElement("marker", {
+            "id": "arrowhead-n",
+            "markerWidth": 4,
+            "markerHeight": 4,
+            "orient": "auto",
+            "refX": 3.1,
+            "refY": 2
+        });
+        arrowN.appendChild(markerPoly.cloneNode(true));
+        defs.appendChild(arrowN);
+
+        svg.appendChild(defs);
+
+        // Background
+        // Horizontal grid lines
+        for (let i = this.bounds.y + 1; i < (this.bounds.y + this.bounds.height); ++i) {
+            const line = createSVGElement("line", {
+                x1: this.bounds.x,
+                y1: i,
+                x2: this.bounds.x + this.bounds.width,
+                y2: i
+            });
+            line.classList.add("grid-line");
+            svg.appendChild(line);
+        }
+
+        // Vertical grid lines
+        for (let i = this.bounds.x + 1; i < (this.bounds.x + this.bounds.width); ++i) {
+            const line = createSVGElement("line", {
+                x1: i,
+                y1: this.bounds.y,
+                x2: i,
+                y2: this.bounds.y + this.bounds.height,
+            });
+            line.classList.add("grid-line");
+            svg.appendChild(line);
+        }
+
+        // X-axis
+        const axisX = createSVGElement("line", {
+            "x1": 0,
+            "y1": this.bounds.y,
+            "x2": 0,
+            "y2": this.bounds.y + this.bounds.height
+        });
+        // Y-axis
+        const axisY = createSVGElement("line", {
+            "x1": this.bounds.x,
+            "y1": 0,
+            "x2": this.bounds.x + this.bounds.width,
+            "y2": 0
+        });
+
+        axisX.classList.add("axis-line");
+        axisY.classList.add("axis-line");
+
+        svg.appendChild(axisX);
+        svg.appendChild(axisY);
+
+        const g_flip = createSVGElement("g", {
+            transform: "scale(1 -1)"
+        });
+        svg.appendChild(g_flip);
+
+        // Create points for vectors (unconventionally: tail and head)
+        const p00 = new Point("p00", 0, 0);
+        const v1 = new Point("v1", -4, 4);
+        const v2 = new Point("v2", 4, 4);
+        const vp = new Point("vp", 2, 0);
+
+        const m0 = new Point("m0", -6, 0);
+        const m1 = new Point("m1", 6, 0);
+        const n = new Point("n1", 0, 3);
+
+        const mirror = new Vector({
+            start: m0,
+            end: m1,
+            label: {
+                text: "mirror",
+                offset: 0.6
+            },
+            parent: g_flip,
+            key: "surface",
+            stroke: {
+                width: vectorStrokeWidth,
+                color: colors.vectorProj,
+            }
+        });
+
+        const normal = new Vector({
+            start: p00,
+            end: n,
+            label: {
+                text: "N",
+                offset: 0.6
+            },
+            parent: g_flip,
+            key: "normal",
+            stroke: {
+                width: vectorStrokeWidth,
+                color: colors.vectorProj,
+            },
+            marker: arrowN
+        });
+
+        const vectorA = new Vector({
+            start: v1,
+            end: p00,
+            label: {
+                text: "V",
+                offset: 0.6
+            },
+            parent: g_flip,
+            key: "vectorA",
+            stroke: {
+                width: vectorStrokeWidth,
+                color: colors.vectorA,
+            },
+            marker: arrowA
+        });
+
+        const vectorB = new Vector({
+            start: p00,
+            end: v2,
+            label: {
+                text: "R",
+                offset: 0.6
+            },
+            parent: g_flip,
+            key: "vectorB",
+            stroke: {
+                width: vectorStrokeWidth,
+                color: colors.vectorB,
+            },
+            marker: arrowB
+        });
+
+        // Add handles
+        new Handle({
+            point: v1,
+            radius: 1.2,
+            interactive: true,
+            parent: g_flip
+        });
+        new Handle({
+            point: v2,
+            radius: 1.2,
+            interactive: true,
+            parent: g_flip
+        });
+
+        // Append svg to shadow DOM
+        div.appendChild(svg);
+
+        function vLen(point) {
+            return Math.sqrt(point.x * point.x + point.y * point.y);
+        }
+
+        function dot(a, b) {
+            return a.x * b.x + a.y * b.y;
+        }
+
+        function round(x, decimals = 2) {
+            const factor = 10 ** decimals;
+            return Math.round(x * factor) / factor;
+        }
+
+        // Create displays at the bottom
+        const info = document.createElement("div");
+        info.classList.add("info-panel");
+        info.innerHTML = `
+            <div class="vector-info a">A: <span id="info-a">(${vectorA.getStr()})</span></div>
+            <div class="vector-info b">B: <span id="info-b">(${vectorB.getStr()})</span></div>
+            <div class="vector-info dot">A⋅B: <span id="info-dot">${dot(v1, v2).toFixed(1)}</span></div>
+        `;
+        div.appendChild(info);
+
+        v1.onChange(() => {
+            const newDot = dot(v1, v2);
+            const lenSq = dot(v1, v1);
+            const t = newDot / lenSq;
+
+            vp.set(v1.x * t, v1.y * t);
+            info.querySelector("#info-a").textContent = `(${v1.x.toFixed(1)}, ${v1.y.toFixed(1)})`;
+            info.querySelector("#info-dot").textContent = newDot.toFixed(1);
+        });
+
+        v2.onChange(() => {
+            const newDot = dot(v1, v2);
+            const lenSq = dot(v1, v1);
+            const t = newDot / lenSq;
+
+            vp.set(v1.x * t, v1.y * t);
+            info.querySelector("#info-b").textContent = `(${v2.x.toFixed(1)}, ${v2.y.toFixed(1)})`;
+            info.querySelector("#info-dot").textContent = newDot.toFixed(1);
         });
     }
 }
@@ -2360,5 +2740,6 @@ customElements.define("vector-scale", VectorScale);
 customElements.define("vector-mag", VectorMag);
 customElements.define("vector-dot", VectorDot);
 customElements.define("vector-cross", VectorCross);
+customElements.define("vector-reflect", VectorReflect);
 
-export { VectorAdd, VectorSub, VectorScale, VectorMag, VectorDot, VectorCross };
+export { VectorAdd, VectorSub, VectorScale, VectorMag, VectorDot, VectorCross, VectorReflect };
