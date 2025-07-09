@@ -62,7 +62,7 @@ function screenToIsometric(sx, sy) {
     const x = (sx / cos + sy / sin) / 2;
     const y = (sy / sin - sx / cos) / 2;
 
-    return {x, y, z: 0};
+    return { x, y, z: 0 };
 }
 
 function calculateIsoBounds(bounds) {
@@ -73,6 +73,53 @@ function calculateIsoBounds(bounds) {
         width: Math.floor(bounds.width + 2 * diagonal),
         height: Math.floor(bounds.height + 2 * diagonal)
     };
+}
+
+function rotateVectorFromPoints(p0, p1, angle) {
+    const rad = angle * (Math.PI / 180);
+
+    const cos = Math.cos(rad);
+    const sin = Math.sin(rad);
+
+    // Find midpoint
+    const M = {
+        x: (p0.x + p1.x) * 0.5,
+        y: (p0.y + p1.y) * 0.5,
+    };
+
+    // Translate and rotate points
+    const p0R = {
+        x: (p0.x - M.x) * cos - (p0.y - M.y) * sin,
+        y: (p0.x - M.x) * sin + (p0.y - M.y) * cos
+    };
+    const p1R = {
+        x: (p1.x - M.x) * cos - (p1.y - M.y) * sin,
+        y: (p1.x - M.x) * sin + (p1.y - M.y) * cos
+    };
+
+    // Translate back to original position and return
+    return [
+        vectorAdd(p0R, M),
+        vectorAdd(p1R, M)
+    ];
+}
+
+function vectorAdd(a, b) {
+    return {
+        x: a.x + b.x,
+        y: a.y + b.y
+    };
+}
+
+function vectorSubtract(a, b) {
+    return {
+        x: a.x - b.x,
+        y: a.y - b.y
+    };
+}
+
+function vectorDot(a, b) {
+    return a.x * b.x + a.y * b.y;
 }
 
 function vectorMag(p) {
@@ -87,6 +134,23 @@ function vectorCrossNorm(a, b) {
     const cross = vectorCross(a, b);
     const len = vectorMag(a) * vectorMag(b);
     return cross / len;
+}
+
+function vectorGetNormal(p0, p1) {
+    const d = vectorSubtract(p1, p0);
+    const normal = { x: -d.y, y: d.x };
+    return normal;
+}
+
+function vectorReflect(V, N) {
+    // Normalize N just in case it's not normalized
+    const Nlen = vectorMag(N);
+    const n = { x: N.x / Nlen, y: N.y / Nlen };
+    const dotVn = vectorDot(V, n);
+    return {
+        x: V.x - 2 * dotVn * n.x,
+        y: V.y - 2 * dotVn * n.y
+    };
 }
 
 class Point {
@@ -268,7 +332,7 @@ class Polygon {
         this.fill = fill;
         this.parent = parent;
         this.key = key;
-        
+
         // Group
         this.group = createSVGElement("g");
 
@@ -414,6 +478,66 @@ class Handle {
         };
     }
 }
+
+const baseStyles = new CSSStyleSheet();
+baseStyles.replaceSync(`
+    :host {
+        /* Color variable defaults */
+        --vo-background: #fafafa;
+        --vo-grid: #f5f5f5;
+        --vo-axes: #0a0a0a;
+        --vo-line-red: #f43f5e;
+        --vo-line-green: #65a30d;
+        --vo-line-blue: #0284c7;
+        --vo-line-yellow: #facc15;
+        --vo-line-grey: #e5e5e5;
+        --vo-info-red-primary: #f43f5e;
+        --vo-info-red-secondary: #fecdd3;
+        --vo-info-green-primary: #65a30d;
+        --vo-info-green-secondary: #ecfccb;
+        --vo-info-blue-primary: #0284c7;
+        --vo-info-blue-secondary: #e0f2fe;
+        --vo-info-yellow-primary: #facc15;
+        --vo-info-yellow-secondary: #fefce8;
+
+        /* Font variable defaults */
+        --vo-font-primary: inherit;
+        --vo-font-label-size: 0.04rem;
+        --vo-font-label-weight: 500;
+
+        display: block;
+    }
+    .wrapper {
+        background: var(--vo-background);
+        padding: 2rem 2rem 0 2rem;
+    }
+    svg { touch-action: none; }
+    .grid-line {
+        stroke: var(--vo-grid);
+        stroke-width: 0.05;
+    }
+    .axis-line {
+        stroke: var(--vo-axes);
+        stroke-width: 0.05;
+    }
+    .vector-label {
+        font-family: var(--vo-font-primary);
+        font-size: var(--vo-font-label-size);
+        font-weight: var(--vo-font-label-weight);
+        user-select: none;
+        pointer-events: none;
+    }
+    .stroke-red { stroke: var(--vo-line-red); }
+    .stroke-green { stroke: var(--vo-line-green); }
+    .stroke-blue { stroke: var(--vo-line-blue); }
+    .stroke-yellow { stroke: var(--vo-line-yellow); }
+    .stroke-grey { stroke: var(--vo-line-grey); }
+    .fill-red { fill: var(--vo-line-red); }
+    .fill-green { fill: var(--vo-line-green); }
+    .fill-blue { fill: var(--vo-line-blue); }
+    .fill-yellow { fill: var(--vo-line-yellow); }
+    .fill-grey { fill: var(--vo-line-grey); }
+`);
 
 class VectorAdd extends HTMLElement {
     constructor() {
@@ -2245,7 +2369,7 @@ class VectorCross extends HTMLElement {
         // Cross product vector
         const axb = this.v1.x * this.v2.y - this.v1.y * this.v2.x;
         // NOTE: Need to flip the Y because of the nature of SVG canvas
-        const pcross = project3DToIsometric(0, 0, -axb * 0.2); 
+        const pcross = project3DToIsometric(0, 0, -axb * 0.2);
         const vcross = new Point("cross", pcross.x, pcross.y);
 
         // Define the parallelogram's point that A and B encompass
@@ -2346,7 +2470,7 @@ class VectorCross extends HTMLElement {
             <div class="vector-info cross">A x B: <span id="info-cross">${-vectorCross(v1, v2).toFixed(1)}</span></div>
         `;
         div.appendChild(info);
-        
+
         v1.onChange(() => {
             // Update the parallelogram's tip
             const s = { x: v1.x + v2.x, y: v1.y + v2.y };
@@ -2393,6 +2517,12 @@ class VectorReflect extends HTMLElement {
             width: 20,
             height: 16
         };
+
+        // To store the mirror's default
+        this.mirror = [
+            { x: -6, y: 0 },
+            { x: 6, y: 0 }
+        ];
 
         // Create shadow DOM
         this.attachShadow({ mode: "open" });
@@ -2480,17 +2610,13 @@ class VectorReflect extends HTMLElement {
                 width: 10rem;
                 text-align: center;
             }
-            .vector-info.a {
-                color: ${colors.vectorA};
-                background: #fecdd3;
+            .vector-info.v {
+                color: #fecdd3;
+                background: #4c0519;
             }
-            .vector-info.b {
-                color: ${colors.vectorB};
-                background: #ecfccb;
-            }
-            .vector-info.dot {
-                color: ${colors.vectorProj};
-                background: #fefce8;
+            .vector-info.r {
+                color: #ecfccb;
+                background: #1a2e05;
             }
         `;
         shadow.appendChild(style);
@@ -2601,13 +2727,11 @@ class VectorReflect extends HTMLElement {
 
         // Create points for vectors (unconventionally: tail and head)
         const p00 = new Point("p00", 0, 0);
-        const v1 = new Point("v1", -4, 4);
-        const v2 = new Point("v2", 4, 4);
-        const vp = new Point("vp", 2, 0);
-
-        const m0 = new Point("m0", -6, 0);
-        const m1 = new Point("m1", 6, 0);
+        const m0 = new Point("m0", this.mirror[0].x, this.mirror[0].y);
+        const m1 = new Point("m1", this.mirror[1].x, this.mirror[1].y);
         const n = new Point("n1", 0, 3);
+        const Vtail = new Point("v", -4, 4);
+        const Rhead = new Point("r", 4, 4);
 
         const mirror = new Vector({
             start: m0,
@@ -2640,15 +2764,15 @@ class VectorReflect extends HTMLElement {
             marker: arrowN
         });
 
-        const vectorA = new Vector({
-            start: v1,
+        const V = new Vector({
+            start: Vtail,
             end: p00,
             label: {
                 text: "V",
                 offset: 0.6
             },
             parent: g_flip,
-            key: "vectorA",
+            key: "V",
             stroke: {
                 width: vectorStrokeWidth,
                 color: colors.vectorA,
@@ -2656,15 +2780,15 @@ class VectorReflect extends HTMLElement {
             marker: arrowA
         });
 
-        const vectorB = new Vector({
+        const R = new Vector({
             start: p00,
-            end: v2,
+            end: Rhead,
             label: {
                 text: "R",
                 offset: 0.6
             },
             parent: g_flip,
-            key: "vectorB",
+            key: "R",
             stroke: {
                 width: vectorStrokeWidth,
                 color: colors.vectorB,
@@ -2674,13 +2798,7 @@ class VectorReflect extends HTMLElement {
 
         // Add handles
         new Handle({
-            point: v1,
-            radius: 1.2,
-            interactive: true,
-            parent: g_flip
-        });
-        new Handle({
-            point: v2,
+            point: Vtail,
             radius: 1.2,
             interactive: true,
             parent: g_flip
@@ -2689,47 +2807,53 @@ class VectorReflect extends HTMLElement {
         // Append svg to shadow DOM
         div.appendChild(svg);
 
-        function vLen(point) {
-            return Math.sqrt(point.x * point.x + point.y * point.y);
-        }
-
-        function dot(a, b) {
-            return a.x * b.x + a.y * b.y;
-        }
-
-        function round(x, decimals = 2) {
-            const factor = 10 ** decimals;
-            return Math.round(x * factor) / factor;
-        }
+        // Create control at the bottom
+        const control = document.createElement("div");
+        control.classList.add("control-panel");
+        control.innerHTML = `
+            <label>Mirror angle: </label>
+            <input type="range" id="scale-slider" min="-45.0" max="45.0" step="0.5" value="0.0">
+            <span id="scale-value">0.0°</span>
+        `;
+        const scaleSlider = control.querySelector("#scale-slider");
+        const scaleValue = control.querySelector("#scale-value");
+        div.appendChild(control);
 
         // Create displays at the bottom
         const info = document.createElement("div");
         info.classList.add("info-panel");
         info.innerHTML = `
-            <div class="vector-info a">A: <span id="info-a">(${vectorA.getStr()})</span></div>
-            <div class="vector-info b">B: <span id="info-b">(${vectorB.getStr()})</span></div>
-            <div class="vector-info dot">A⋅B: <span id="info-dot">${dot(v1, v2).toFixed(1)}</span></div>
+            <div class="vector-info v">V: <span id="info-v">(${V.getStr()})</span></div>
+            <div class="vector-info r">R: <span id="info-r">(${R.getStr()})</span></div>
         `;
         div.appendChild(info);
 
-        v1.onChange(() => {
-            const newDot = dot(v1, v2);
-            const lenSq = dot(v1, v1);
-            const t = newDot / lenSq;
+        Vtail.onChange(() => {
+            const v = vectorSubtract(p00, Vtail);
+            const reflect = vectorReflect(v, n);
 
-            vp.set(v1.x * t, v1.y * t);
-            info.querySelector("#info-a").textContent = `(${v1.x.toFixed(1)}, ${v1.y.toFixed(1)})`;
-            info.querySelector("#info-dot").textContent = newDot.toFixed(1);
+            Rhead.set(reflect.x, reflect.y);
+            info.querySelector("#info-v").textContent = `(${Vtail.x.toFixed(1)}, ${Vtail.y.toFixed(1)})`;
+            info.querySelector("#info-r").textContent = `(${reflect.x.toFixed(1)}, ${reflect.y.toFixed(1)})`;
         });
 
-        v2.onChange(() => {
-            const newDot = dot(v1, v2);
-            const lenSq = dot(v1, v1);
-            const t = newDot / lenSq;
+        scaleSlider.addEventListener("input", (e) => {
+            const angle = parseFloat(e.target.value);
+            const rotatedLine = rotateVectorFromPoints(this.mirror[0], this.mirror[1], angle);
+            m0.set(rotatedLine[0].x, rotatedLine[0].y);
+            m1.set(rotatedLine[1].x, rotatedLine[1].y);
 
-            vp.set(v1.x * t, v1.y * t);
-            info.querySelector("#info-b").textContent = `(${v2.x.toFixed(1)}, ${v2.y.toFixed(1)})`;
-            info.querySelector("#info-dot").textContent = newDot.toFixed(1);
+            // Update normal
+            const nr = vectorGetNormal(rotatedLine[0], rotatedLine[1]);
+            n.set(nr.x * 0.25, nr.y * 0.25);
+            scaleValue.textContent = `${angle.toFixed(1)}°`;
+
+            // Update reflection
+            const v = vectorSubtract(p00, Vtail);
+            const reflect = vectorReflect(v, n);
+
+            Rhead.set(reflect.x, reflect.y);
+            info.querySelector("#info-r").textContent = `(${reflect.x.toFixed(1)}, ${reflect.y.toFixed(1)})`;
         });
     }
 }
