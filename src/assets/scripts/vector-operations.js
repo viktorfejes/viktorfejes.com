@@ -6,6 +6,116 @@ function createSVGElement(tag, attributes = {}) {
     return element;
 }
 
+function createLine(p0, p1, strokeWidth, dashArray = "none", arrowEnd = true) {
+    let lineEnd = { x: p1.x, y: p1.y };
+    
+    // Create the group to group these together as a "vector"
+    const g = createSVGElement("g");
+
+    // Calculate arrow dimensions from strokeWidth
+    const arrowLength = strokeWidth * Math.PI;
+    const arrowWidth = arrowLength * 0.5;
+
+    let normVec = {};
+
+    if (arrowEnd) {
+        // Calculate the direction vector
+        const vec = vectorSubtract(p1, p0);
+        const len = vectorMag(vec);
+        normVec.x = vec.x / len;
+        normVec.y = vec.y / len;
+
+        // Calculate where the line should end (before the arrowhead)
+        lineEnd.x = p1.x - (normVec.x * arrowLength);
+        lineEnd.y = p1.y - (normVec.y * arrowLength);
+    }
+
+    // Draw the line part of the vector
+    const line = createSVGElement("line", {
+        x1: p0.x, y1: p0.y,
+        x2: lineEnd.x, y2: lineEnd.y,
+        "stroke-width": strokeWidth,
+        stroke: "currentColor",
+        "stroke-dasharray": dashArray
+    });
+    g.appendChild(line);
+
+    if (arrowEnd) {
+        // Create the arrowhead points
+        const perpVec = { x: -normVec.y, y: normVec.x };
+
+        const arrowCorner1 = {
+            x: lineEnd.x + (perpVec.x * arrowWidth),
+            y: lineEnd.y + (perpVec.y * arrowWidth)
+        };
+
+        const arrowCorner2 = {
+            x: lineEnd.x - (perpVec.x * arrowWidth),
+            y: lineEnd.y - (perpVec.y * arrowWidth)
+        };
+
+        // Draw the head
+        const head = createSVGElement("polygon", {
+            points: `${arrowCorner1.x},${arrowCorner1.y} ${arrowCorner2.x},${arrowCorner2.y} ${p1.x},${p1.y}`,
+            fill: "currentColor"
+        });
+
+        g.appendChild(head);
+    }
+
+    return g;
+}
+
+function updateLine(g, p0, p1) {
+    const line = g.children[0];
+    const arrow = g.children[1];
+
+    if (!arrow) {
+        // no arrowhead, just update line
+        line.setAttribute("x1", p0.x);
+        line.setAttribute("y1", p0.y);
+        line.setAttribute("x2", p1.x);
+        line.setAttribute("y2", p1.y);
+        return;
+    }
+
+    // Get attributes
+    const strokeWidth = parseFloat(line.getAttribute("stroke-width"));
+    const arrowLength = strokeWidth * Math.PI;
+    const arrowWidth = arrowLength * 0.5;
+
+    // Calculate new positions
+    const vec = vectorSubtract(p1, p0);
+    const len = vectorMag(vec);
+    const normVec = { x: vec.x / len, y: vec.y / len };
+    
+    const lineEnd = {
+        x: p1.x - (normVec.x * arrowLength),
+        y: p1.y - (normVec.y * arrowLength),
+    };
+
+    // Update line
+    line.setAttribute("x1", p0.x);
+    line.setAttribute("y1", p0.y);
+    line.setAttribute("x2", lineEnd.x);
+    line.setAttribute("y2", lineEnd.y);
+
+    // Update arrowhead
+    const perpVec = { x: -normVec.y, y: normVec.x };
+    const c1 = {
+        x: lineEnd.x + (perpVec.x * arrowWidth),
+        y: lineEnd.y + (perpVec.y * arrowWidth)
+    };
+
+    const c2 = {
+        x: lineEnd.x - (perpVec.x * arrowWidth),
+        y: lineEnd.y - (perpVec.y * arrowWidth)
+    };
+
+    // Draw the head
+    arrow.setAttribute("points", `${c1.x},${c1.y} ${c2.x},${c2.y} ${p1.x},${p1.y}`);
+}
+
 function calculateLabelPosition(x1, y1, x2, y2, offsetDistance) {
     // Calculate midpoint of the line
     const midX = (x1 + x2) / 2;
@@ -21,28 +131,7 @@ function calculateLabelPosition(x1, y1, x2, y2, offsetDistance) {
     return { x: midX + offsetX, y: midY + offsetY };
 }
 
-function calculateVectorLineLength(vectorStart, vectorEnd, arrowWidth, arrowRefX, strokeWidth) {
-    const arrowLength = (arrowWidth - arrowRefX) * strokeWidth;
-
-    const dx = vectorEnd.x - vectorStart.x;
-    const dy = vectorEnd.y - vectorStart.y;
-    const len = Math.hypot(dx, dy);
-
-    const ux = dx / len;
-    const uy = dy / len;
-
-    return {
-        x: vectorEnd.x - arrowLength * ux,
-        y: vectorEnd.y - arrowLength * uy,
-    };
-}
-
 function project3DToIsometric(x, y, z) {
-    // Isometric projection matrix
-    // Standard isometric: 30° angles
-    const cos30 = Math.cos(Math.PI / 6); // 0.866
-    const sin30 = Math.sin(Math.PI / 6); // 0.5
-
     // 2:1 aspect ratio tiles (pixel art style)
     const isoAngle = Math.atan(0.5);
     const cos = Math.cos(isoAngle);
@@ -130,12 +219,6 @@ function vectorCross(a, b) {
     return a.x * b.y - a.y * b.x;
 }
 
-function vectorCrossNorm(a, b) {
-    const cross = vectorCross(a, b);
-    const len = vectorMag(a) * vectorMag(b);
-    return cross / len;
-}
-
 function vectorGetNormal(p0, p1) {
     const d = vectorSubtract(p1, p0);
     const normal = { x: -d.y, y: d.x };
@@ -188,7 +271,7 @@ class Vector {
         stroke = {},
         parent,
         key,
-        marker = ""
+        marker = true
     }) {
 
         // Defaults for objects
@@ -201,6 +284,7 @@ class Vector {
         this.stroke = {
             width: 0.15,
             color: "black",
+            dasharray: "none",
             ...stroke
         };
 
@@ -214,26 +298,9 @@ class Vector {
         this.group = createSVGElement("g");
         this.group.classList.add(this.key);
 
-        // Line
-        this.line = createSVGElement("line", {
-            "stroke-width": this.stroke.width,
-            "stroke": this.stroke.color
-        });
-        this.line.classList.add("vector-line", `vector-line--${this.key}`);
-
-        // Dash
-        if (this.stroke.dasharray) {
-            this.line.setAttribute("stroke-dasharray", this.stroke.dasharray);
-        }
-
-        // Marker
-        if (marker) {
-            this.marker.classList.add(this.key);
-            this.line.setAttribute("marker-end", `url(#${this.marker.id})`);
-        }
-
-        // Append line to the group
-        this.group.appendChild(this.line);
+        // Create vector line (with arrow if marker is true)
+        this.vector = createLine(this.start, this.end, this.stroke.width, this.stroke.dasharray, this.marker);
+        this.group.appendChild(this.vector);
 
         // Label
         if (label) {
@@ -268,20 +335,7 @@ class Vector {
         const { x: sx, y: sy } = this.start;
         let { x: ex, y: ey } = this.end;
 
-        if (this.marker) {
-            const { x: lineX, y: lineY } = calculateVectorLineLength(
-                this.start, this.end,
-                parseFloat(this.marker.getAttribute("markerWidth")),
-                parseFloat(this.marker.getAttribute("refX")),
-                this.stroke.width
-            );
-            ex = lineX;
-            ey = lineY;
-        }
-        this.line.setAttribute("x1", sx);
-        this.line.setAttribute("y1", sy);
-        this.line.setAttribute("x2", ex);
-        this.line.setAttribute("y2", ey);
+        updateLine(this.vector, this.start, this.end);
 
         if (this.labelEl) {
             let { x: labelX, y: labelY } = calculateLabelPosition(sx, sy, ex, ey, this.label.offset);
@@ -439,7 +493,7 @@ class Handle {
         if (interactive) {
             this.el.style.cursor = "grab";
 
-            this.el.addEventListener("pointerdown", (e) => {
+            this.el.addEventListener("pointerdown", () => {
                 this.dragging = true;
                 this.el.style.cursor = "grabbing";
 
@@ -596,61 +650,6 @@ class VectorAdd extends HTMLElement {
             "viewBox": `${this.bounds.x} ${this.bounds.y} ${this.bounds.width} ${this.bounds.height}`,
         });
 
-        // Create definitions for the SVG
-        const defs = createSVGElement("defs");
-
-        // Create arrow(s)
-        const arrowA = createSVGElement("marker", {
-            id: "arrowhead-a",
-            markerWidth: 4,
-            markerHeight: 4,
-            orient: "auto",
-            refX: 3.1,
-            refY: 2
-        });
-
-        const arrowPoly = createSVGElement("polygon", {
-            points: "0 0, 4 2, 0 4",
-            fill: "currentColor"
-        });
-        arrowA.appendChild(arrowPoly);
-        defs.appendChild(arrowA);
-
-        const arrowB = createSVGElement("marker", {
-            id: "arrowhead-b",
-            markerWidth: 4,
-            markerHeight: 4,
-            orient: "auto",
-            refX: 3.1,
-            refY: 2
-        });
-        arrowB.appendChild(arrowPoly.cloneNode(true));
-        defs.appendChild(arrowB);
-
-        const arrowSum = createSVGElement("marker", {
-            id: "arrowhead-sum",
-            markerWidth: 4,
-            markerHeight: 4,
-            orient: "auto",
-            refX: 3.1,
-            refY: 2
-        });
-        arrowSum.appendChild(arrowPoly.cloneNode(true));
-        defs.appendChild(arrowSum);
-
-        const arrowAux = createSVGElement("marker", {
-            id: "arrowhead-aux",
-            markerWidth: 4,
-            markerHeight: 4,
-            orient: "auto",
-            refX: 3.1,
-            refY: 2
-        });
-        arrowAux.appendChild(arrowPoly.cloneNode(true));
-        defs.appendChild(arrowAux);
-
-        svg.appendChild(defs);
-
         // Background
         // Horizontal grid lines
         for (let i = this.bounds.y + 1; i < (this.bounds.y + this.bounds.height); ++i) {
@@ -719,7 +718,6 @@ class VectorAdd extends HTMLElement {
             stroke: {
                 width: vectorStrokeWidth,
             },
-            marker: arrowA
         });
 
         const vectorB = new Vector({
@@ -734,7 +732,6 @@ class VectorAdd extends HTMLElement {
             stroke: {
                 width: vectorStrokeWidth,
             },
-            marker: arrowB
         });
 
         new Vector({
@@ -749,7 +746,6 @@ class VectorAdd extends HTMLElement {
                 width: vectorStrokeWidth,
                 dasharray: "0.3 0.1"
             },
-            marker: arrowAux
         });
 
         new Vector({
@@ -765,7 +761,6 @@ class VectorAdd extends HTMLElement {
                 width: vectorStrokeWidth,
                 dasharray: "0.3 0.1"
             },
-            marker: arrowAux
         });
 
         const vectorSum = new Vector({
@@ -780,7 +775,6 @@ class VectorAdd extends HTMLElement {
             stroke: {
                 width: vectorStrokeWidth,
             },
-            marker: arrowSum
         });
 
         // Add handles
@@ -856,61 +850,6 @@ class VectorSub extends HTMLElement {
             "viewBox": `${this.bounds.x} ${this.bounds.y} ${this.bounds.width} ${this.bounds.height}`,
         });
 
-        // Create definitions for the SVG
-        const defs = createSVGElement("defs");
-
-        // Create arrow(s)
-        const arrowA = createSVGElement("marker", {
-            id: "arrowhead-a",
-            markerWidth: 4,
-            markerHeight: 4,
-            orient: "auto",
-            refX: 3.1,
-            refY: 2
-        });
-
-        const arrowPoly = createSVGElement("polygon", {
-            points: "0 0, 4 2, 0 4",
-            fill: "currentColor"
-        });
-        arrowA.appendChild(arrowPoly);
-        defs.appendChild(arrowA);
-
-        const arrowB = createSVGElement("marker", {
-            id: "arrowhead-b",
-            markerWidth: 4,
-            markerHeight: 4,
-            orient: "auto",
-            refX: 3.1,
-            refY: 2
-        });
-        arrowB.appendChild(arrowPoly.cloneNode(true));
-        defs.appendChild(arrowB);
-
-        const arrowSum = createSVGElement("marker", {
-            id: "arrowhead-sum",
-            markerWidth: 4,
-            markerHeight: 4,
-            orient: "auto",
-            refX: 3.1,
-            refY: 2
-        });
-        arrowSum.appendChild(arrowPoly.cloneNode(true));
-        defs.appendChild(arrowSum);
-
-        const arrowAux = createSVGElement("marker", {
-            id: "arrowhead-aux",
-            markerWidth: 4,
-            markerHeight: 4,
-            orient: "auto",
-            refX: 3.1,
-            refY: 2
-        });
-        arrowAux.appendChild(arrowPoly.cloneNode(true));
-        defs.appendChild(arrowAux);
-
-        svg.appendChild(defs);
-
         // Background
         // Horizontal grid lines
         for (let i = this.bounds.y + 1; i < (this.bounds.y + this.bounds.height); ++i) {
@@ -979,7 +918,6 @@ class VectorSub extends HTMLElement {
             stroke: {
                 width: vectorStrokeWidth,
             },
-            marker: arrowA
         });
 
         new Vector({
@@ -994,7 +932,6 @@ class VectorSub extends HTMLElement {
                 width: vectorStrokeWidth,
                 dasharray: "0.3 0.1"
             },
-            marker: arrowAux
         });
 
         const vectorB = new Vector({
@@ -1008,7 +945,6 @@ class VectorSub extends HTMLElement {
             stroke: {
                 width: vectorStrokeWidth,
             },
-            marker: arrowB
         });
 
         const vectorSum = new Vector({
@@ -1023,7 +959,6 @@ class VectorSub extends HTMLElement {
             stroke: {
                 width: vectorStrokeWidth,
             },
-            marker: arrowSum
         });
 
         // Add handles
@@ -1112,39 +1047,6 @@ class VectorScale extends HTMLElement {
             "viewBox": `${this.bounds.x} ${this.bounds.y} ${this.bounds.width} ${this.bounds.height}`,
         });
 
-        // Create definitions for the SVG
-        const defs = createSVGElement("defs");
-
-        // Create arrow(s)
-        const arrowA = createSVGElement("marker", {
-            id: "arrowhead-a",
-            markerWidth: 4,
-            markerHeight: 4,
-            orient: "auto",
-            refX: 3.1,
-            refY: 2
-        });
-
-        const arrowPoly = createSVGElement("polygon", {
-            points: "0 0, 4 2, 0 4",
-            fill: "currentColor"
-        });
-        arrowA.appendChild(arrowPoly);
-        defs.appendChild(arrowA);
-
-        const arrowB = createSVGElement("marker", {
-            id: "arrowhead-b",
-            markerWidth: 4,
-            markerHeight: 4,
-            orient: "auto",
-            refX: 3.1,
-            refY: 2
-        });
-        arrowB.appendChild(arrowPoly.cloneNode(true));
-        defs.appendChild(arrowB);
-
-        svg.appendChild(defs);
-
         // Background
         // Horizontal grid lines
         for (let i = this.bounds.y + 1; i < (this.bounds.y + this.bounds.height); ++i) {
@@ -1213,7 +1115,6 @@ class VectorScale extends HTMLElement {
             stroke: {
                 width: vectorStrokeWidth,
             },
-            marker: arrowB
         });
 
         const vectorA = new Vector({
@@ -1228,7 +1129,6 @@ class VectorScale extends HTMLElement {
             stroke: {
                 width: vectorStrokeWidth,
             },
-            marker: arrowA
         });
 
         // Add handles
@@ -1329,39 +1229,6 @@ class VectorMag extends HTMLElement {
             "viewBox": `${this.bounds.x} ${this.bounds.y} ${this.bounds.width} ${this.bounds.height}`,
         });
 
-        // Create definitions for the SVG
-        const defs = createSVGElement("defs");
-
-        // Create arrow(s)
-        const arrowA = createSVGElement("marker", {
-            id: "arrowhead-a",
-            markerWidth: 4,
-            markerHeight: 4,
-            orient: "auto",
-            refX: 3.1,
-            refY: 2
-        });
-
-        const arrowPoly = createSVGElement("polygon", {
-            points: "0 0, 4 2, 0 4",
-            fill: "currentColor"
-        });
-        arrowA.appendChild(arrowPoly);
-        defs.appendChild(arrowA);
-
-        const arrowB = createSVGElement("marker", {
-            id: "arrowhead-b",
-            markerWidth: 4,
-            markerHeight: 4,
-            orient: "auto",
-            refX: 3.1,
-            refY: 2
-        });
-        arrowB.appendChild(arrowPoly.cloneNode(true));
-        defs.appendChild(arrowB);
-
-        svg.appendChild(defs);
-
         // Background
         // Horizontal grid lines
         for (let i = this.bounds.y + 1; i < (this.bounds.y + this.bounds.height); ++i) {
@@ -1431,6 +1298,7 @@ class VectorMag extends HTMLElement {
                 width: 0.1,
                 dasharray: "0.3 0.1"
             },
+            marker: false
         });
 
         new Vector({
@@ -1446,6 +1314,7 @@ class VectorMag extends HTMLElement {
                 width: 0.1,
                 dasharray: "0.3 0.1"
             },
+            marker: false
         });
 
         const vector = new Vector({
@@ -1460,7 +1329,6 @@ class VectorMag extends HTMLElement {
             stroke: {
                 width: vectorStrokeWidth,
             },
-            marker: arrowA
         });
 
         // Add handles
@@ -1541,39 +1409,6 @@ class VectorDot extends HTMLElement {
             "viewBox": `${this.bounds.x} ${this.bounds.y} ${this.bounds.width} ${this.bounds.height}`,
         });
 
-        // Create definitions for the SVG
-        const defs = createSVGElement("defs");
-
-        // Create arrow(s)
-        const arrowA = createSVGElement("marker", {
-            id: "arrowhead-a",
-            markerWidth: 4,
-            markerHeight: 4,
-            orient: "auto",
-            refX: 3.1,
-            refY: 2
-        });
-
-        const arrowPoly = createSVGElement("polygon", {
-            points: "0 0, 4 2, 0 4",
-            fill: "currentColor"
-        });
-        arrowA.appendChild(arrowPoly);
-        defs.appendChild(arrowA);
-
-        const arrowB = createSVGElement("marker", {
-            id: "arrowhead-b",
-            markerWidth: 4,
-            markerHeight: 4,
-            orient: "auto",
-            refX: 3.1,
-            refY: 2
-        });
-        arrowB.appendChild(arrowPoly.cloneNode(true));
-        defs.appendChild(arrowB);
-
-        svg.appendChild(defs);
-
         // Background
         // Horizontal grid lines
         for (let i = this.bounds.y + 1; i < (this.bounds.y + this.bounds.height); ++i) {
@@ -1643,7 +1478,6 @@ class VectorDot extends HTMLElement {
             stroke: {
                 width: vectorStrokeWidth,
             },
-            marker: arrowA
         });
 
         const vectorB = new Vector({
@@ -1658,7 +1492,6 @@ class VectorDot extends HTMLElement {
             stroke: {
                 width: vectorStrokeWidth,
             },
-            marker: arrowB
         });
 
         new Vector({
@@ -1673,6 +1506,7 @@ class VectorDot extends HTMLElement {
             stroke: {
                 width: vectorStrokeWidth,
             },
+            marker: false
         });
 
         // Add handles
@@ -1782,50 +1616,6 @@ class VectorCross extends HTMLElement {
         const svg = createSVGElement("svg", {
             "viewBox": `${this.bounds.x} ${this.bounds.y} ${this.bounds.width} ${this.bounds.height}`,
         });
-
-        // Create definitions for the SVG
-        const defs = createSVGElement("defs");
-
-        // Create arrow(s)
-        const arrowA = createSVGElement("marker", {
-            id: "arrowhead-a",
-            markerWidth: 4,
-            markerHeight: 4,
-            orient: "auto",
-            refX: 3.1,
-            refY: 2
-        });
-
-        const arrowPoly = createSVGElement("polygon", {
-            points: "0 0, 4 2, 0 4",
-            fill: "currentColor"
-        });
-        arrowA.appendChild(arrowPoly);
-        defs.appendChild(arrowA);
-
-        const arrowB = createSVGElement("marker", {
-            id: "arrowhead-b",
-            markerWidth: 4,
-            markerHeight: 4,
-            orient: "auto",
-            refX: 3.1,
-            refY: 2
-        });
-        arrowB.appendChild(arrowPoly.cloneNode(true));
-        defs.appendChild(arrowB);
-
-        const arrowC = createSVGElement("marker", {
-            id: "arrowhead-c",
-            markerWidth: 4,
-            markerHeight: 4,
-            orient: "auto",
-            refX: 3.1,
-            refY: 2
-        });
-        arrowC.appendChild(arrowPoly.cloneNode(true));
-        defs.appendChild(arrowC);
-
-        svg.appendChild(defs);
 
         // Background
         const isoBounds = calculateIsoBounds(this.bounds);
@@ -1939,7 +1729,6 @@ class VectorCross extends HTMLElement {
             stroke: {
                 width: vectorStrokeWidth,
             },
-            marker: arrowA
         });
 
         const vectorB = new Vector({
@@ -1955,7 +1744,6 @@ class VectorCross extends HTMLElement {
             stroke: {
                 width: vectorStrokeWidth,
             },
-            marker: arrowB
         });
 
         new Vector({
@@ -1971,7 +1759,6 @@ class VectorCross extends HTMLElement {
             stroke: {
                 width: vectorStrokeWidth,
             },
-            marker: arrowC
         });
 
         // Add handles
@@ -2089,50 +1876,6 @@ class VectorReflect extends HTMLElement {
             "viewBox": `${this.bounds.x} ${this.bounds.y} ${this.bounds.width} ${this.bounds.height}`,
         });
 
-        // Create definitions for the SVG
-        const defs = createSVGElement("defs");
-
-        // Create arrow(s)
-        const arrowA = createSVGElement("marker", {
-            id: "arrowhead-a",
-            markerWidth: 4,
-            markerHeight: 4,
-            orient: "auto",
-            refX: 3.1,
-            refY: 2
-        });
-
-        const arrowPoly = createSVGElement("polygon", {
-            points: "0 0, 4 2, 0 4",
-            fill: "currentColor"
-        });
-        arrowA.appendChild(arrowPoly);
-        defs.appendChild(arrowA);
-
-        const arrowB = createSVGElement("marker", {
-            id: "arrowhead-b",
-            markerWidth: 4,
-            markerHeight: 4,
-            orient: "auto",
-            refX: 3.1,
-            refY: 2
-        });
-        arrowB.appendChild(arrowPoly.cloneNode(true));
-        defs.appendChild(arrowB);
-
-        const arrowN = createSVGElement("marker", {
-            id: "arrowhead-n",
-            markerWidth: 4,
-            markerHeight: 4,
-            orient: "auto",
-            refX: 3.1,
-            refY: 2
-        });
-        arrowN.appendChild(arrowPoly.cloneNode(true));
-        defs.appendChild(arrowN);
-
-        svg.appendChild(defs);
-
         // Background
         // Horizontal grid lines
         for (let i = this.bounds.y + 1; i < (this.bounds.y + this.bounds.height); ++i) {
@@ -2203,7 +1946,8 @@ class VectorReflect extends HTMLElement {
             key: "surface",
             stroke: {
                 width: vectorStrokeWidth,
-            }
+            },
+            marker: false
         });
 
         new Vector({
@@ -2218,7 +1962,6 @@ class VectorReflect extends HTMLElement {
             stroke: {
                 width: vectorStrokeWidth,
             },
-            marker: arrowN
         });
 
         const V = new Vector({
@@ -2233,7 +1976,6 @@ class VectorReflect extends HTMLElement {
             stroke: {
                 width: vectorStrokeWidth,
             },
-            marker: arrowA
         });
 
         const R = new Vector({
@@ -2248,7 +1990,6 @@ class VectorReflect extends HTMLElement {
             stroke: {
                 width: vectorStrokeWidth,
             },
-            marker: arrowB
         });
 
         // Add handles
