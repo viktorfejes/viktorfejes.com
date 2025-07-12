@@ -1,5 +1,5 @@
 ---
-title: Vector Operations
+title: "Vector Operations: A visual guide"
 description: SOmething
 pubDate: 2024-03-24
 draft: true
@@ -12,8 +12,15 @@ import VectorDot from "../../components/visualizations/VectorDot.astro";
 import VectorCross from "../../components/visualizations/VectorCross.astro";
 import VectorReflect from "../../components/visualizations/VectorReflect.astro";
 
-This is a blog post about vector operations to visually build intuition about how they work and how to think of them.
-This is completely work in progress and even these words are gibberish just because I'm testing something. Thank you for your attention to this matter.
+Vector operations are fundamental in various fields including computer graphics, physics, and image processing. There are many
+posts about what they are and how they work but I want use this post to try to build intuition about how they work using
+interactive visuals.
+
+In this post we are going to explore vector operations and what they look like in (mostly) 2D space.
+
+In this post, we'll use:
+- **Point** - a specific location in 2D space, like a vertex in a mesh or a pixel coordinate.
+- **Vector** - a direction and distance; and arrow that can be moved around freely representing offset between points.
 
 The first operation we are taking a look at is addition, just because this is what came to my mind first when I was
 building the web component for it. So, this is just a second paragraph I'm using to test my styling with.
@@ -23,6 +30,13 @@ building the web component for it. So, this is just a second paragraph I'm using
 ## Vector addition
 To further test on how my styling is working in this simple blog post that uses mdx and web components, and actually
 quite a few extra fancy stuff.
+
+```c
+struct vec2 {
+    float x;
+    float y;
+};
+```
 
 <VectorAdd />
 

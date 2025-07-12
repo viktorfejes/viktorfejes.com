@@ -4,6 +4,10 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+@theme {
+    --font-mono: "Geist Mono", monospace;
+}
+
 :root {
     --font-primary: "Geist", sans-serif;
 }
@@ -26,4 +30,18 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100%;
+}
+
+/* Code block */
+.astro-code {
+    font-family: var(--font-mono);
+    border-radius: var(--radius-lg);
+    margin-bottom: calc(var(--spacing) * 4);
+    padding: calc(var(--spacing) * 4);
+}
+
+html.dark .astro-code,
+html.dark .astro-code span {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg) !important;
 }

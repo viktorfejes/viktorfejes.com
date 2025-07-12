@@ -19,6 +19,8 @@
     "astro": "^5.9.4",
     "astro-icon": "^1.1.5",
     "katex": "^0.16.22",
+    "mdast-util-to-string": "^4.0.0",
+    "reading-time": "^1.5.0",
     "rehype-katex": "^7.0.1",
     "remark-math": "^6.0.0",
     "sharp": "^0.34.2",
