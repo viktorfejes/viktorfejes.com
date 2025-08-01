@@ -1,8 +1,8 @@
 ---
 title: "Vector Operations: A visual guide"
-description: SOmething
-pubDate: 2024-03-24
-draft: true
+description: "A visual interactive guide for building intuition about vector operations."
+pubDate: 2025-07-31
+draft: false
 ---
 import VectorAdd from "../../components/visualizations/VectorAdd.astro";
 import VectorSub from "../../components/visualizations/VectorSub.astro";
@@ -12,84 +12,252 @@ import VectorDot from "../../components/visualizations/VectorDot.astro";
 import VectorCross from "../../components/visualizations/VectorCross.astro";
 import VectorReflect from "../../components/visualizations/VectorReflect.astro";
 
-Vector operations are fundamental in various fields including computer graphics, physics, and image processing. There are many
-posts about what they are and how they work but I want use this post to try to build intuition about how they work using
-interactive visuals.
+Plenty has been written about vector operations — and most of it is correct. However, reading alone rarely makes things
+click. In my experience, nothing beats applying something hands-on. And if that's not possible, building a visual
+intuition is the next best thing. That's what this post is about: understanding vector operations through interactive
+visuals.
 
-In this post we are going to explore vector operations and what they look like in (mostly) 2D space.
+Now, there are many kinds of vectors out there. In computer graphics, for instance, we often use the same data structure for
+both **points** and **vectors** — even though they represent different ideas.
 
-In this post, we'll use:
-- **Point** - a specific location in 2D space, like a vertex in a mesh or a pixel coordinate.
-- **Vector** - a direction and distance; and arrow that can be moved around freely representing offset between points.
+For clarity, when I say **vector** in this post, I always mean a *direction and distance*, represented by an arrow. On the other hand,
+**point** refers to a *location in space.*
 
-The first operation we are taking a look at is addition, just because this is what came to my mind first when I was
-building the web component for it. So, this is just a second paragraph I'm using to test my styling with.
+In this post we'll be looking at the following operations — each with an interactive visual, a bit of math, and some code to tie it all
+together:
+- [addition](#vector-addition),
+- [subtraction](#vector-subtraction),
+- [scaling](#vector-scaling),
+- [magnitude/length](#vector-length),
+- [dot product](#vector-dot-product),
+- [cross product](#vector-cross-product),
+- and [reflection](#vector-reflection).
 
-<Alert type="question">Adding two vectors together is simply: $$\vec{A} + \vec{B} = \vec{C}$$</Alert>
-
-## Vector addition
-To further test on how my styling is working in this simple blog post that uses mdx and web components, and actually
-quite a few extra fancy stuff.
+If you're only here for the visuals, feel free to skip the code! However, for those interested, I'll be using the following C
+struct throughout to represent 2D vectors:
 
 ```c
-struct vec2 {
+typedef struct vec2 {
     float x;
     float y;
-};
+} vec2_t;
 ```
 
-<VectorAdd />
+## Vector addition
+
+When you add two vectors, you're essentially stacking movements one after the other.
+
+This is similar to walking through a city: first, you walk 3 blocks east, then you turn and go 4 block north. However, instead
+of tracking each leg of your walk, you could draw a single arrow from your starting point to your final destination. That
+arrow is the **sum** of your two vectors — a single direction and distance that gets you to the same place.
+
+This kind of "chained movement" comes up constantly in graphics and physics. Forces can be added together this way. UV coordinates can be
+offset by directional gradients in image filters. It's all just vector addition
+
+<div class="mb-4"><VectorAdd /></div>
+
+<div class="mb-4">
+    <Alert type="info">Vector addition is <strong>commutative</strong>, meaning the order of operations doesn't matter: $$\vec{A} + \vec{B} = \vec{B} + \vec{A}$$</Alert>
+</div>
+
+You can see this in the visualization, too. Whether we add A to B or B to A (stacking them tail to head), the resulting vector
+ends up the same.
+
+Mathematically, all we are doing is adding each vector component individually to the corresponding component in the other vector.
+
+<p class="text-center">$$\vec{A} + \vec{B} = \begin{bmatrix} A_x + B_x \\ A_y + B_y \end{bmatrix}$$</p>
+
+Which can be expressed the following way in code:
+
+```c
+vec2_t vec2_add(vec2_t a, vec2_t b) {
+    return (vec2_t){
+        .x = a.x + b.x,
+        .y = a.y + b.y
+    };
+}
+```
 
 ## Vector subtraction
-To further test on how my styling is working in this simple blog post that uses mdx and web components, and actually
-quite a few extra fancy stuff.
 
-To further test on how my styling is working in this simple blog post that uses mdx and web components, and actually
-quite a few extra fancy stuff.
+Vector subtraction is about finding the directional difference between two vectors. In other words, how to get from one to the
+other.
 
-<VectorSub />
+A helpful way to think about this is to treat vectors as positions — like points in space. Given vector A and B, **subtracting
+A from B gives you the direction and distance** you'd need to travel to get **from point A to point B.** You're not stacking movements
+this time, you are comparing them.
+
+This comes up constantly in graphics, when computing motion vectors, trying to find the light direction from the light position,
+or in image processing for edge detection and normal map generation.
+
+<div class="mb-4">
+    <Alert type="warning">Important to note that vector subtraction is <strong>not commutative</strong>: <span class="text-nowrap">$$\vec{A} - \vec{B} \ne \vec{B} - \vec{A}$$</span></Alert>
+</div>
+
+<div class="mb-4"><VectorSub /></div>
+
+In the visualization, the **B - A vector** is shown both as a vector pointing from the head of A to the head of B, and as one
+starting from the center of the coordinate system. That's because the result is still just a direction and a length and it's
+common to draw vectors from the origin to better compare their properties.
+
+Similarly to addition, subtraction is also applied component-wise:
+<p class="text-center">$$\vec{A} - \vec{B} = \begin{bmatrix} A_x - B_x \\ A_y - B_y \end{bmatrix}$$</p>
+
+Which in code is as simple as:
+
+```c
+vec2_t vec2_sub(vec2_t a, vec2_t b) {
+    return (vec2_t){
+        .x = a.x - b.x,
+        .y = a.y - b.y
+    };
+}
+```
 
 ## Vector scaling
-To further test on how my styling is working in this simple blog post that uses mdx and web components, and actually
-quite a few extra fancy stuff.
 
-To further test on how my styling is working in this simple blog post that uses mdx and web components, and actually
-quite a few extra fancy stuff.
+Scaling a vector — that is, multiplying by a scalar —, stretches or compresses it on its own axis. If the scalar is **positive**,
+only its length changes. However, when the scalar is **negative**, its length changes and also flips its direction.
 
-<VectorScale />
+<div class="mb-4"><VectorScale /></div>
+
+This is a simple but powerful operation. You'll often scale direction vectors to control speed or magnitude, such as adjusting
+velocity, resizing normals, or scaling gradients in image effects.
+
+Mathematically, we multiply each component of the vector by the scalar:
+<p class="text-center">$$\text{scale}(\vec{A}, s) = s \cdot \vec{A} = \begin{bmatrix} s \cdot A_x \\ s \cdot A_y \end{bmatrix}$$</p>
+
+In code, this looks like:
+
+```c
+vec2_t vec2_scale(vec2_t a, float scale) {
+    return (vec2_t){
+        .x = a.x * scale,
+        .y = a.y * scale
+    };
+}
+```
 
 ## Vector magnitude
-To further test on how my styling is working in this simple blog post that uses mdx and web components, and actually
-quite a few extra fancy stuff.
 
-To further test on how my styling is working in this simple blog post that uses mdx and web components, and actually
-quite a few extra fancy stuff.
+Even though vectors represent both direction and magnitude, their components don’t explicitly store the magnitude. But we can
+compute it easily by treating the vector as the hypotenuse of a right-angled triangle.
 
-<VectorMag />
+If you imagine the vector's x and y components as the triangle's legs, then by the **Pythagorean theorem**, the length of the
+vector (its magnitude) is:
+<p class="text-center">$$|\vec{A}| = \sqrt{A_x^2 + A_y^2}$$</p>
+
+<div class="mb-4"><VectorMag /></div>
+
+This value is often used to normalize vectors (make them unit length), calculate distances, or compare sizes of directional
+quantities.
+
+In code, we simply do the following:
+
+```c
+float vec2_mag(vec2_t vec) {
+    return sqrtf(vec.x * vec.x + vec.y * vec.y);
+}
+```
 
 ## Vector dot product
-To further test on how my styling is working in this simple blog post that uses mdx and web components, and actually
-quite a few extra fancy stuff.
 
-To further test on how my styling is working in this simple blog post that uses mdx and web components, and actually
-quite a few extra fancy stuff.
+As you can see, we have covered the most common operations already and we have addition and subtraction but we don't have
+multiplication, yet. The reason is that vector multiplication is not as straightforward as multiplying real numbers — they are
+defined in more than one ways.
 
-<VectorDot />
+One of which is called the **dot product**, and it calculates the angle between two vectors. In other words, how much two
+vectors are pointing in the same direction. The result is not a vector, though, but a scalar. We are usually interested in
+three of its states:
+- if **both vectors point in** exactly **the same direction**, the dot product is large and **positive,**
+- if they're at **90°**, the dot product is **zero,**
+- if **they point in opposite directions**, the result is **negative.**
+
+This makes the dot product perfect for things like determining if an object is facing the camera, checking if a player is within
+a cone of vision, or computing brightness in lighting, as Lambert's cosine law uses a dot product between the surface normal
+and the light direction.
+
+<div class="mb-4"><VectorDot /></div>
+
+<div class="mb-4">
+    <Alert type="info">If the two vectors are normalized (magnitude == 1), the dot product equals the <strong>cosine of the angle</strong> between them.</Alert>
+</div>
+
+Another way to think of the dot product is as a projection. It tells us how much of vector B lies in the direction of vector A.
+If you imagine drawing a perpendicular line from B onto A, the dot product is proportional to the length of that "shadow", as
+can be seen in the visualization.
+
+Therefore, one way to calculate the resulting dot product is:
+<p class="text-center">$$\vec{A} \cdot \vec{B} = A_x \cdot B_x + A_y \cdot B_y$$</p>
+
+```c
+float vec2_dot(vec2_t a, vec2_t b) {
+    return a.x * b.x + a.y * b.y;
+}
+```
 
 ## Vector cross product
-To further test on how my styling is working in this simple blog post that uses mdx and web components, and actually
-quite a few extra fancy stuff.
 
-To further test on how my styling is working in this simple blog post that uses mdx and web components, and actually
-quite a few extra fancy stuff.
+Another way to define the multiplication of two vectors is the vector cross product. In 3D, the cross product gives a new
+vector perpendicular to both inputs. But in 2D, there’s no “out of plane” direction — so we instead use a scalar cross product
+that tells us the signed area of the parallelogram formed by the two vectors.
 
-<VectorCross />
+More intuitively, it tells us which direction you'd have to turn to rotate from vector A to B:
+- Positive - turn left (counter-clockwise)
+- Negative - turn right (clockwise)
+- Zero - perfectly aligned
+
+<div class="mb-4">
+    <Alert type="warning">The above interpretation of "which way to turn" depends on the *handedness* of the coordinate system we are working in. In mathematics that is right-handed.</Alert>
+</div>
+
+<div class="mb-4"><VectorCross /></div>
+
+The cross product is incredibly useful for steering behaviors (e.g. deciding which way to turn), for backface culling, and for
+computing triangle winding and area.
+
+It is non-commutative and component-wise is calculated using the following formula:
+<p class="text-center">$$\vec{A} \times \vec{B} = A_x \cdot B_y - A_y \cdot B_x$$</p>
+
+Which can be translated to code the following way:
+```c
+float vec2_cross(vec2_t a, vec2_t b) {
+    return a.x * b.y - a.y * b.x;
+}
+```
 
 ## Vector reflection
-To further test on how my styling is working in this simple blog post that uses mdx and web components, and actually
-quite a few extra fancy stuff.
 
-To further test on how my styling is working in this simple blog post that uses mdx and web components, and actually
-quite a few extra fancy stuff.
+Reflecting a vector across a surface (like a mirror, or a normal) is crucial in physics and rendering. You'll see this used in:
+- light ray reflection in ray tracing,
+- bouncing projectiles (e.g. pool, bullets, ricochets),
+- image effects like screen-space reflections.
 
-<VectorReflect />
+<div class="mb-4">
+    <Alert type="warning">It is important to make sure the normal is <strong>normalized</strong> (unit length) or the result will be incorrect!</Alert>
+</div>
+
+<div class="mb-4"><VectorReflect /></div>
+
+To reflect a vector across a **unit** normal, we subtract twice the projection of the vector onto the normal:
+<p class="text-center">$$\vec{R} = \vec{V} - 2(\vec{V} \cdot \vec{N})\vec{N}$$</p>
+
+```c
+vec2_t vec2_reflect(vec2_t v, vec2_t n) {
+    float dot = vec2_dot(v, n);
+    return (vec2_t){
+        .x = v.x - 2.0f * dot * n.x,
+        .y = v.y - 2.0f * dot * n.y
+    };
+}
+```
+
+## Wrapping it up
+
+While vector math might seem abstract at first, it forms the foundation of everything from basic motion to complex lighting
+and physics in games and graphics programming. Understanding how to add, scale, reflect, or take the dot and cross product of
+vectors isn’t just about numbers. It’s about being able to reason clearly about space, direction, and interaction.
+
+Hopefully, the visuals and examples here made these concepts click a little more intuitively. As with most things in math and
+code, the more you play with vectors — tweak them, visualize them, apply them — the more second nature they’ll become. And once
+that happens, you’ll start seeing them everywhere.
